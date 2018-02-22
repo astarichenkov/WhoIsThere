@@ -2,6 +2,8 @@ package ru.whoisthere;
 
 import java.util.ArrayList;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -10,7 +12,7 @@ import javafx.stage.Stage;
 public class Main extends Application{
 
 	static ArrayList<ArrayList<String>> allPersonsData = null;
-
+	ObservableList<Object> pd = FXCollections.observableArrayList();
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -30,6 +32,13 @@ public class Main extends Application{
 		Scene scene = new Scene (layout);
 		primaryStage.setScene(scene);
 		primaryStage.show();
-
 	}
+	
+	public ObservableList<Object> downloadData(){
+		
+		
+		pd.add(allPersonsData);
+		return pd;
+	}
+	
 }
