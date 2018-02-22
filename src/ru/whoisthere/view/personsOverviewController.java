@@ -10,6 +10,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import ru.whoisthere.SqlUtils;
+import ru.whoisthere.model.PersonsData;
 
 public class personsOverviewController {
 	
@@ -33,19 +34,23 @@ public class personsOverviewController {
 			allPersonsData = sqlutil.execQuery(queryStr);
 		}
 		
-		VBox vb = new VBox();
-		vb.setAlignment(Pos.TOP_CENTER);
-		for (int i=0; i < allPersonsData.size(); i++) {
-			
-			VBox p = new VBox();
-			p.setStyle("-fx-border-color:black");
-			p.getChildren().add(new Label(allPersonsData.get(i).get(0)));
-			p.getChildren().add(new Label(allPersonsData.get(i).get(1)));
-			vb.getChildren().add(p);			
-		}
-		gp.add(vb, 1, 1);
-		
-		
+		PersonsData pd = new PersonsData(allPersonsData);
+		gp.setColumnIndex(pd.getSecondColumn(), 0);
+		/*gp.getChildren().addAll(1, pd.getSecondColumn());
+		gp.getChildren().addAll(2, pd.getThirdColumn());
+		gp.getChildren().addAll(3, pd.getFourthColumn());
+		gp.getChildren().addAll(4, pd.getFifthColumn());
+		gp.getChildren().addAll(5, pd.getSixthColumn());
+		gp.getChildren().addAll(6, pd.getSeventhColumn());
+		gp.getChildren().addAll(7, pd.getEighthColumn());
+		gp.getChildren().addAll(8, pd.getNinthColumn());
+		gp.getChildren().addAll(9, pd.getTenthColumn());
+		gp.getChildren().addAll(10, pd.getEleventhColumn());
+		gp.getChildren().addAll(11, pd.getTwelthColumn());
+		gp.getChildren().addAll(12, pd.getThirtinthColumn());
+		gp.getChildren().addAll(13, pd.getFourtinthColumn());
+		gp.getChildren().addAll(14, pd.getFiftinthColumn());
+		gp.getChildren().addAll(15, pd.getSixtinthColumn());*/
 		
 		
 	}
