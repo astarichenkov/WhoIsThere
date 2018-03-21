@@ -1,38 +1,36 @@
 package ru.whoisthere.model;
 
-
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class PersonsData {
 	
 	private ArrayList<ArrayList<String>> personsDataAsArray;	
 	private ObservableList<Node> AllColumns = FXCollections.observableArrayList();
-	private ObservableList<Node> firstColumn = FXCollections.observableArrayList();
-	private ObservableList<Node> secondColumn = FXCollections.observableArrayList();
-	private ObservableList<Node> thirdColumn = FXCollections.observableArrayList();
-	private ObservableList<Node> fourthColumn = FXCollections.observableArrayList();
-	private ObservableList<Node> fifthColumn = FXCollections.observableArrayList();
-	private ObservableList<Node> sixthColumn = FXCollections.observableArrayList();
-	private ObservableList<Node> seventhColumn = FXCollections.observableArrayList();
-	private ObservableList<Node> eighthColumn = FXCollections.observableArrayList();
-	private ObservableList<Node> ninthColumn = FXCollections.observableArrayList();
-	private ObservableList<Node> tenthColumn = FXCollections.observableArrayList();
-	private ObservableList<Node> eleventhColumn = FXCollections.observableArrayList();
-	private ObservableList<Node> twelfthColumn = FXCollections.observableArrayList();
-	private ObservableList<Node> thirtinthColumn = FXCollections.observableArrayList();
-	private ObservableList<Node> fourteenthColumn = FXCollections.observableArrayList();
-	private ObservableList<Node> fifteenthColumn = FXCollections.observableArrayList();
-	private ObservableList<Node> sixteenthColumn = FXCollections.observableArrayList();
+	private VBox firstColumn = new VBox();
+	private VBox secondColumn = new VBox();
+	private VBox thirdColumn = new VBox();
+	private VBox fourthColumn = new VBox();;
+	private VBox fifthColumn = new VBox();
+	private VBox sixthColumn = new VBox();
+	private VBox seventhColumn = new VBox();
+	private VBox eighthColumn = new VBox();
+	private VBox ninthColumn = new VBox();
+	private VBox tenthColumn = new VBox();
+	private VBox eleventhColumn = new VBox();
+	private VBox twelfthColumn = new VBox();
+	private VBox thirtinthColumn = new VBox();
+	private VBox fourteenthColumn = new VBox();
+	private VBox fifteenthColumn = new VBox();
+	private VBox sixteenthColumn = new VBox();
 	private List<String> otdels = Arrays.asList(new String[] {"дирекци€",
 										"строительные материалы",
 										"стол€рные издели€",
@@ -61,66 +59,68 @@ public class PersonsData {
 		return personsDataAsArray; 
 	}
 	
-	private void handleData() {			
+	private void handleData() {
 		if (personsDataAsArray != null) {
-			for (int i = 0; i<personsDataAsArray.size(); i ++) {
+			for (int i = 0; i < personsDataAsArray.size(); i++) {
 				VBox p = new VBox();
-				p.setStyle("-fx-border-color:black");
+				p.setStyle("-fx-border-color:black");				
 				p.getChildren().add(new Label(personsDataAsArray.get(i).get(0)));
-				p.getChildren().add(new Label(personsDataAsArray.get(i).get(1)));
+				p.getChildren().add(new Label(personsDataAsArray.get(i).get(1)));	
+				p.setAlignment(Pos.CENTER);
 				String otdel = personsDataAsArray.get(i).get(5);
+				
 				switch (otdels.indexOf(otdel)){
 				case 0:
-					firstColumn.add(p);
+					firstColumn.getChildren().add(p);
 					break;
 				case 1:
-					secondColumn.add(p);
+					secondColumn.getChildren().add(p);
 					break;
 				case 2:
-					thirdColumn.add(p);
+					thirdColumn.getChildren().add(p);
 					break;
 				case 3:					
-					fourthColumn.add(p);
+					fourthColumn.getChildren().add(p);
 					break;
 				case 4:
-					fifthColumn.add(p);
+					fifthColumn.getChildren().add(p);
 					break;
 				case 5:					
-					sixthColumn.add(p);
+					sixthColumn.getChildren().add(p);
 					break;
 				case 6:					
-					seventhColumn.add(p);
+					seventhColumn.getChildren().add(p);
 					break;
 				case 7:					
-					eighthColumn.add(p);
+					eighthColumn.getChildren().add(p);
 					break;
 				case 8:					
-					ninthColumn.add(p);
+					ninthColumn.getChildren().add(p);
 					break;
 				case 9:					
-					tenthColumn.add(p);
+					tenthColumn.getChildren().add(p);
 					break;
 				case 10:				
-					eleventhColumn.add(p);
+					eleventhColumn.getChildren().add(p);
 					break;
 				case 11:					
-					twelfthColumn.add(p);
+					twelfthColumn.getChildren().add(p);
 					break;
 				case 12:				
-					thirtinthColumn.add(p);
+					thirtinthColumn.getChildren().add(p);
 					break;
 				case 13:					
-					fourteenthColumn.add(p);
+					fourteenthColumn.getChildren().add(p);
 					break;
 				case 14:					
-					fifteenthColumn.add(p);
+					fifteenthColumn.getChildren().add(p);
 					break;
 				case 15:					
-					sixteenthColumn.add(p);
+					sixteenthColumn.getChildren().add(p);
 					break;
-				}				
+				}
 			}			
-		}		
+		}	
 	}
 	
 	public ObservableList<Node> getAllColumns(){
@@ -143,67 +143,67 @@ public class PersonsData {
 		return AllColumns;
 	}
 	
-	public ObservableList<Node> getFirstColumn(){
+	public VBox getFirstColumn(){
 		return firstColumn;
 	}
 	
-	public ObservableList<Node> getSecondColumn(){
+	public VBox getSecondColumn(){
 		return secondColumn;
 	}
 	
-	public ObservableList<Node> getThirdColumn(){
+	public VBox getThirdColumn(){
 		return thirdColumn;
 	}
 	
-	public ObservableList<Node> getFourthColumn(){
+	public VBox getFourthColumn(){
 		return fourthColumn;
 	}
 	
-	public ObservableList<Node> getFifthColumn(){
+	public VBox getFifthColumn(){
 		return fifthColumn;
 	}
 	
-	public ObservableList<Node> getSixthColumn(){
+	public VBox getSixthColumn(){
 		return sixthColumn;
 	}
 	
-	public ObservableList<Node> getSeventhColumn(){
+	public VBox getSeventhColumn(){
 		return seventhColumn;
 	}
 	
-	public ObservableList<Node> getEighthColumn(){
+	public VBox getEighthColumn(){
 		return eighthColumn;
 	}
 	
-	public ObservableList<Node> getNinthColumn(){
+	public VBox getNinthColumn(){
 		return ninthColumn;
 	}
 	
-	public ObservableList<Node> getTenthColumn(){
+	public VBox getTenthColumn(){
 		return tenthColumn;
 	}
 	
-	public ObservableList<Node> getEleventhColumn(){
+	public VBox getEleventhColumn(){
 		return eleventhColumn;
 	}
 	
-	public ObservableList<Node> getTwelthColumn(){
+	public VBox getTwelthColumn(){
 		return twelfthColumn;
 	}
 	
-	public ObservableList<Node> getThirtinthColumn(){
+	public VBox getThirtinthColumn(){
 		return thirtinthColumn;
 	}
 	
-	public ObservableList<Node> getFourtinthColumn(){
+	public VBox getFourtinthColumn(){
 		return fourteenthColumn;
 	}
 	
-	public ObservableList<Node> getFiftinthColumn(){
+	public VBox getFiftinthColumn(){
 		return fifteenthColumn;
 	}
 	
-	public ObservableList<Node> getSixtinthColumn(){
+	public VBox getSixtinthColumn(){
 		return sixteenthColumn;
 	}
 
