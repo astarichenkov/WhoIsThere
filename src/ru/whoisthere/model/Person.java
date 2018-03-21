@@ -47,6 +47,10 @@ public class Person {
 		return this.department;
 	}
 	
+	/*public byte[] getPhoto() {
+		return this.photo;
+	}*/
+	
 	public BufferedImage getPhoto() {
 		return biToImage();
 	}
@@ -57,8 +61,7 @@ public class Person {
 			img = ImageIO.read(new ByteArrayInputStream(this.photo));
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		
+		}		
 		return img;
 	}
 	
