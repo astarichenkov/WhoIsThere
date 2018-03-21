@@ -51,5 +51,21 @@
       <AnchorPane GridPane.columnIndex="15" GridPane.rowIndex="1">
       	<Button onAction="#uploadData" prefHeight="15.0" text="Button" />
       </AnchorPane>
+<!--       <VBox fx:id="firstColumn" GridPane.rowIndex="1" />
+      <VBox fx:id="secondColumn" GridPane.rowIndex="2" />
+      <VBox fx:id="thirdColumn" GridPane.rowIndex="3" />
+      <VBox fx:id="fourthColumn" GridPane.rowIndex="4" />
+      <VBox fx:id="fifthColumn" GridPane.rowIndex="5" />
+      <VBox fx:id="sixthColumn" GridPane.rowIndex="6" />
+      <VBox fx:id="seventhColumn" GridPane.rowIndex="7" />
+      <VBox fx:id="eighthColumn" GridPane.rowIndex="8" />
+      <VBox fx:id="ninthColumn" GridPane.rowIndex="9" />
+      <VBox fx:id="tenthColumn" GridPane.rowIndex="10" />
+      <VBox fx:id="eleventhColumn" GridPane.rowIndex="11" />
+      <VBox fx:id="twelfthColumn" GridPane.rowIndex="12" />
+      <VBox fx:id="thirteenthColumn" GridPane.rowIndex="13" />
+      <VBox fx:id="fourteenthColumn" GridPane.rowIndex="14" />
+      <VBox fx:id="fifteenthColumn" GridPane.rowIndex="15" />
+      <VBox fx:id="sixteenthColumn" GridPane.rowIndex="16" /> -->
    </children>
 </GridPane>
