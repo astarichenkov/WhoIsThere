@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
+
+import ru.whoisthere.model.Person;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 public class SqlUtils {
@@ -37,19 +39,21 @@ public class SqlUtils {
 		}
 	}
 	
-	public ArrayList<ArrayList<String>> execQuery(String queryStr){
-		ArrayList<ArrayList<String>> allPersonsData = new ArrayList<ArrayList<String>>();
+	public List<Person> execQuery(){
 		
+		List<Person> persons = new ArrayList<Person>();
+		String queryStr = 	"SELECT plist.FirstName, plist.Name, div.Name, plist.Picture " +
+				"FROM (SELECT MAX(TimeVal) as TimeVal, HozOrgan, Max(Mode) as mode FROM ORION1122.dbo.pLogData Where TimeVal>='20180322' Group By HozOrgan) as p " +
+				"INNER JOIN (SELECT ID, Name, FirstName, Section, Picture From ORION1122.dbo.pList  where Section <> '199' and Company=2) plist ON plist.ID = p.HozOrgan " +
+				"LEFT JOIN [ORION1122].[dbo].[PDivision] div ON div.ID = plist.Section " +
+				"WHERE TimeVal >='20180322' and p.Mode = 1 and div.ID < 184 " +
+				"Order by div.Name";
 		try {
 			Statement stmt = con.createStatement();			
 			ResultSet rs = stmt.executeQuery(queryStr);
-			ResultSetMetaData rsmd = rs.getMetaData();
 			while (rs.next()) {
-				ArrayList<String> personData = new ArrayList<String>();
-				for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-					personData.add(rs.getString(i));
-				}
-				allPersonsData.add(personData);
+				Person person = new Person(rs.getString(1), rs.getString(2), rs.getString(3), rs.getBytes(4));
+				persons.add(person);
 			}
 			rs.close();
 			stmt.close();
@@ -58,6 +62,6 @@ public class SqlUtils {
 		} finally {
 			closeConnection();
 		}
-		return allPersonsData;
+		return persons;
 	}	
 }
