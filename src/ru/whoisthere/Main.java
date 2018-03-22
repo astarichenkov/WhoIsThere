@@ -26,10 +26,11 @@ public class Main extends Application{
 
 		primaryStage.setFullScreen(true);
 		primaryStage.setTitle("Кто в Зале!?");
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("view/personsOverview.fxml"));
 		
-		Parent layout = FXMLLoader.load(getClass().getResource("view/personsOverview.fxml"));
+		/*Parent layout = FXMLLoader.load(getClass().getResource("view/personsOverview.fxml"));
 		
-		Scene scene = new Scene (layout);
+		Scene scene = new Scene (layout);*/
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
