@@ -31,22 +31,22 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <VBox id="col0" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1" />
-      <VBox id="col1" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <VBox id="col2" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-      <VBox id="col3" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-      <VBox id="col4" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-      <VBox id="col5" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-      <VBox id="col6" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="6" GridPane.rowIndex="1" />
-      <VBox id="col7" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="7" GridPane.rowIndex="1" />
-      <VBox id="col8" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="8" GridPane.rowIndex="1" />
-      <VBox id="col9" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="9" GridPane.rowIndex="1" />
-      <VBox id="col10" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="10" GridPane.rowIndex="1" />
-      <VBox id="col11" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="11" GridPane.rowIndex="1" />
-      <VBox id="col12" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="12" GridPane.rowIndex="1" />
-      <VBox id="col13" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="13" GridPane.rowIndex="1" />
-      <VBox id="col14" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="14" GridPane.rowIndex="1" />
-      <VBox id="col15" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="15" GridPane.rowIndex="1" />
+      <VBox id="col0" prefHeight="200.0" prefWidth="100.0" styleClass="columns" GridPane.rowIndex="1" />
+      <VBox id="col1" prefHeight="200.0" prefWidth="100.0" styleClass="columns" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <VBox id="col2" prefHeight="200.0" prefWidth="100.0" styleClass="columns" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+      <VBox id="col3" prefHeight="200.0" prefWidth="100.0" styleClass="columns" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+      <VBox id="col4" prefHeight="200.0" prefWidth="100.0" styleClass="columns" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+      <VBox id="col5" prefHeight="200.0" prefWidth="100.0" styleClass="columns" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+      <VBox id="col6" prefHeight="200.0" prefWidth="100.0" styleClass="columns" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+      <VBox id="col7" prefHeight="200.0" prefWidth="100.0" styleClass="columns" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+      <VBox id="col8" prefHeight="200.0" prefWidth="100.0" styleClass="columns" GridPane.columnIndex="8" GridPane.rowIndex="1" />
+      <VBox id="col9" prefHeight="200.0" prefWidth="100.0" styleClass="columns" GridPane.columnIndex="9" GridPane.rowIndex="1" />
+      <VBox id="col10" prefHeight="200.0" prefWidth="100.0" styleClass="columns" GridPane.columnIndex="10" GridPane.rowIndex="1" />
+      <VBox id="col11" prefHeight="200.0" prefWidth="100.0" styleClass="columns" GridPane.columnIndex="11" GridPane.rowIndex="1" />
+      <VBox id="col12" prefHeight="200.0" prefWidth="100.0" styleClass="columns" GridPane.columnIndex="12" GridPane.rowIndex="1" />
+      <VBox id="col13" prefHeight="200.0" prefWidth="100.0" styleClass="columns" GridPane.columnIndex="13" GridPane.rowIndex="1" />
+      <VBox id="col14" prefHeight="200.0" prefWidth="100.0" styleClass="columns" GridPane.columnIndex="14" GridPane.rowIndex="1" />
+      <VBox id="col15" prefHeight="200.0" prefWidth="100.0" styleClass="columns" GridPane.columnIndex="15" GridPane.rowIndex="1" />
       <Button fx:id="btn" mnemonicParsing="false" onAction="#uploadData" text="Button" GridPane.rowIndex="1" />
       <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="35.0" style="-fx-background-color: #DDDDDD;" text="Дирекция" textAlignment="CENTER" />
       <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #DDDDDD;" text="1 отдел" textAlignment="CENTER" GridPane.columnIndex="1" />
