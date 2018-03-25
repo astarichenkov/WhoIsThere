@@ -6,12 +6,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import ru.whoisthere.SqlUtils;
 import ru.whoisthere.model.Person;
@@ -23,7 +29,7 @@ public class personsOverviewController {
 	@FXML
 	public Button btn;
 	public GridPane gp = new GridPane();
-	VBox col0 = new VBox(new Label("sdasdsd"));
+/*	VBox col0 = new VBox(new Label("sdasdsd"));
 	VBox col1 = new VBox();
 	VBox col2 = new VBox();
 	VBox col3 = new VBox();
@@ -38,10 +44,13 @@ public class personsOverviewController {
 	VBox col12 = new VBox();
 	VBox col13 = new VBox();
 	VBox col14 = new VBox();
-	VBox col15 = new VBox();	
+	VBox col15 = new VBox();*/	
 	
 	@FXML
 	public void uploadData() {
+		
+		clearData();
+		
 		List<List<String>> otdels = new ArrayList<List<String>>();		
 		otdels.add(Arrays.asList((new String[]{"дирекция", "дирекция"})));
 		otdels.add(Arrays.asList((new String[]{"строительные материалы", "1 отдел"})));
@@ -66,13 +75,55 @@ public class personsOverviewController {
 		}		
 		
 		int colCount = otdels.size();
-		for (Person person : persons) {			
+		int maxPersons = 0;
+		int personsInOtdel = 0;
+		/*for (int i = 0; i<colCount; i++) {
+			for (int j = 0; j<colCount; j++) {
+				if ()
+			}
+		}*/
+		
+		
+		for (Person person : persons) {	
 			for (int i = 0; i<colCount; i++) {
-				if (person.getDepartment() == otdels.get(i).get(0)) {
+				if (person.getDepartment().equals(otdels.get(i).get(0))) {
+					
 					String nodeName = "col" + i;
-					Node node = Parent.
+					VBox mynode = (VBox) gp.lookup("#" + nodeName);
+					
+					System.out.println(mynode.getHeight());
+					
+					//------------ элемент с фотографией--------------------------------
+					ImageView personPhoto = new ImageView(SwingFXUtils.toFXImage(person.getPhoto(), null));	
+					personPhoto.setFitWidth(mynode.getWidth());
+					personPhoto.setPreserveRatio(true);
+					//==================================================================
+					
+					//------------ элемент с именем и фамилией--------------------------
+					VBox personName = new VBox();
+					personName.setAlignment(Pos.TOP_CENTER);
+					personName.getChildren().addAll(new Label(person.getName()), new Label(person.getSurname()));					
+					//==================================================================
+					
+					//------------- контейнер с выводимой в столбец информацией о сотруднике---
+					VBox personInfoContainer = new VBox();
+					personInfoContainer.setAlignment(Pos.TOP_CENTER);
+					personInfoContainer.setMaxWidth(250.0);
+					personInfoContainer.getChildren().addAll(personPhoto, personName);
+					//=========================================================================
+					
+					mynode.getChildren().add(personInfoContainer);
 				}
-			}	
+			}
 		}		
-	}	
+	}
+	
+	private void clearData() {
+		for (Node n: gp.getChildren()) {
+			if (n.getStyleClass().toString().equals("columns")) {
+				VBox node = (VBox) n;
+				node.getChildren().clear();
+			}
+		}
+	}
 }
