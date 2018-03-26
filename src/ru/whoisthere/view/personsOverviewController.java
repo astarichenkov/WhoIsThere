@@ -1,57 +1,51 @@
 package ru.whoisthere.view;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import ru.whoisthere.SqlUtils;
 import ru.whoisthere.model.Person;
 
 
 public class personsOverviewController {
+	
+	
 	private List<Person> persons = new ArrayList<Person>();
 	
 	@FXML
-	public Button btn;
 	public GridPane gp = new GridPane();
-/*	VBox col0 = new VBox(new Label("sdasdsd"));
-	VBox col1 = new VBox();
-	VBox col2 = new VBox();
-	VBox col3 = new VBox();
-	VBox col4 = new VBox();
-	VBox col5 = new VBox();
-	VBox col6 = new VBox();
-	VBox col7 = new VBox();
-	VBox col8 = new VBox();
-	VBox col9 = new VBox();
-	VBox col10 = new VBox();
-	VBox col11 = new VBox();
-	VBox col12 = new VBox();
-	VBox col13 = new VBox();
-	VBox col14 = new VBox();
-	VBox col15 = new VBox();*/	
 	
-	@FXML
-	public void uploadData() {
-		
+
+	public void downloadData() {				
+		SqlUtils sqlutil = new SqlUtils();
+		if (sqlutil.openConnection("10.84.79.125", "sa", "123456")) {
+			persons = sqlutil.execQuery();
+		}
 		clearData();
-		
-		List<List<String>> otdels = new ArrayList<List<String>>();		
+		refreshScreen();
+	}
+	
+	public void refreshScreen() {
+		clearData();
+		List<List<String>> otdels = new ArrayList<List<String>>();	
 		otdels.add(Arrays.asList((new String[]{"дирекция", "дирекция"})));
 		otdels.add(Arrays.asList((new String[]{"строительные материалы", "1 отдел"})));
 		otdels.add(Arrays.asList((new String[]{"столярные изделия", "2 отдел"})));
@@ -68,51 +62,65 @@ public class personsOverviewController {
 		otdels.add(Arrays.asList((new String[]{"освещение", "13 отдел"})));
 		otdels.add(Arrays.asList((new String[]{"обустройство дома", "14 отдел"})));
 		otdels.add(Arrays.asList((new String[]{"кухни", "15 отдел"})));
-				
-		SqlUtils sqlutil = new SqlUtils();
-		if (sqlutil.openConnection("10.84.79.125", "sa", "123456")) {
-			persons = sqlutil.execQuery();
-		}		
-		
 		int colCount = otdels.size();
 		int maxPersons = 0;
-		int personsInOtdel = 0;
-		/*for (int i = 0; i<colCount; i++) {
-			for (int j = 0; j<colCount; j++) {
-				if ()
-			}
-		}*/
-		
-		
-		for (Person person : persons) {	
-			for (int i = 0; i<colCount; i++) {
+		int personsInOtdel;
+		for (int i = 0; i<colCount; i++) {
+			personsInOtdel = 0;
+			for (Person person : persons) {	
 				if (person.getDepartment().equals(otdels.get(i).get(0))) {
-					
+					personsInOtdel += 1;
+				}
+			}
+			if (personsInOtdel > maxPersons) {
+				maxPersons = personsInOtdel;
+			}			
+		}
+		
+		for (int i = 0; i<colCount; i++) {
+
+			for (Person person : persons) {			
+				if (person.getDepartment().equals(otdels.get(i).get(0))) {
 					String nodeName = "col" + i;
 					VBox mynode = (VBox) gp.lookup("#" + nodeName);
-					
-					System.out.println(mynode.getHeight());
-					
+					mynode.prefWidthProperty().bind(gp.getRowConstraints().get(1).maxHeightProperty());
 					//------------ элемент с фотографией--------------------------------
-					ImageView personPhoto = new ImageView(SwingFXUtils.toFXImage(person.getPhoto(), null));	
-					personPhoto.setFitWidth(mynode.getWidth());
-					personPhoto.setPreserveRatio(true);
+					Image photo = SwingFXUtils.toFXImage(person.getPhoto(), null);
+					ImageView personPhoto = new ImageView(photo);	
+					Double imgW = photo.getWidth();
+					Double imgH = photo.getHeight();
+					Double ratio = imgH/imgW;
+					Double containerHeight = mynode.getHeight();
+					Double containerWidth = mynode.getWidth()-10;
+					Double calcHeight = containerWidth * ratio;
+					Double defHeight = (containerWidth) * 1.3;
+					Double calcWidth = defHeight / ratio;
+					
+					if (calcHeight + 40 > containerHeight/maxPersons) {
+						personPhoto.setFitHeight(containerHeight/maxPersons - 40);						
+					} else {
+						if (calcWidth > containerWidth)
+							personPhoto.setFitWidth(containerWidth);
+						else personPhoto.setFitHeight(defHeight);
+					}
+					
+					personPhoto.setPreserveRatio(true);					
 					//==================================================================
 					
 					//------------ элемент с именем и фамилией--------------------------
 					VBox personName = new VBox();
 					personName.setAlignment(Pos.TOP_CENTER);
-					personName.getChildren().addAll(new Label(person.getName()), new Label(person.getSurname()));					
+					personName.getChildren().addAll(new Label(person.getName()), new Label(person.getSurname()));
+
 					//==================================================================
 					
 					//------------- контейнер с выводимой в столбец информацией о сотруднике---
 					VBox personInfoContainer = new VBox();
-					personInfoContainer.setAlignment(Pos.TOP_CENTER);
-					personInfoContainer.setMaxWidth(250.0);
-					personInfoContainer.getChildren().addAll(personPhoto, personName);
+					personInfoContainer.setAlignment(Pos.TOP_CENTER);					
+					personInfoContainer.getChildren().addAll(personPhoto, personName);					
 					//=========================================================================
 					
-					mynode.getChildren().add(personInfoContainer);
+					mynode.getChildren().add(personInfoContainer);				
 				}
 			}
 		}		
@@ -126,4 +134,56 @@ public class personsOverviewController {
 			}
 		}
 	}
+	
+	@FXML
+	public void initialize() {
+		ContextMenu cm = new ContextMenu();
+		MenuItem menuItem0 = new MenuItem("Получить данные с сервера");
+		MenuItem menuItem1 = new MenuItem("Обновить экран");
+		MenuItem menuItem2 = new MenuItem("Выйти из приложения");
+		
+		menuItem0.setOnAction(new EventHandler<ActionEvent>() {			
+			@Override
+			public void handle(ActionEvent event) {
+				downloadData();
+			}
+		});
+		
+		menuItem1.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				refreshScreen();
+			}
+		});
+		
+		menuItem2.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				System.exit(0);			
+			}
+		});
+		
+		cm.getItems().addAll(menuItem0, menuItem1, new SeparatorMenuItem(), menuItem2);
+		
+		gp.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+			@Override
+			public void handle(ContextMenuEvent event) {
+				cm.show(gp, event.getScreenX(), event.getScreenY());
+			}
+		});
+		
+		gp.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				cm.hide();
+			}
+		});
+		
+		
+		
+		
+	}
+	
 }
