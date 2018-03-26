@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javafx.beans.value.ChangeListener;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,7 +19,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import ru.whoisthere.SqlUtils;
@@ -27,10 +27,10 @@ import ru.whoisthere.model.Person;
 
 public class personsOverviewController {
 	
-	
 	private List<Person> persons = new ArrayList<Person>();
 	
-	@FXML
+	
+	@FXML 
 	public GridPane gp = new GridPane();
 	
 
@@ -39,7 +39,6 @@ public class personsOverviewController {
 		if (sqlutil.openConnection("10.84.79.125", "sa", "123456")) {
 			persons = sqlutil.execQuery();
 		}
-		clearData();
 		refreshScreen();
 	}
 	
@@ -78,12 +77,11 @@ public class personsOverviewController {
 		}
 		
 		for (int i = 0; i<colCount; i++) {
-
 			for (Person person : persons) {			
 				if (person.getDepartment().equals(otdels.get(i).get(0))) {
 					String nodeName = "col" + i;
 					VBox mynode = (VBox) gp.lookup("#" + nodeName);
-					mynode.prefWidthProperty().bind(gp.getRowConstraints().get(1).maxHeightProperty());
+					mynode.setMinHeight(gp.getRowConstraints().get(0).getMinHeight());
 					//------------ элемент с фотографией--------------------------------
 					Image photo = SwingFXUtils.toFXImage(person.getPhoto(), null);
 					ImageView personPhoto = new ImageView(photo);	
@@ -103,7 +101,7 @@ public class personsOverviewController {
 							personPhoto.setFitWidth(containerWidth);
 						else personPhoto.setFitHeight(defHeight);
 					}
-					
+					System.out.println(containerHeight);
 					personPhoto.setPreserveRatio(true);					
 					//==================================================================
 					
@@ -135,28 +133,26 @@ public class personsOverviewController {
 		}
 	}
 	
-	@FXML
+	//@FXML
 	public void initialize() {
 		ContextMenu cm = new ContextMenu();
 		MenuItem menuItem0 = new MenuItem("Получить данные с сервера");
 		MenuItem menuItem1 = new MenuItem("Обновить экран");
 		MenuItem menuItem2 = new MenuItem("Выйти из приложения");
-		
+		//-----------------обработка событий нажатия пунктов меню---------------------
 		menuItem0.setOnAction(new EventHandler<ActionEvent>() {			
 			@Override
 			public void handle(ActionEvent event) {
 				downloadData();
 			}
-		});
-		
+		});		
 		menuItem1.setOnAction(new EventHandler<ActionEvent>() {
 			
 			@Override
 			public void handle(ActionEvent event) {
 				refreshScreen();
 			}
-		});
-		
+		});		
 		menuItem2.setOnAction(new EventHandler<ActionEvent>() {
 			
 			@Override
@@ -164,7 +160,7 @@ public class personsOverviewController {
 				System.exit(0);			
 			}
 		});
-		
+		//===========================================================================
 		cm.getItems().addAll(menuItem0, menuItem1, new SeparatorMenuItem(), menuItem2);
 		
 		gp.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
@@ -181,7 +177,9 @@ public class personsOverviewController {
 			}
 		});
 		
-		
+		/*ChangeListener<Number> gpSizeChangingListener = (observable, oldValue, newValue) -> refreshScreen();
+		gp.widthProperty().addListener(gpSizeChangingListener);
+		gp.heightProperty().addListener(gpSizeChangingListener);*/
 		
 		
 	}
