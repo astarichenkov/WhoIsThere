@@ -43,10 +43,10 @@ public class SqlUtils {
 		
 		List<Person> persons = new ArrayList<Person>();
 		String queryStr = 	"SELECT plist.FirstName, plist.Name, div.Name, plist.Picture " +
-				"FROM (SELECT MAX(TimeVal) as TimeVal, HozOrgan, Max(Mode) as mode FROM ORION1122.dbo.pLogData Where TimeVal>='20180322' Group By HozOrgan) as p " +
+				"FROM (SELECT MAX(TimeVal) as TimeVal, HozOrgan, Max(Mode) as mode FROM ORION1122.dbo.pLogData Where TimeVal>='20180325' Group By HozOrgan) as p " +
 				"INNER JOIN (SELECT ID, Name, FirstName, Section, Picture From ORION1122.dbo.pList  where Section <> '199' and Company=2) plist ON plist.ID = p.HozOrgan " +
 				"LEFT JOIN [ORION1122].[dbo].[PDivision] div ON div.ID = plist.Section " +
-				"WHERE TimeVal >='20180322' and p.Mode = 1 and div.ID < 184 " +
+				"WHERE TimeVal >='20180325' and p.Mode = 1 and div.ID < 184 " +
 				"Order by div.Name";
 		try {
 			Statement stmt = con.createStatement();			
