@@ -3,8 +3,6 @@ package ru.whoisthere.view;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import javafx.beans.value.ChangeListener;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -28,23 +26,16 @@ import ru.whoisthere.model.Person;
 public class personsOverviewController {
 	
 	private List<Person> persons = new ArrayList<Person>();
-	
+	List<List<String>> otdels = new ArrayList<List<String>>();
+	private int colCount = 0;
+	private int maxPersons;
 	
 	@FXML 
 	public GridPane gp = new GridPane();
 	
 
-	public void downloadData() {				
-		SqlUtils sqlutil = new SqlUtils();
-		if (sqlutil.openConnection("10.84.79.125", "sa", "123456")) {
-			persons = sqlutil.execQuery();
-		}
-		refreshScreen();
-	}
-	
-	public void refreshScreen() {
-		clearData();
-		List<List<String>> otdels = new ArrayList<List<String>>();	
+	public void downloadData() {
+		int personsInOtdel;
 		otdels.add(Arrays.asList((new String[]{"дирекция", "дирекция"})));
 		otdels.add(Arrays.asList((new String[]{"строительные материалы", "1 отдел"})));
 		otdels.add(Arrays.asList((new String[]{"столярные изделия", "2 отдел"})));
@@ -61,9 +52,13 @@ public class personsOverviewController {
 		otdels.add(Arrays.asList((new String[]{"освещение", "13 отдел"})));
 		otdels.add(Arrays.asList((new String[]{"обустройство дома", "14 отдел"})));
 		otdels.add(Arrays.asList((new String[]{"кухни", "15 отдел"})));
-		int colCount = otdels.size();
-		int maxPersons = 0;
-		int personsInOtdel;
+		SqlUtils sqlutil = new SqlUtils();
+		if (sqlutil.openConnection("10.84.79.125", "sa", "123456")) {
+			persons = sqlutil.execQuery();
+		}
+		
+		colCount = otdels.size();
+		maxPersons = 0;
 		for (int i = 0; i<colCount; i++) {
 			personsInOtdel = 0;
 			for (Person person : persons) {	
@@ -74,54 +69,64 @@ public class personsOverviewController {
 			if (personsInOtdel > maxPersons) {
 				maxPersons = personsInOtdel;
 			}			
-		}
-		
-		for (int i = 0; i<colCount; i++) {
-			for (Person person : persons) {			
-				if (person.getDepartment().equals(otdels.get(i).get(0))) {
-					String nodeName = "col" + i;
-					VBox mynode = (VBox) gp.lookup("#" + nodeName);
-					mynode.setMinHeight(gp.getRowConstraints().get(0).getMinHeight());
-					//------------ элемент с фотографией--------------------------------
-					Image photo = SwingFXUtils.toFXImage(person.getPhoto(), null);
-					ImageView personPhoto = new ImageView(photo);	
-					Double imgW = photo.getWidth();
-					Double imgH = photo.getHeight();
-					Double ratio = imgH/imgW;
-					Double containerHeight = mynode.getHeight();
-					Double containerWidth = mynode.getWidth()-10;
-					Double calcHeight = containerWidth * ratio;
-					Double defHeight = (containerWidth) * 1.3;
-					Double calcWidth = defHeight / ratio;
-					
-					if (calcHeight + 40 > containerHeight/maxPersons) {
-						personPhoto.setFitHeight(containerHeight/maxPersons - 40);						
-					} else {
-						if (calcWidth > containerWidth)
-							personPhoto.setFitWidth(containerWidth);
-						else personPhoto.setFitHeight(defHeight);
-					}
-					System.out.println(containerHeight);
-					personPhoto.setPreserveRatio(true);					
-					//==================================================================
-					
-					//------------ элемент с именем и фамилией--------------------------
-					VBox personName = new VBox();
-					personName.setAlignment(Pos.TOP_CENTER);
-					personName.getChildren().addAll(new Label(person.getName()), new Label(person.getSurname()));
-
-					//==================================================================
-					
-					//------------- контейнер с выводимой в столбец информацией о сотруднике---
-					VBox personInfoContainer = new VBox();
-					personInfoContainer.setAlignment(Pos.TOP_CENTER);					
-					personInfoContainer.getChildren().addAll(personPhoto, personName);					
-					//=========================================================================
-					
-					mynode.getChildren().add(personInfoContainer);				
-				}
-			}
 		}		
+		// refreshScreen();
+	}
+	
+	public void refreshScreen() {
+		System.out.println("---------------------------------------------------------------------------");
+		try {
+			clearData();
+			for (int i = 0; i<colCount; i++) {
+				for (Person person : persons) {			
+					if (person.getDepartment().equals(otdels.get(i).get(0))) {
+						String nodeName = "col" + i;
+						VBox mynode = (VBox) gp.lookup("#" + nodeName);
+						System.out.println(gp.getRowConstraints().get(1).getMinHeight());
+						mynode.setMinHeight(gp.getRowConstraints().get(1).getMinHeight());
+						//------------ элемент с фотографией--------------------------------
+						Image photo = SwingFXUtils.toFXImage(person.getPhoto(), null);
+						ImageView personPhoto = new ImageView(photo);	
+						Double imgW = photo.getWidth();
+						Double imgH = photo.getHeight();
+						Double ratio = imgH/imgW;
+						Double containerHeight = mynode.getHeight();
+						Double containerWidth = mynode.getWidth()-10;
+						Double calcHeight = containerWidth * ratio;
+						Double defHeight = (containerWidth) * 1.3;
+						Double calcWidth = defHeight / ratio;
+						
+						if (calcHeight + 40 > containerHeight/maxPersons) {
+							personPhoto.setFitHeight(containerHeight/maxPersons - 40);						
+						} else {
+							if (calcWidth > containerWidth)
+								personPhoto.setFitWidth(containerWidth);
+							else personPhoto.setFitHeight(defHeight);
+						}
+						// System.out.println(containerHeight);
+						personPhoto.setPreserveRatio(true);					
+						//==================================================================
+						
+						//------------ элемент с именем и фамилией--------------------------
+						VBox personName = new VBox();
+						personName.setAlignment(Pos.TOP_CENTER);
+						personName.getChildren().addAll(new Label(person.getName()), new Label(person.getSurname()));
+
+						//==================================================================
+						
+						//------------- контейнер с выводимой в столбец информацией о сотруднике---
+						VBox personInfoContainer = new VBox();
+						personInfoContainer.setAlignment(Pos.TOP_CENTER);
+						personInfoContainer.getChildren().addAll(personPhoto, personName);					
+						//=========================================================================
+						
+						mynode.getChildren().add(personInfoContainer);				
+					}
+				}
+			}		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void clearData() {
@@ -146,15 +151,13 @@ public class personsOverviewController {
 				downloadData();
 			}
 		});		
-		menuItem1.setOnAction(new EventHandler<ActionEvent>() {
-			
+		menuItem1.setOnAction(new EventHandler<ActionEvent>() {			
 			@Override
 			public void handle(ActionEvent event) {
 				refreshScreen();
 			}
 		});		
-		menuItem2.setOnAction(new EventHandler<ActionEvent>() {
-			
+		menuItem2.setOnAction(new EventHandler<ActionEvent>() {			
 			@Override
 			public void handle(ActionEvent event) {
 				System.exit(0);			
@@ -176,12 +179,5 @@ public class personsOverviewController {
 				cm.hide();
 			}
 		});
-		
-		/*ChangeListener<Number> gpSizeChangingListener = (observable, oldValue, newValue) -> refreshScreen();
-		gp.widthProperty().addListener(gpSizeChangingListener);
-		gp.heightProperty().addListener(gpSizeChangingListener);*/
-		
-		
-	}
-	
+	}	
 }
