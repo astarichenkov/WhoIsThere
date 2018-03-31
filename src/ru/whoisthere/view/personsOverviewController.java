@@ -173,11 +173,11 @@ public class personsOverviewController {
 			}
 		});
 		
-		gp.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+/*		gp.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
 				cm.hide();
 			}
-		});
+		});*/
 	}	
 }
