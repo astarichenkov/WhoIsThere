@@ -3,6 +3,11 @@ package ru.whoisthere.view;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,9 +21,13 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 import ru.whoisthere.SqlUtils;
 import ru.whoisthere.model.Person;
 
@@ -31,34 +40,22 @@ public class personsOverviewController {
 	private int maxPersons;
 	
 	@FXML 
-	public GridPane gp = new GridPane();
+	private GridPane gp = new GridPane();
+
 	
 
 	public void downloadData() {
 		int personsInOtdel;
-		otdels.add(Arrays.asList((new String[]{"дирекция", "дирекция"})));
-		otdels.add(Arrays.asList((new String[]{"строительные материалы", "1 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"столярные изделия", "2 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"электротовары", "3 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"инструменты", "4 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"напольные покрытия", "5 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"настенная и напольная плитка", "6 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"сантехника", "7 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"водоканализационные системы - отопление", "8 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"сад", "9 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"скобяные изделия", "10 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"лакокрасочные изделия", "11 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"отделочные материалы", "12 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"освещение", "13 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"обустройство дома", "14 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"кухни", "15 отдел"})));
+		
 		SqlUtils sqlutil = new SqlUtils();
 		if (sqlutil.openConnection("10.84.79.125", "sa", "123456")) {
+			persons.clear();
 			persons = sqlutil.execQuery();
 		}
 		
 		colCount = otdels.size();
 		maxPersons = 0;
+		//personsInOtdel = 0;
 		for (int i = 0; i<colCount; i++) {
 			personsInOtdel = 0;
 			for (Person person : persons) {	
@@ -69,20 +66,23 @@ public class personsOverviewController {
 			if (personsInOtdel > maxPersons) {
 				maxPersons = personsInOtdel;
 			}			
-		}		
-		// refreshScreen();
+		}	
+		//System.out.println("maxPersons = " + maxPersons);
+		refreshScreen();
 	}
 	
 	public void refreshScreen() {
-		System.out.println("---------------------------------------------------------------------------");
+		//System.out.println("---------------------------------------------------------------------------");
 		try {
+			//System.out.println("otdels.size = " + otdels.size());
 			clearData();
-			for (int i = 0; i<colCount; i++) {
+			for (int i = 0; i<otdels.size(); i++) {
 				for (Person person : persons) {			
 					if (person.getDepartment().equals(otdels.get(i).get(0))) {
 						String nodeName = "col" + i;
 						VBox mynode = (VBox) gp.lookup("#" + nodeName);
-						System.out.println(gp.getRowConstraints().get(1).getMinHeight());
+						//System.out.print(person.getSurname());
+						//System.out.println(gp.getRowConstraints().get(1).getMinHeight());
 						mynode.setMinHeight(gp.getRowConstraints().get(1).getMinHeight());
 						//------------ элемент с фотографией--------------------------------
 						Image photo = SwingFXUtils.toFXImage(person.getPhoto(), null);
@@ -140,10 +140,29 @@ public class personsOverviewController {
 	
 	//@FXML
 	public void initialize() {
+		
+		otdels.add(Arrays.asList((new String[]{"дирекция", "дирекция"})));
+		otdels.add(Arrays.asList((new String[]{"строительные материалы", "1 отдел"})));
+		otdels.add(Arrays.asList((new String[]{"столярные изделия", "2 отдел"})));
+		otdels.add(Arrays.asList((new String[]{"электротовары", "3 отдел"})));
+		otdels.add(Arrays.asList((new String[]{"инструменты", "4 отдел"})));
+		otdels.add(Arrays.asList((new String[]{"напольные покрытия", "5 отдел"})));
+		otdels.add(Arrays.asList((new String[]{"настенная и напольная плитка", "6 отдел"})));
+		otdels.add(Arrays.asList((new String[]{"сантехника", "7 отдел"})));
+		otdels.add(Arrays.asList((new String[]{"водоканализационные системы - отопление", "8 отдел"})));
+		otdels.add(Arrays.asList((new String[]{"сад", "9 отдел"})));
+		otdels.add(Arrays.asList((new String[]{"скобяные изделия", "10 отдел"})));
+		otdels.add(Arrays.asList((new String[]{"лакокрасочные изделия", "11 отдел"})));
+		otdels.add(Arrays.asList((new String[]{"отделочные материалы", "12 отдел"})));
+		otdels.add(Arrays.asList((new String[]{"освещение", "13 отдел"})));
+		otdels.add(Arrays.asList((new String[]{"обустройство дома", "14 отдел"})));
+		otdels.add(Arrays.asList((new String[]{"кухни", "15 отдел"})));
+		
 		ContextMenu cm = new ContextMenu();
 		MenuItem menuItem0 = new MenuItem("Получить данные с сервера");
 		MenuItem menuItem1 = new MenuItem("Обновить экран");
-		MenuItem menuItem2 = new MenuItem("Выйти из приложения");
+		MenuItem menuItem2 = new MenuItem("Полноэкранный режим");
+		MenuItem menuItem3 = new MenuItem("Выйти из приложения");
 		//-----------------обработка событий нажатия пунктов меню---------------------
 		menuItem0.setOnAction(new EventHandler<ActionEvent>() {			
 			@Override
@@ -160,11 +179,17 @@ public class personsOverviewController {
 		menuItem2.setOnAction(new EventHandler<ActionEvent>() {			
 			@Override
 			public void handle(ActionEvent event) {
+				//stage.setFullScreen(true);
+			}
+		});		
+		menuItem3.setOnAction(new EventHandler<ActionEvent>() {			
+			@Override
+			public void handle(ActionEvent event) {
 				System.exit(0);			
 			}
 		});
 		//===========================================================================
-		cm.getItems().addAll(menuItem0, menuItem1, new SeparatorMenuItem(), menuItem2);
+		cm.getItems().addAll(menuItem0, menuItem1, menuItem2, new SeparatorMenuItem(), menuItem3);
 		
 		gp.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
 			@Override
@@ -173,11 +198,34 @@ public class personsOverviewController {
 			}
 		});
 		
-/*		gp.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+		gp.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				cm.hide();
+				if (e.getButton()==MouseButton.PRIMARY) {					
+					cm.hide();
+				}				
 			}
-		});*/
+		});
+		
+		Timeline downloadDataLine = new Timeline(new KeyFrame(Duration.seconds(15), new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				downloadData();
+			}
+		}));
+		downloadDataLine.setCycleCount(Timeline.INDEFINITE);
+		downloadDataLine.play();	
+		
+		/*Timeline refreshScreenLine = new Timeline(new KeyFrame(Duration.seconds(40), new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				refreshScreen();
+			}
+		}));
+		//downloadDataLine.setCycleCount(Timeline.INDEFINITE);
+		//refreshScreenLine.setCycleCount(Timeline.INDEFINITE);
+		
+		refreshScreenLine.play();*/
+		
 	}	
 }
