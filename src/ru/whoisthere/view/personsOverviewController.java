@@ -1,10 +1,6 @@
 package ru.whoisthere.view;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.Date;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -23,66 +19,30 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-import ru.whoisthere.SqlUtils;
+import ru.whoisthere.DownloadData;
+import ru.whoisthere.model.Departments;
 import ru.whoisthere.model.Person;
 
-
 public class personsOverviewController {
-	
-	private List<Person> persons = new ArrayList<Person>();
-	List<List<String>> otdels = new ArrayList<List<String>>();
-	private int colCount = 0;
-	private int maxPersons;
+	DownloadData downloadData = new DownloadData();
+	Departments departs = new Departments();	
 	
 	@FXML 
 	private GridPane gp = new GridPane();
 
-	
-
-	public void downloadData() {
-		int personsInOtdel;
-		
-		SqlUtils sqlutil = new SqlUtils();
-		if (sqlutil.openConnection("10.84.79.125", "sa", "123456")) {
-			persons.clear();
-			persons = sqlutil.execQuery();
-		}
-		
-		colCount = otdels.size();
-		maxPersons = 0;
-		//personsInOtdel = 0;
-		for (int i = 0; i<colCount; i++) {
-			personsInOtdel = 0;
-			for (Person person : persons) {	
-				if (person.getDepartment().equals(otdels.get(i).get(0))) {
-					personsInOtdel += 1;
-				}
-			}
-			if (personsInOtdel > maxPersons) {
-				maxPersons = personsInOtdel;
-			}			
-		}	
-		//System.out.println("maxPersons = " + maxPersons);
-		refreshScreen();
-	}
-	
 	public void refreshScreen() {
-		//System.out.println("---------------------------------------------------------------------------");
 		try {
-			//System.out.println("otdels.size = " + otdels.size());
+			Date refreshingStart = new Date();
 			clearData();
-			for (int i = 0; i<otdels.size(); i++) {
-				for (Person person : persons) {			
-					if (person.getDepartment().equals(otdels.get(i).get(0))) {
+			int maxPersons = downloadData.getMaxPersons();
+			for (int i = 0; i<departs.getOtdelsCount(); i++) {
+				for (Person person : downloadData.getPersons()) {			
+					if (person.getDepartment().equals(departs.getDepartmentName(i))) {
 						String nodeName = "col" + i;
 						VBox mynode = (VBox) gp.lookup("#" + nodeName);
-						//System.out.print(person.getSurname());
-						//System.out.println(gp.getRowConstraints().get(1).getMinHeight());
 						mynode.setMinHeight(gp.getRowConstraints().get(1).getMinHeight());
 						//------------ элемент с фотографией--------------------------------
 						Image photo = SwingFXUtils.toFXImage(person.getPhoto(), null);
@@ -91,7 +51,7 @@ public class personsOverviewController {
 						Double imgH = photo.getHeight();
 						Double ratio = imgH/imgW;
 						Double containerHeight = mynode.getHeight();
-						Double containerWidth = mynode.getWidth()-10;
+						Double containerWidth = mynode.getWidth()-10;					
 						Double calcHeight = containerWidth * ratio;
 						Double defHeight = (containerWidth) * 1.3;
 						Double calcWidth = defHeight / ratio;
@@ -103,7 +63,6 @@ public class personsOverviewController {
 								personPhoto.setFitWidth(containerWidth);
 							else personPhoto.setFitHeight(defHeight);
 						}
-						// System.out.println(containerHeight);
 						personPhoto.setPreserveRatio(true);					
 						//==================================================================
 						
@@ -123,10 +82,13 @@ public class personsOverviewController {
 						mynode.getChildren().add(personInfoContainer);				
 					}
 				}
-			}		
+			}
+			Date refreshingEnd = new Date();
+			System.out.println("Изображение обновлено за: " + (refreshingEnd.getTime() - refreshingStart.getTime())/1000 + " сек.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 	}
 	
 	private void clearData() {
@@ -139,57 +101,32 @@ public class personsOverviewController {
 	}
 	
 	//@FXML
-	public void initialize() {
-		
-		otdels.add(Arrays.asList((new String[]{"дирекция", "дирекция"})));
-		otdels.add(Arrays.asList((new String[]{"строительные материалы", "1 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"столярные изделия", "2 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"электротовары", "3 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"инструменты", "4 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"напольные покрытия", "5 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"настенная и напольная плитка", "6 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"сантехника", "7 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"водоканализационные системы - отопление", "8 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"сад", "9 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"скобяные изделия", "10 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"лакокрасочные изделия", "11 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"отделочные материалы", "12 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"освещение", "13 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"обустройство дома", "14 отдел"})));
-		otdels.add(Arrays.asList((new String[]{"кухни", "15 отдел"})));
-		
+	public void initialize() {		
 		ContextMenu cm = new ContextMenu();
 		MenuItem menuItem0 = new MenuItem("Получить данные с сервера");
-		MenuItem menuItem1 = new MenuItem("Обновить экран");
-		MenuItem menuItem2 = new MenuItem("Полноэкранный режим");
-		MenuItem menuItem3 = new MenuItem("Выйти из приложения");
+		MenuItem menuItem1 = new MenuItem("Полноэкранный режим");
+		MenuItem menuItem2 = new MenuItem("Выйти из приложения");
 		//-----------------обработка событий нажатия пунктов меню---------------------
 		menuItem0.setOnAction(new EventHandler<ActionEvent>() {			
 			@Override
-			public void handle(ActionEvent event) {
-				downloadData();
+			public void handle(ActionEvent event) {				
+				downloadData.start();
 			}
-		});		
+		});
 		menuItem1.setOnAction(new EventHandler<ActionEvent>() {			
-			@Override
-			public void handle(ActionEvent event) {
-				refreshScreen();
-			}
-		});		
-		menuItem2.setOnAction(new EventHandler<ActionEvent>() {			
 			@Override
 			public void handle(ActionEvent event) {
 				//stage.setFullScreen(true);
 			}
 		});		
-		menuItem3.setOnAction(new EventHandler<ActionEvent>() {			
+		menuItem2.setOnAction(new EventHandler<ActionEvent>() {			
 			@Override
 			public void handle(ActionEvent event) {
 				System.exit(0);			
 			}
 		});
 		//===========================================================================
-		cm.getItems().addAll(menuItem0, menuItem1, menuItem2, new SeparatorMenuItem(), menuItem3);
+		cm.getItems().addAll(menuItem0, menuItem1, new SeparatorMenuItem(), menuItem2);
 		
 		gp.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
 			@Override
@@ -206,26 +143,14 @@ public class personsOverviewController {
 				}				
 			}
 		});
-		
-		Timeline downloadDataLine = new Timeline(new KeyFrame(Duration.seconds(15), new EventHandler<ActionEvent>() {
+		Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(15.0), new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent e) {
-				downloadData();
-			}
-		}));
-		downloadDataLine.setCycleCount(Timeline.INDEFINITE);
-		downloadDataLine.play();	
-		
-		/*Timeline refreshScreenLine = new Timeline(new KeyFrame(Duration.seconds(40), new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
+			public void handle(ActionEvent event) {
 				refreshScreen();
 			}
 		}));
-		//downloadDataLine.setCycleCount(Timeline.INDEFINITE);
-		//refreshScreenLine.setCycleCount(Timeline.INDEFINITE);
-		
-		refreshScreenLine.play();*/
+		timeline.setCycleCount(Timeline.INDEFINITE);
+		timeline.play();
 		
 	}	
 }
