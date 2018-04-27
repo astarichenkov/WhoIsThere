@@ -26,16 +26,19 @@ import ru.whoisthere.DownloadData;
 import ru.whoisthere.model.Departments;
 import ru.whoisthere.model.Person;
 
-public class personsOverviewController {
+public class PersonsOverviewController {
 	DownloadData downloadData = new DownloadData();
 	Departments departs = new Departments();	
 	
 	@FXML 
 	private GridPane gp = new GridPane();
+	@FXML
+	private Label dataUpdated = new Label();
 
 	public void refreshScreen() {
 		try {
 			Date refreshingStart = new Date();
+			System.out.println("Интерфейс. Начало обновления интерфейса: " + refreshingStart);
 			clearData();
 			int maxPersons = downloadData.getMaxPersons();
 			for (int i = 0; i<departs.getOtdelsCount(); i++) {
@@ -84,7 +87,8 @@ public class personsOverviewController {
 				}
 			}
 			Date refreshingEnd = new Date();
-			System.out.println("Изображение обновлено за: " + (refreshingEnd.getTime() - refreshingStart.getTime())/1000 + " сек.");
+			System.out.println("Интерфейс. Обновлен за: " + (refreshingEnd.getTime() - refreshingStart.getTime())/1000 + " сек.");
+			dataUpdated.setText(downloadData.getDataTime());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
