@@ -101,32 +101,26 @@ public class personsOverviewController {
 	}
 	
 	//@FXML
-	public void initialize() {		
+	public void initialize() {
+		downloadData.start();
 		ContextMenu cm = new ContextMenu();
-		MenuItem menuItem0 = new MenuItem("Получить данные с сервера");
-		MenuItem menuItem1 = new MenuItem("Полноэкранный режим");
-		MenuItem menuItem2 = new MenuItem("Выйти из приложения");
+		MenuItem menuItem0 = new MenuItem("Полноэкранный режим");
+		MenuItem menuItem1 = new MenuItem("Выйти из приложения");
 		//-----------------обработка событий нажатия пунктов меню---------------------
 		menuItem0.setOnAction(new EventHandler<ActionEvent>() {			
-			@Override
-			public void handle(ActionEvent event) {				
-				downloadData.start();
-			}
-		});
-		menuItem1.setOnAction(new EventHandler<ActionEvent>() {			
 			@Override
 			public void handle(ActionEvent event) {
 				//stage.setFullScreen(true);
 			}
 		});		
-		menuItem2.setOnAction(new EventHandler<ActionEvent>() {			
+		menuItem1.setOnAction(new EventHandler<ActionEvent>() {			
 			@Override
 			public void handle(ActionEvent event) {
 				System.exit(0);			
 			}
 		});
 		//===========================================================================
-		cm.getItems().addAll(menuItem0, menuItem1, new SeparatorMenuItem(), menuItem2);
+		cm.getItems().addAll(menuItem0, new SeparatorMenuItem(), menuItem1);
 		
 		gp.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
 			@Override
