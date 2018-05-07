@@ -45,4 +45,8 @@ public class Departments {
 			return null;
 		}
 	}
+	
+	public List<List<String>> getDepartments() {
+		return departs;
+	}
 }
