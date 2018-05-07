@@ -1,6 +1,8 @@
 package ru.whoisthere.view;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -20,101 +22,120 @@ import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import ru.whoisthere.DownloadData;
+import ru.whoisthere.Loging;
 import ru.whoisthere.model.Departments;
 import ru.whoisthere.model.Person;
 
 public class PersonsOverviewController {
 	DownloadData downloadData = new DownloadData();
-	Departments departs = new Departments();	
+	Departments departs = new Departments();
+	Loging logs= new Loging();
+	List<Person> persons = new ArrayList<Person>();
+	List<ImageView> imagesList = new ArrayList<ImageView>();
 	
 	@FXML 
 	private GridPane gp = new GridPane();
 	@FXML
 	private Label dataUpdated = new Label();
 
+	
 	public void refreshScreen() {
 		try {
-			Date refreshingStart = new Date();
-			System.out.println("Интерфейс. Начало обновления интерфейса: " + refreshingStart);
 			clearData();
-			int maxPersons = downloadData.getMaxPersons();
+			persons = downloadData.getPersons();			
+			Date refreshingStart = new Date();			
+			logs.addInfoLog("Интерфейс. Начало обновления интерфейса: " + refreshingStart);			
+			int maxPersons = downloadData.getMaxPersons();				
+			
+			Stage stage = (Stage)gp.getScene().getWindow();
+			gp.prefHeightProperty().bind(stage.heightProperty().subtract(40));
+			
 			for (int i = 0; i<departs.getOtdelsCount(); i++) {
-				for (Person person : downloadData.getPersons()) {			
+				VBox column = (VBox) gp.lookup("#col" + i);
+				column.prefHeightProperty().bind(gp.prefHeightProperty().subtract(40));
+				column.prefWidthProperty().bind(gp.getColumnConstraints().get(0).prefWidthProperty());
+				column.setAlignment(Pos.TOP_CENTER);
+			}			
+			
+			for (Person person : persons) {
+				for (int i = 0; i<departs.getOtdelsCount(); i++) {
 					if (person.getDepartment().equals(departs.getDepartmentName(i))) {
-						String nodeName = "col" + i;
-						VBox mynode = (VBox) gp.lookup("#" + nodeName);
-						mynode.setMinHeight(gp.getRowConstraints().get(1).getMinHeight());
-						//------------ элемент с фотографией--------------------------------
-						Image photo = SwingFXUtils.toFXImage(person.getPhoto(), null);
-						ImageView personPhoto = new ImageView(photo);	
-						Double imgW = photo.getWidth();
-						Double imgH = photo.getHeight();
-						Double ratio = imgH/imgW;
-						Double containerHeight = mynode.getHeight();
-						Double containerWidth = mynode.getWidth()-10;					
-						Double calcHeight = containerWidth * ratio;
-						Double defHeight = (containerWidth) * 1.3;
-						Double calcWidth = defHeight / ratio;
+						VBox mynode = (VBox) gp.lookup("#col" + i);						
+																		
+						Image photo = (Image)SwingFXUtils.toFXImage(person.getPhoto(), null);												
+						ImageView personPhoto = new ImageView(photo);
 						
-						if (calcHeight + 40 > containerHeight/maxPersons) {
-							personPhoto.setFitHeight(containerHeight/maxPersons - 40);						
-						} else {
-							if (calcWidth > containerWidth)
-								personPhoto.setFitWidth(containerWidth);
-							else personPhoto.setFitHeight(defHeight);
-						}
-						personPhoto.setPreserveRatio(true);					
-						//==================================================================
+						double imgWidth = photo.getWidth();
+						double imgHeight = photo.getHeight();						
+						double imgRatio = imgWidth / imgHeight;
+												
+						personPhoto.fitWidthProperty().bind(mynode.prefWidthProperty().multiply(imgRatio));
+						personPhoto.fitHeightProperty().bind(mynode.prefHeightProperty().divide(maxPersons).subtract(40));											
+						personPhoto.setPreserveRatio(true);
 						
-						//------------ элемент с именем и фамилией--------------------------
-						VBox personName = new VBox();
-						personName.setAlignment(Pos.TOP_CENTER);
-						personName.getChildren().addAll(new Label(person.getName()), new Label(person.getSurname()));
-
-						//==================================================================
+						//imagesList.add(personPhoto);
+						mynode.getChildren().addAll(personPhoto, new Label(person.getName()), new Label (person.getSurname()));
 						
-						//------------- контейнер с выводимой в столбец информацией о сотруднике---
-						VBox personInfoContainer = new VBox();
-						personInfoContainer.setAlignment(Pos.TOP_CENTER);
-						personInfoContainer.getChildren().addAll(personPhoto, personName);					
-						//=========================================================================
-						
-						mynode.getChildren().add(personInfoContainer);				
+						personPhoto = null;
+						photo = null;						
 					}
 				}
 			}
+			
 			Date refreshingEnd = new Date();
-			System.out.println("Интерфейс. Обновлен за: " + (refreshingEnd.getTime() - refreshingStart.getTime())/1000 + " сек.");
+			logs.addInfoLog("Интерфейс. Обновлен за: " + (refreshingEnd.getTime() - refreshingStart.getTime())/1000 + " сек.");
 			dataUpdated.setText(downloadData.getDataTime());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logs.addWarningLog(e.getMessage());
 		}
 		
 	}
+
 	
 	private void clearData() {
 		for (Node n: gp.getChildren()) {
-			if (n.getStyleClass().toString().equals("columns")) {
-				VBox node = (VBox) n;
-				node.getChildren().clear();
+			if (n instanceof Pane) {
+				for (Node n1: ((Pane) n).getChildren()) {
+					if (n1.getStyleClass().toString().equals("columns")) {
+						VBox node = (VBox) n1;
+						persons = null;
+						imagesList = null;
+						node.getChildren().clear();
+					}					
+				}
 			}
 		}
 	}
 	
 	//@FXML
 	public void initialize() {
-		downloadData.start();
+		
+		try {
+			downloadData.start();
+		} catch (Exception e) {
+			e.getMessage();
+		}
 		ContextMenu cm = new ContextMenu();
-		MenuItem menuItem0 = new MenuItem("Полноэкранный режим");
+		MenuItem menuItem0 = new MenuItem();
 		MenuItem menuItem1 = new MenuItem("Выйти из приложения");
 		//-----------------обработка событий нажатия пунктов меню---------------------
 		menuItem0.setOnAction(new EventHandler<ActionEvent>() {			
 			@Override
 			public void handle(ActionEvent event) {
-				//stage.setFullScreen(true);
+				Stage stage = (Stage) gp.getScene().getWindow();				
+				if(stage.isFullScreen()) {
+					stage.setFullScreen(false);
+					menuItem0.setText("Полноэкранный режим");
+				} else {
+					stage.setFullScreen(true);
+					menuItem0.setText("Оконный режим");
+				}
+					
 			}
 		});		
 		menuItem1.setOnAction(new EventHandler<ActionEvent>() {			
@@ -129,6 +150,13 @@ public class PersonsOverviewController {
 		gp.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
 			@Override
 			public void handle(ContextMenuEvent event) {
+				Stage stage = (Stage) gp.getScene().getWindow();		
+				if(stage.isFullScreen()) {
+					menuItem0.setText("Оконный режим");
+					
+				} else {
+					menuItem0.setText("Полноэкранный режим");
+				}
 				cm.show(gp, event.getScreenX(), event.getScreenY());
 			}
 		});
@@ -141,14 +169,20 @@ public class PersonsOverviewController {
 				}				
 			}
 		});
-		Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(15.0), new EventHandler<ActionEvent>() {
+				
+		
+		Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(30.0), new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				refreshScreen();
 			}
 		}));
 		timeline.setCycleCount(Timeline.INDEFINITE);
-		timeline.play();
-		
-	}	
+		timeline.play();		
+	}
+	
+	
+	
+	
+
 }
