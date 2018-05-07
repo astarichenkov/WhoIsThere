@@ -28,6 +28,12 @@ public class Main extends Application{
 		
 		Scene scene = new Scene (layout);
 		primaryStage.setScene(scene);
-		primaryStage.show();
+		primaryStage.show();	
+	}
+	
+	@Override
+	public void stop(){
+	    System.exit(0);
+	    
 	}
 }
