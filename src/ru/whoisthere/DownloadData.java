@@ -15,7 +15,9 @@ public class DownloadData extends Thread{
 	List<Person> persons = new ArrayList<Person>();
 	int maxPersons = 0;
 	DateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-	String dataDateTime; 
+	String dataDateTime;
+	boolean dataDownloaded = false;
+	Loging logs = new Loging();
 	
 	@Override
 	public void run () {
@@ -24,21 +26,23 @@ public class DownloadData extends Thread{
 			SqlUtils sqlutil = new SqlUtils();
 			TimerTask timerTask = new TimerTask(){
 				public void run() {
+					
 					if (sqlutil.openConnection("10.84.79.125", "sa", "123456")) {
 						Date refreshingStart = new Date();
-						System.out.println("Данные. Начало загрузки данных: " + refreshingStart);
+						//System.out.println("Данные. Начало загрузки данных: " + refreshingStart);
 						persons = sqlutil.execQuery();
 						Date refreshingEnd = new Date();
-						maxPersons = 0;
-						
-						
+						// maxPersons = 0;
+												
 						Departments otdels = new Departments();
 						int colCount = otdels.getOtdelsCount();
+						// System.out.println("Количество отделов: " + colCount);
+						
 						
 						for (int i = 0; i<colCount; i++) {
 							int personsInOtdel = 0;
 							for (Person person : persons) {	
-								if (person.getDepartment().equals(otdels.getDepartmentTitle(i))) {
+								if (person.getDepartment().equals(otdels.getDepartmentName(i))) {
 									personsInOtdel += 1;
 								}
 							}
@@ -46,13 +50,18 @@ public class DownloadData extends Thread{
 								maxPersons = personsInOtdel;
 							}
 						}
-						System.out.println("Данные. Загружено за: " + (refreshingEnd.getTime() - refreshingStart.getTime())/1000 + " сек.");
+						
+						
+						dataDownloaded = true; //признак, что данные загрузились
+						logs.addInfoLog("Данные. Загружено за: " + (refreshingEnd.getTime() - refreshingStart.getTime())/1000 + " сек.");
 					}
 				}
 			};			
-			timer.schedule(timerTask, 0, 30000);			
+			timer.schedule(timerTask, 0, 60000);
+			
 		} catch (Exception e){
-			System.out.println(e.getLocalizedMessage());
+			dataDownloaded = false;
+			logs.addWarningLog(e.getMessage());			
 		}
 	}
 	
@@ -64,14 +73,18 @@ public class DownloadData extends Thread{
 		}
 	}
 	
-	public int getMaxPersons() {		
+	public int getMaxPersons() {
+		//logs.setInfoLog("Максимальное число сотрудников в отделе: " + maxPersons);
 		return maxPersons;
 	}
 	
 	public String getDataTime() {
-		Date curDateTime = new Date();
-		String dataTime = df.format(curDateTime);
-		return dataTime;
+		if (dataDownloaded) { // если данные загрузились, то 
+			Date curDateTime = new Date();
+			String dataTime = df.format(curDateTime);
+			return dataTime;
+		} else return null;
+		
 	}
 	
 }
