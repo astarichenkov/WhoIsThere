@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<VBox prefHeight="800.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.whoisthere.controller.DepartsOverviewController">
+  <children>
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="830.0" prefWidth="640.0" VBox.vgrow="ALWAYS">
+      <children>
+            <TextField fx:id="departLabel00" layoutX="30" layoutY="52.0" prefHeight="25.0" prefWidth="265.0" />
+            <Text layoutX="30" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Столбец 1" wrappingWidth="135" />
+            <Button fx:id="okButton" layoutX="345.0" layoutY="731.0" mnemonicParsing="false" onAction="#saveAndExit" prefHeight="40.0" prefWidth="100" text="OK" />
+            <Button fx:id="cancelButton" layoutX="474.0" layoutY="731.0" mnemonicParsing="false" onAction="#closeWindow" prefHeight="40.0" prefWidth="100" text="Отмена" />
+            <Text layoutX="30" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Столбец 2" wrappingWidth="135" />
+            <TextField fx:id="departLabel01" layoutX="30" layoutY="94.0" prefHeight="25.0" prefWidth="265.0" />
+            <Text layoutX="30" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Столбец 3" wrappingWidth="135" />
+            <TextField fx:id="departLabel02" layoutX="30" layoutY="136.0" prefHeight="25.0" prefWidth="265.0" />
+            <Text layoutX="30" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Столбец 4" wrappingWidth="135" />
+            <TextField fx:id="departLabel03" layoutX="30" layoutY="178.0" prefHeight="25.0" prefWidth="265.0" />
+            <Text layoutX="30" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Столбец 5" wrappingWidth="135" />
+            <TextField fx:id="departLabel04" layoutX="30" layoutY="220.0" prefHeight="25.0" prefWidth="265.0" />
+            <Text layoutX="30" layoutY="258.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Столбец 6" wrappingWidth="135" />
+            <TextField fx:id="departLabel05" layoutX="30" layoutY="262.0" prefHeight="25.0" prefWidth="265.0" />
+            <Text layoutX="30" layoutY="300.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Столбец 7" wrappingWidth="135" />
+            <TextField fx:id="departLabel06" layoutX="30" layoutY="304.0" prefHeight="25.0" prefWidth="265.0" />
+            <Text layoutX="30" layoutY="344.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Столбец 8" wrappingWidth="135" />
+            <TextField fx:id="departLabel07" layoutX="30" layoutY="348.0" prefHeight="25.0" prefWidth="265.0" />
+            <Text layoutX="30" layoutY="386.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Столбец 9" wrappingWidth="135" />
+            <TextField fx:id="departLabel08" layoutX="30" layoutY="390.0" prefHeight="25.0" prefWidth="265.0" />
+            <Text layoutX="30" layoutY="428.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Столбец 10" wrappingWidth="135" />
+            <TextField fx:id="departLabel09" layoutX="30" layoutY="432.0" prefHeight="25.0" prefWidth="265.0" />
+            <Text layoutX="30" layoutY="470.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Столбец 11" wrappingWidth="135" />
+            <TextField fx:id="departLabel10" layoutX="30" layoutY="474.0" prefHeight="25.0" prefWidth="265.0" />
+            <Text layoutX="30" layoutY="512.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Столбец 12" wrappingWidth="135" />
+            <TextField fx:id="departLabel11" layoutX="30" layoutY="516.0" prefHeight="25.0" prefWidth="265.0" />
+            <TextField fx:id="departLabel12" layoutX="30" layoutY="558.0" prefHeight="25.0" prefWidth="265.0" />
+            <Text layoutX="30" layoutY="554.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Столбец 13" wrappingWidth="135" />
+            <Text layoutX="30" layoutY="596.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Столбец 14" wrappingWidth="135" />
+            <TextField fx:id="departLabel13" layoutX="30" layoutY="600.0" prefHeight="25.0" prefWidth="265.0" />
+            <TextField fx:id="departLabel14" layoutX="30" layoutY="642.0" prefHeight="25.0" prefWidth="265.0" />
+            <Text layoutX="30" layoutY="638.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Столбец 15" wrappingWidth="135" />
+            <TextField fx:id="departLabel15" layoutX="30" layoutY="684.0" prefHeight="25.0" prefWidth="265.0" />
+            <Text layoutX="30" layoutY="680.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Столбец 16" wrappingWidth="135" />
+            <TextField fx:id="departKey15" layoutX="345.0" layoutY="685.0" prefHeight="25.0" prefWidth="265.0" />
+            <TextField fx:id="departKey14" layoutX="345.0" layoutY="643.0" prefHeight="25.0" prefWidth="265.0" />
+            <TextField fx:id="departKey13" layoutX="345.0" layoutY="601.0" prefHeight="25.0" prefWidth="265.0" />
+            <TextField fx:id="departKey12" layoutX="345.0" layoutY="559.0" prefHeight="25.0" prefWidth="265.0" />
+            <TextField fx:id="departKey11" layoutX="345.0" layoutY="517.0" prefHeight="25.0" prefWidth="265.0" />
+            <TextField fx:id="departKey10" layoutX="345.0" layoutY="475.0" prefHeight="25.0" prefWidth="265.0" />
+            <TextField fx:id="departKey09" layoutX="345.0" layoutY="433.0" prefHeight="25.0" prefWidth="265.0" />
+            <TextField fx:id="departKey08" layoutX="345.0" layoutY="391.0" prefHeight="25.0" prefWidth="265.0" />
+            <TextField fx:id="departKey07" layoutX="345.0" layoutY="349.0" prefHeight="25.0" prefWidth="265.0" />
+            <TextField fx:id="departKey06" layoutX="345.0" layoutY="305.0" prefHeight="25.0" prefWidth="265.0" />
+            <TextField fx:id="departKey05" layoutX="345.0" layoutY="263.0" prefHeight="25.0" prefWidth="265.0" />
+            <TextField fx:id="departKey04" layoutX="345.0" layoutY="221.0" prefHeight="25.0" prefWidth="265.0" />
+            <TextField fx:id="departKey03" layoutX="345.0" layoutY="179.0" prefHeight="25.0" prefWidth="265.0" />
+            <TextField fx:id="departKey02" layoutX="345.0" layoutY="137.0" prefHeight="25.0" prefWidth="265.0" />
+            <TextField fx:id="departKey01" layoutX="345.0" layoutY="95.0" prefHeight="25.0" prefWidth="265.0" />
+            <TextField fx:id="departKey00" layoutX="345.0" layoutY="52.0" prefHeight="25.0" prefWidth="265.0" />
+      </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+    </AnchorPane>
+  </children>
+</VBox>
