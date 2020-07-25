@@ -16,6 +16,7 @@ import ru.whoisthere.settings.DoorsReadersSettings;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 public class SqlUtils {
     private static Loging logs = new Loging();
@@ -66,7 +67,7 @@ public class SqlUtils {
         String curDate = dateFormat.format(new Date());
 
         List<Person> persons = new ArrayList<Person>();
-        String queryStr = "SELECT events.lname1, events.lname2, events.ldepartment, EVENTS.POBJECT"
+        String queryStr = "SELECT events.lname1, events.lname2, events.ldepartment, EVENTS.LPOST, EVENTS.POBJECT"
                 + " from events where (d = (SELECT MAX(D) FROM EVENTS)"
                 + " AND (POBJECT = " + inputDoor + " OR POBJECT = " + outputDoor
                 + " OR POBJECT = " + exitDoor + ")) ORDER BY LNAME1, T ASC";
@@ -82,13 +83,13 @@ public class SqlUtils {
 
             while (rs.next()) {
                 Person person = new Person(
-                        rs.getString(1), rs.getString(2), rs.getString(3),
-                        new byte[10]);
+                        rs.getString(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4), new byte[10]);
                 if (person.getName() == null || person.getSurname() == null
                         || person.getDepartment() == null) {
                     continue;
                 }
-                int pObject = rs.getInt(4);
+                int pObject = rs.getInt(5);
 
                 if (pObject == inputDoor) {
                     if (!persons.contains(person) && otdels.contains(person.getDepartment())) {
@@ -103,7 +104,7 @@ public class SqlUtils {
                 }
 
             }
-
+            persons = sotrByDepartment(persons);
             for (int i = 0; i < persons.size(); i++) {
                 queryStr = "SELECT DISTINCT events.lname1, events.lname2, events.ldepartment,"
                         + " CARDS.PHOTO, EVENTS.POBJECT from events JOIN CARDS ON"
@@ -127,9 +128,30 @@ public class SqlUtils {
         } finally {
             closeConnection();
         }
+
         return persons;
     }
-    private void sotrByDepartment(ArrayList<Person> persons) {
 
+    private ArrayList<Person> sotrByDepartment(List<Person> persons) {
+        ArrayList<Person> directors = new ArrayList<>();
+        ArrayList<Person> managers = new ArrayList<>();
+        ArrayList<Person> others = new ArrayList<>();
+        for (Person person : persons) {
+            String post = person.getPost();
+            if (post.contains("Руководитель")) {
+                directors.add(person);
+            }
+            if (post.contains("Менеджер")) {
+                managers.add(person);
+            }
+            if (!post.contains("Менеджер") && !post.contains("Руководитель")) {
+                others.add(person);
+            }
+        }
+        List<Person> personsSorted = new ArrayList<>(directors);
+        personsSorted.addAll(managers);
+        personsSorted.addAll(others);
+
+        return new ArrayList<>(personsSorted);
     }
 }

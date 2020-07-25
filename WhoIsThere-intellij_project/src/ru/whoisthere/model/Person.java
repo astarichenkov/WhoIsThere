@@ -12,12 +12,14 @@ public class Person {
     private String name;
     private String surname;
     private String department;
+    private String post;
     private byte[] photo;
 
-    public Person(String name, String surname, String department, byte[] photo) {
+    public Person(String name, String surname, String department, String post, byte[] photo) {
         this.name = name;
         this.surname = surname;
         this.department = department;
+        this.post = post;
         this.photo = photo;
     }
 
@@ -47,6 +49,10 @@ public class Person {
 
     public String getDepartment() {
         return this.department;
+    }
+
+    public String getPost() {
+        return post;
     }
 
     public BufferedImage getPhoto() {
