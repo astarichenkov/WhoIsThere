@@ -13,14 +13,14 @@ public class Person {
     private String surname;
     private String department;
     private String post;
-    private byte[] photo;
+    private byte[] ph;
 
-    public Person(String name, String surname, String department, String post, byte[] photo) {
+    public Person(String name, String surname, String department, String post, byte[] ph) {
         this.name = name;
         this.surname = surname;
         this.department = department;
         this.post = post;
-        this.photo = photo;
+        this.ph = ph;
     }
 
     public void setName(String name) {
@@ -35,8 +35,8 @@ public class Person {
         this.department = department;
     }
 
-    public void setPhoto(byte[] photo) {
-        this.photo = photo;
+    public void setPhoto(byte[] ph) {
+        this.ph = ph;
     }
 
     public String getName() {
@@ -62,13 +62,13 @@ public class Person {
     public BufferedImage biToImage() {
         BufferedImage img = null;
         try {
-            img = ImageIO.read(new ByteArrayInputStream(this.photo));
+            img = ImageIO.read(new ByteArrayInputStream(this.ph));
             double imgWidth = img.getWidth();
             double imgHeight = img.getHeight();
             double imgRatio = imgHeight / imgWidth;
             img = resize(img, (int) (100 * imgRatio), 100);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("error in biToImage()");
         }
 
         return img;

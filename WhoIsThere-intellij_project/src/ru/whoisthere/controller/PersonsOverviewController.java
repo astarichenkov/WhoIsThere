@@ -40,8 +40,7 @@ public class PersonsOverviewController {
     private static Loging logs = new Loging();
     private Departments departs = new Departments();
     private DownloadData downloadData = new DownloadData();
-    private List<Person> persons = new ArrayList<Person>();
-    private List<ImageView> imagesList = new ArrayList<ImageView>();
+    private List<Person> persons = new ArrayList<>();
 
     @FXML
     private GridPane gp = new GridPane();
@@ -104,12 +103,9 @@ public class PersonsOverviewController {
                     if (person.getDepartment().equals(departs.getDepartmentName(i))) {
                         VBox mynode = (VBox) gp.lookup("#col" + i);
 
-                        Image photo = (Image) SwingFXUtils.toFXImage(person.getPhoto(), null);
+                        Image photo = SwingFXUtils.toFXImage(person.getPhoto(), null);
                         ImageView personPhoto = new ImageView(photo);
-
-                        double imgWidth = photo.getWidth();
-                        double imgHeight = photo.getHeight();
-                        double imgRatio = imgWidth / imgHeight;
+                        double imgRatio = setImageRatio(photo);
 
                         personPhoto.fitWidthProperty().bind(
                                 mynode.prefWidthProperty().multiply(imgRatio));
@@ -117,13 +113,9 @@ public class PersonsOverviewController {
                                 mynode.prefHeightProperty().divide(maxPersons).subtract(40));
                         personPhoto.setPreserveRatio(true);
 
-                        //imagesList.add(personPhoto);
                         mynode.getChildren().addAll(
                                 personPhoto, new Label(person.getName()), new Label(
                                         person.getSurname()));
-
-                        personPhoto = null;
-                        photo = null;
                     }
                 }
             }
@@ -138,6 +130,12 @@ public class PersonsOverviewController {
 
     }
 
+    private double setImageRatio(Image photo) {
+        double imgWidth = photo.getWidth();
+        double imgHeight = photo.getHeight();
+        return 1 * imgWidth / imgHeight;
+    }
+
     private void clearData() {
         for (Node n : gp.getChildren()) {
             if (n instanceof Pane) {
@@ -145,7 +143,6 @@ public class PersonsOverviewController {
                     if (n1.getStyleClass().toString().equals("columns")) {
                         VBox node = (VBox) n1;
                         persons = null;
-                        imagesList = null;
                         node.getChildren().clear();
                     }
                 }
@@ -153,7 +150,7 @@ public class PersonsOverviewController {
         }
     }
 
-    //@FXML
+    @FXML
     public void initialize() {
         departLabel00.setText(departs.getDepartments().get(0).get(1));
         departLabel01.setText(departs.getDepartments().get(1).get(1));
@@ -222,7 +219,7 @@ public class PersonsOverviewController {
                 stage.showAndWait();
             }
         });
-        menuItem3.setOnAction(new EventHandler<ActionEvent>() {
+        menuItem3.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent event) {
                 FXMLLoader loader = new FXMLLoader();
@@ -241,7 +238,7 @@ public class PersonsOverviewController {
                 stage.showAndWait();
             }
         });
-        menuItem4.setOnAction(new EventHandler<ActionEvent>() {
+        menuItem4.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent event) {
                 FXMLLoader loader = new FXMLLoader();
@@ -299,5 +296,11 @@ public class PersonsOverviewController {
                 }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
+
+    }
+
+    public void stop() {
+        logs.addInfoLog("Close program");
+        return;
     }
 }

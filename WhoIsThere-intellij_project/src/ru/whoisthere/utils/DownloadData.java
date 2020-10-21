@@ -1,5 +1,6 @@
 package ru.whoisthere.utils;
 
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,18 +12,30 @@ import java.util.TimerTask;
 import ru.whoisthere.model.Departments;
 import ru.whoisthere.model.Person;
 import ru.whoisthere.settings.ConnectionSettings;
-import ru.whoisthere.utils.Loging;
-import ru.whoisthere.utils.SqlUtils;
 
 public class DownloadData extends Thread {
     private static Loging logs = new Loging();
     private Departments otdels = new Departments();
     private List<Person> persons = new ArrayList<Person>();
     private DateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-    private String dataDateTime;
     private boolean dataDownloaded = false;
     private ConnectionSettings settings = new ConnectionSettings();
     private int maxPersons = 0;
+
+    public int getMaxPersons() {
+        return maxPersons;
+    }
+
+    public String getDataTime() {
+        if (dataDownloaded) {
+            Date curDateTime = new Date();
+            String dataTime = df.format(curDateTime);
+            return dataTime;
+        } else {
+            return null;
+        }
+
+    }
 
     @Override
     public void run() {
@@ -33,7 +46,7 @@ public class DownloadData extends Thread {
                 public void run() {
 
                     if (sqlutil.openConnection(settings.getIp(), settings.getLogin(),
-                            settings.getPassword(), settings.getPathToDB())) {
+                            settings.getAsswd(), settings.getPathToDB())) {
                         Date refreshingStart = new Date();
                         persons = sqlutil.execQuery();
                         Date refreshingEnd = new Date();
@@ -51,14 +64,14 @@ public class DownloadData extends Thread {
                             }
                         }
 
-                        dataDownloaded = true; // признак, что данные загрузились
+                        dataDownloaded = true;
                         logs.addInfoLog("Data is loaded in "
                                 + (refreshingEnd.getTime() - refreshingStart.getTime()) / 1000
                                 + " seconds.");
                     }
                 }
             };
-            timer.schedule(timerTask, 0, 40000);
+            timer.schedule(timerTask, 0, 15000);
 
         } catch (Exception e) {
             dataDownloaded = false;
@@ -73,21 +86,4 @@ public class DownloadData extends Thread {
             return null;
         }
     }
-
-    public int getMaxPersons() {
-        //logs.setInfoLog("Максимальное число сотрудников в отделе: " + maxPersons);
-        return maxPersons;
-    }
-
-    public String getDataTime() {
-        if (dataDownloaded) { // если данные загрузились, то
-            Date curDateTime = new Date();
-            String dataTime = df.format(curDateTime);
-            return dataTime;
-        } else {
-            return null;
-        }
-
-    }
-
 }

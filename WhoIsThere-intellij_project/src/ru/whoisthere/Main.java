@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import ru.whoisthere.settings.ConnectionSettings;
 
 public class Main extends javafx.application.Application {
 
@@ -15,8 +14,6 @@ public class Main extends javafx.application.Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        ConnectionSettings staticConnectionSettings = new ConnectionSettings();
-
         primaryStage.setFullScreen(true);
         primaryStage.setTitle("Кто в зале!?");
 

@@ -2,11 +2,9 @@ package ru.whoisthere.settings;
 
 import ru.whoisthere.utils.Loging;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 
 public class DoorsReadersSettings {
     private static Loging logs = new Loging();
@@ -36,10 +34,13 @@ public class DoorsReadersSettings {
     }
 
     private void readFile() {
+        String userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
+        File file = new File(userDir, "doorsReaders.txt");
+
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(
                         new FileInputStream(
-                                "C:\\WhoIsThere\\doorsReaders.txt"), StandardCharsets.UTF_8))) {
+                                file), StandardCharsets.UTF_8))) {
             this.inputHall = Integer.parseInt(reader.readLine());
             this.outputHall = Integer.parseInt(reader.readLine());
             this.inputMag = Integer.parseInt(reader.readLine());
@@ -47,7 +48,6 @@ public class DoorsReadersSettings {
             logs.addInfoLog("Settings file doors.txt read.");
         } catch (IOException e) {
             logs.addInfoLog("File reading error doors.txt");
-            e.printStackTrace();
         }
     }
 }

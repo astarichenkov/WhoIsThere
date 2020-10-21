@@ -1,12 +1,12 @@
 package ru.whoisthere.utils;
 
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import ru.whoisthere.model.Departments;
@@ -16,24 +16,25 @@ import ru.whoisthere.settings.DoorsReadersSettings;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
 public class SqlUtils {
     private static Loging logs = new Loging();
     private Departments departs = new Departments();
     private Connection con;
     private DoorsReadersSettings doors = new DoorsReadersSettings();
+    private int inputDoor = doors.getInputHall();
+    private int outputDoor = doors.getOutputHall();
+    private int exitDoor = doors.getExitMag();
 
     public boolean openConnection(
-            String serverAddress, String login, String password, String pathToDB) {
+            String serverAddress, String login, String asswd, String pathToDB) {
 
         Properties props = new Properties();
         props.setProperty("user", login);
-        props.setProperty("password", password);
+        props.setProperty("password", asswd);
         props.setProperty("encoding", "UTF8");
         try {
             Class.forName("org.firebirdsql.jdbc.FBDriver");
-            String url = "jdbc:sqlserver://" + serverAddress;
             this.con = DriverManager.getConnection(
                     "jdbc:firebirdsql://" + serverAddress
                             + "/" + pathToDB, props);
@@ -45,6 +46,8 @@ public class SqlUtils {
         } catch (ClassNotFoundException e) {
             logs.addWarningLog(e.getMessage());
             return false;
+        } finally {
+//                con.close();
         }
     }
 
@@ -60,17 +63,8 @@ public class SqlUtils {
     }
 
     public List<Person> execQuery() {
-        int inputDoor = doors.getInputHall();
-        int outputDoor = doors.getOutputHall();
-        int exitDoor = doors.getExitMag();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-        String curDate = dateFormat.format(new Date());
-
         List<Person> persons = new ArrayList<Person>();
-        String queryStr = "SELECT events.lname1, events.lname2, events.ldepartment, EVENTS.LPOST, EVENTS.POBJECT"
-                + " from events where (d = (SELECT MAX(D) FROM EVENTS)"
-                + " AND (POBJECT = " + inputDoor + " OR POBJECT = " + outputDoor
-                + " OR POBJECT = " + exitDoor + ")) ORDER BY LNAME1, T ASC";
+        String host;
 
         ArrayList otdels = new ArrayList();
         for (int i = 0; i < 16; i++) {
@@ -79,7 +73,11 @@ public class SqlUtils {
 
         try {
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(queryStr);
+            host = InetAddress.getLocalHost().getCanonicalHostName();
+            ResultSet rs = null;
+            if (host.contains("leroymerlin")) {
+                rs = stmt.executeQuery(getEvents());
+            }
 
             while (rs.next()) {
                 Person person = new Person(
@@ -104,17 +102,14 @@ public class SqlUtils {
                 }
 
             }
-            persons = sotrByDepartment(persons);
+//            persons = sotrByDepartment(persons);
             for (int i = 0; i < persons.size(); i++) {
-                queryStr = "SELECT DISTINCT events.lname1, events.lname2, events.ldepartment,"
-                        + " CARDS.PHOTO, EVENTS.POBJECT from events JOIN CARDS ON"
-                        + " (EVENTS.LNAME1 = CARDS.NAME1 AND EVENTS.LNAME2 = CARDS.NAME2) where"
-                        + " (d = (SELECT MAX(D) FROM EVENTS) AND "
-                        + " (POBJECT = " + inputDoor + " OR POBJECT = " + exitDoor + ")"
-                        + " AND EVENTS.LNAME1 = '" + persons.get(i).getName()
-                        + "' AND EVENTS.LNAME2 = '" + persons.get(i).getSurname()
-                        + "' AND CARDS.PHOTO IS NOT NULL)";
-                rs = stmt.executeQuery(queryStr);
+                String name = persons.get(i).getName();
+                String surname = persons.get(i).getSurname();
+
+                if (host.contains("leroymerlin")) {
+                    rs = stmt.executeQuery(getPersons(name, surname));
+                }
                 if (rs.next()) {
                     persons.get(i).setPhoto(rs.getBytes(4));
                 }
@@ -123,7 +118,7 @@ public class SqlUtils {
             stmt.close();
             logs.addInfoLog("Employee data is received. " + persons.size() + " records.");
         } catch (
-                SQLException e) {
+                SQLException | UnknownHostException e) {
             logs.addWarningLog(e.getMessage());
         } finally {
             closeConnection();
@@ -132,26 +127,25 @@ public class SqlUtils {
         return persons;
     }
 
-    private ArrayList<Person> sotrByDepartment(List<Person> persons) {
-        ArrayList<Person> directors = new ArrayList<>();
-        ArrayList<Person> managers = new ArrayList<>();
-        ArrayList<Person> others = new ArrayList<>();
-        for (Person person : persons) {
-            String post = person.getPost();
-            if (post.contains("Руководитель")) {
-                directors.add(person);
-            }
-            if (post.contains("Менеджер")) {
-                managers.add(person);
-            }
-            if (!post.contains("Менеджер") && !post.contains("Руководитель")) {
-                others.add(person);
-            }
-        }
-        List<Person> personsSorted = new ArrayList<>(directors);
-        personsSorted.addAll(managers);
-        personsSorted.addAll(others);
-
-        return new ArrayList<>(personsSorted);
+    private String getEvents() {
+        String queryStr = "SELECT events.lname1, events.lname2, events.ldepartment, EVENTS.LPOST, EVENTS.POBJECT"
+                + " from events where ((d = (SELECT MAX(D) FROM EVENTS) )"
+                + " AND (POBJECT = " + inputDoor + " OR POBJECT = " + outputDoor
+                + " OR POBJECT = " + exitDoor + ")) ORDER BY LNAME1, T ASC";
+        return queryStr;
     }
+
+    private String getPersons(String name, String surname) {
+        String queryStr = "SELECT DISTINCT events.lname1, events.lname2, events.ldepartment,"
+                + " CARDS.PHOTO, EVENTS.POBJECT from events JOIN CARDS ON"
+                + " (EVENTS.LNAME1 = CARDS.NAME1 AND EVENTS.LNAME2 = CARDS.NAME2) where"
+                + " (d = (SELECT MAX(D) FROM EVENTS) AND "
+                + " (POBJECT = " + inputDoor + " OR POBJECT = " + exitDoor + ")"
+                + " AND EVENTS.LNAME1 = '" + name
+                + "' AND EVENTS.LNAME2 = '" + surname
+                + "' AND CARDS.PHOTO IS NOT NULL)";
+        return queryStr;
+    }
+
+
 }

@@ -2,44 +2,30 @@ package ru.whoisthere.model;
 
 import ru.whoisthere.utils.Loging;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Departments {
     private static Loging logs = new Loging();
     private List<List<String>> departs = new ArrayList<List<String>>();
 
     public Departments() {
+        String userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
+        File file = new File(userDir, "departs.txt");
 
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(
                         new FileInputStream(
-                                "C:\\WhoIsThere\\departs.txt"), StandardCharsets.UTF_8))) {
-            departs.add(Arrays.asList(reader.readLine().split(", ")));
-            departs.add(Arrays.asList(reader.readLine().split(", ")));
-            departs.add(Arrays.asList(reader.readLine().split(", ")));
-            departs.add(Arrays.asList(reader.readLine().split(", ")));
-            departs.add(Arrays.asList(reader.readLine().split(", ")));
-            departs.add(Arrays.asList(reader.readLine().split(", ")));
-            departs.add(Arrays.asList(reader.readLine().split(", ")));
-            departs.add(Arrays.asList(reader.readLine().split(", ")));
-            departs.add(Arrays.asList(reader.readLine().split(", ")));
-            departs.add(Arrays.asList(reader.readLine().split(", ")));
-            departs.add(Arrays.asList(reader.readLine().split(", ")));
-            departs.add(Arrays.asList(reader.readLine().split(", ")));
-            departs.add(Arrays.asList(reader.readLine().split(", ")));
-            departs.add(Arrays.asList(reader.readLine().split(", ")));
-            departs.add(Arrays.asList(reader.readLine().split(", ")));
-            departs.add(Arrays.asList(reader.readLine().split(", ")));
-            logs.addInfoLog("Settings file departs.txt read.");
+                                file), StandardCharsets.UTF_8))) {
+
+            for (int i = 0; i < 16; i++) {
+                departs.add(readAndFilterString(reader.readLine()));
+            }
         } catch (IOException e) {
-            logs.addInfoLog("File reading error departs.txt");
+            logs.addInfoLog(e.getMessage() + " File reading error departs.txt");
         }
     }
 
@@ -65,5 +51,21 @@ public class Departments {
 
     public List<List<String>> getDepartments() {
         return departs;
+    }
+
+    private List<String> readAndFilterString(String s) {
+        String s2 = s.trim();
+        Pattern pattern = Pattern.compile(".*, .*");
+        Matcher matcher = pattern.matcher(s);
+        boolean matches = matcher.matches();
+        List<String> list = new ArrayList<>();
+        if (matches) {
+            list = Arrays.asList(s2.split(", "));
+        } else {
+            logs.addInfoLog("Error in pattern of file");
+            list.add("New");
+            list.add("wrong parameter");
+        }
+        return list;
     }
 }

@@ -9,8 +9,11 @@ import ru.whoisthere.utils.Loging;
 import ru.whoisthere.model.Departments;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 public class DepartsOverviewController implements Initializable {
@@ -19,8 +22,8 @@ public class DepartsOverviewController implements Initializable {
     @FXML
     private Button okButton;
 
-    @FXML
-    private Button cancelButton;
+//    @FXML
+//    private Button cancelButton;
 
     @FXML
     private TextField departLabel00;
@@ -93,47 +96,58 @@ public class DepartsOverviewController implements Initializable {
         stage.close();
     }
 
-    public void saveAndExit() throws FileNotFoundException {
-        try (BufferedWriter writer = new BufferedWriter(
-                new OutputStreamWriter(
-                        new FileOutputStream(
-                                "C:\\WhoIsThere\\departs.txt"), StandardCharsets.UTF_8))) {
-            writer.write(departKey00.getText() + ", " + departLabel00.getText());
-            writer.newLine();
-            writer.write(departKey01.getText() + ", " + departLabel01.getText());
-            writer.newLine();
-            writer.write(departKey02.getText() + ", " + departLabel02.getText());
-            writer.newLine();
-            writer.write(departKey03.getText() + ", " + departLabel03.getText());
-            writer.newLine();
-            writer.write(departKey04.getText() + ", " + departLabel04.getText());
-            writer.newLine();
-            writer.write(departKey05.getText() + ", " + departLabel05.getText());
-            writer.newLine();
-            writer.write(departKey06.getText() + ", " + departLabel06.getText());
-            writer.newLine();
-            writer.write(departKey07.getText() + ", " + departLabel07.getText());
-            writer.newLine();
-            writer.write(departKey08.getText() + ", " + departLabel08.getText());
-            writer.newLine();
-            writer.write(departKey09.getText() + ", " + departLabel09.getText());
-            writer.newLine();
-            writer.write(departKey10.getText() + ", " + departLabel10.getText());
-            writer.newLine();
-            writer.write(departKey11.getText() + ", " + departLabel11.getText());
-            writer.newLine();
-            writer.write(departKey12.getText() + ", " + departLabel12.getText());
-            writer.newLine();
-            writer.write(departKey13.getText() + ", " + departLabel13.getText());
-            writer.newLine();
-            writer.write(departKey14.getText() + ", " + departLabel14.getText());
-            writer.newLine();
-            writer.write(departKey15.getText() + ", " + departLabel15.getText());
-            logs.addInfoLog("Settings was successfully recorded to file doorsReaders.txt");
-            Stage stage = (Stage) okButton.getScene().getWindow();
-            stage.close();
-        } catch (IOException e) {
-            logs.addInfoLog("File reading error doorsReaders.txt");
+    public void saveAndExit() {
+        String userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
+        File file = new File(userDir, "departs.txt");
+
+        String host = "";
+        try {
+            host = InetAddress.getLocalHost().getCanonicalHostName();
+        } catch (UnknownHostException e) {
+            logs.addInfoLog("error in getLocalHost");
+        }
+        if (host.contains("leroymerlin")) {
+            try (BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(
+                            new FileOutputStream(
+                                    file), StandardCharsets.UTF_8))) {
+                writer.write(departKey00.getText() + ", " + departLabel00.getText());
+                writer.newLine();
+                writer.write(departKey01.getText() + ", " + departLabel01.getText());
+                writer.newLine();
+                writer.write(departKey02.getText() + ", " + departLabel02.getText());
+                writer.newLine();
+                writer.write(departKey03.getText() + ", " + departLabel03.getText());
+                writer.newLine();
+                writer.write(departKey04.getText() + ", " + departLabel04.getText());
+                writer.newLine();
+                writer.write(departKey05.getText() + ", " + departLabel05.getText());
+                writer.newLine();
+                writer.write(departKey06.getText() + ", " + departLabel06.getText());
+                writer.newLine();
+                writer.write(departKey07.getText() + ", " + departLabel07.getText());
+                writer.newLine();
+                writer.write(departKey08.getText() + ", " + departLabel08.getText());
+                writer.newLine();
+                writer.write(departKey09.getText() + ", " + departLabel09.getText());
+                writer.newLine();
+                writer.write(departKey10.getText() + ", " + departLabel10.getText());
+                writer.newLine();
+                writer.write(departKey11.getText() + ", " + departLabel11.getText());
+                writer.newLine();
+                writer.write(departKey12.getText() + ", " + departLabel12.getText());
+                writer.newLine();
+                writer.write(departKey13.getText() + ", " + departLabel13.getText());
+                writer.newLine();
+                writer.write(departKey14.getText() + ", " + departLabel14.getText());
+                writer.newLine();
+                writer.write(departKey15.getText() + ", " + departLabel15.getText());
+                logs.addInfoLog("Settings was successfully recorded to file departs.txt");
+                Stage stage = (Stage) okButton.getScene().getWindow();
+                stage.close();
+            } catch (IOException e) {
+                logs.addInfoLog(e.getMessage() + " File reading error departs.txt");
+            }
         }
     }
 

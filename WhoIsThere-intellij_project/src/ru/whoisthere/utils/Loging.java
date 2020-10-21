@@ -12,17 +12,15 @@ public class Loging {
 
     public Loging() {
         try {
-            fh = new FileHandler("C:\\WhoIsThere\\logs.log");
+            fh = new FileHandler("logs.log");
             logger.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();
-            //formatter.format();
             fh.setFormatter(formatter);
         } catch (SecurityException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public void addInfoLog(String info) {
