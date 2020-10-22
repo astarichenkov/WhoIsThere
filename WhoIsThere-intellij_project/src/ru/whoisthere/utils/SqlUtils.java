@@ -28,40 +28,10 @@ public class SqlUtils {
     private int exitDoor = doors.getExitMag();
     private List<Person> persons = new ArrayList<Person>();
     private ConnectionSettings settings = new ConnectionSettings();
-//    private boolean isConnectionClosed;
-
-//    public boolean openConnection(
-//            String serverAddress, String login, String asswd, String pathToDB) {
-//
-////        Properties props = new Properties();
-////        props.setProperty("user", login);
-////        props.setProperty("password", asswd);
-////        props.setProperty("encoding", "UTF8");
-//        try {
-//            Class.forName("org.firebirdsql.jdbc.FBDriver");
-//            this.con = DriverManager.getConnection(
-//                    "jdbc:firebirdsql://" + serverAddress
-//                            + "/" + pathToDB, props);
-//            logs.addInfoLog("Connection to the server " + serverAddress + " was successful.");
-//            return true;
-//        } catch (SQLException | ClassNotFoundException e) {
-//            logs.addWarningLog(e.getMessage());
-//            return false;
-//        } finally {
-//            try {
-//                if ((con != null) && (con.isClosed())) {
-//                    con.close();
-//                }
-//            } catch (SQLException e) {
-//                e.getMessage();
-//            }
-//        }
-//    }
 
     public boolean closeConnection() {
         try {
             this.con.close();
-            System.out.println(this.con.isClosed());
             logs.addInfoLog("Disconnecting from the server.");
             return true;
         } catch (SQLException e) {
@@ -168,6 +138,4 @@ public class SqlUtils {
         props.setProperty("encoding", "UTF8");
         return props;
     }
-
-
 }

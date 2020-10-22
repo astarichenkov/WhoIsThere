@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Objects;
 import javax.imageio.ImageIO;
 
@@ -36,7 +37,7 @@ public class Person {
     }
 
     public void setPhoto(byte[] ph) {
-        this.ph = ph;
+        this.ph = Arrays.copyOf(ph, ph.length);
     }
 
     public String getName() {

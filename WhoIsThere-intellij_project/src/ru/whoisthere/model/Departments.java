@@ -1,12 +1,11 @@
 package ru.whoisthere.model;
 
+import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
 import ru.whoisthere.utils.Loging;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Departments {
     private static Loging logs = new Loging();
@@ -22,7 +21,9 @@ public class Departments {
                                 file), StandardCharsets.UTF_8))) {
 
             for (int i = 0; i < 16; i++) {
-                departs.add(readAndFilterString(reader.readLine()));
+                String s = reader.readLine();
+                String escaped = escapeHtml4(s);
+                departs.add(Arrays.asList(escaped.split(", ")));
             }
         } catch (IOException e) {
             logs.addInfoLog(e.getMessage() + " File reading error departs.txt");
@@ -51,21 +52,5 @@ public class Departments {
 
     public List<List<String>> getDepartments() {
         return departs;
-    }
-
-    private List<String> readAndFilterString(String s) {
-        String s2 = s.trim();
-        Pattern pattern = Pattern.compile(".*, .*");
-        Matcher matcher = pattern.matcher(s);
-        boolean matches = matcher.matches();
-        List<String> list = new ArrayList<>();
-        if (matches) {
-            list = Arrays.asList(s2.split(", "));
-        } else {
-            logs.addInfoLog("Error in pattern of file");
-            list.add("New");
-            list.add("wrong parameter");
-        }
-        return list;
     }
 }

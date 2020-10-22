@@ -21,10 +21,6 @@ public class DepartsOverviewController implements Initializable {
 
     @FXML
     private Button okButton;
-
-//    @FXML
-//    private Button cancelButton;
-
     @FXML
     private TextField departLabel00;
     @FXML
