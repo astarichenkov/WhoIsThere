@@ -50,7 +50,7 @@ public class DownloadData extends Thread {
                         Date refreshingStart = new Date();
                         persons = sqlutil.execQuery();
                         Date refreshingEnd = new Date();
-                        int colCount = otdels.getOtdelsCount();
+                        int colCount = 16;
 
                         for (int i = 0; i < colCount; i++) {
                             int personsInOtdel = 0;

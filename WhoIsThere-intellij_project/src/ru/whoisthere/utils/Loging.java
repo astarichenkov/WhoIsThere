@@ -16,10 +16,8 @@ public class Loging {
             logger.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();
             fh.setFormatter(formatter);
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (SecurityException | IOException e) {
+            e.getMessage();
         }
     }
 

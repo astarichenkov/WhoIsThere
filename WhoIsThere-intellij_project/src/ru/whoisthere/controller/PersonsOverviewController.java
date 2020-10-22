@@ -90,7 +90,7 @@ public class PersonsOverviewController {
             Stage stage = (Stage) gp.getScene().getWindow();
             gp.prefHeightProperty().bind(stage.heightProperty().subtract(40));
 
-            for (int i = 0; i < departs.getOtdelsCount(); i++) {
+            for (int i = 0; i < 16; i++) {
                 VBox column = (VBox) gp.lookup("#col" + i);
                 column.prefHeightProperty().bind(gp.prefHeightProperty().subtract(40));
                 column.prefWidthProperty().bind(
@@ -99,7 +99,7 @@ public class PersonsOverviewController {
             }
 
             for (Person person : persons) {
-                for (int i = 0; i < departs.getOtdelsCount(); i++) {
+                for (int i = 0; i < 16; i++) {
                     if (person.getDepartment().equals(departs.getDepartmentName(i))) {
                         VBox mynode = (VBox) gp.lookup("#col" + i);
 
@@ -175,10 +175,9 @@ public class PersonsOverviewController {
         }
         ContextMenu cm = new ContextMenu();
         MenuItem menuItem0 = new MenuItem();
-        MenuItem menuItem1 = new MenuItem("Выйти из приложения");
-        MenuItem menuItem2 = new MenuItem("Настройки соединения с БД");
-        MenuItem menuItem3 = new MenuItem("Настройки считывателей");
-        MenuItem menuItem4 = new MenuItem("Список отделов");
+        MenuItem menuItem1 = new MenuItem("Настройки соединения с БД");
+        MenuItem menuItem2 = new MenuItem("Настройки считывателей");
+        MenuItem menuItem3 = new MenuItem("Список отделов");
         //-----------------обработка событий нажатия пунктов меню---------------------
         menuItem0.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -197,18 +196,12 @@ public class PersonsOverviewController {
         menuItem1.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.exit(0);
-            }
-        });
-        menuItem2.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("/ru/whoisthere/view/connectionOverview.fxml"));
                 try {
                     loader.load();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logs.addInfoLog(e.getMessage());
                 }
 
                 Parent root = loader.getRoot();
@@ -219,7 +212,7 @@ public class PersonsOverviewController {
                 stage.showAndWait();
             }
         });
-        menuItem3.setOnAction(new EventHandler<>() {
+        menuItem2.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent event) {
                 FXMLLoader loader = new FXMLLoader();
@@ -227,7 +220,7 @@ public class PersonsOverviewController {
                 try {
                     loader.load();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logs.addInfoLog(e.getMessage());
                 }
 
                 Parent root = loader.getRoot();
@@ -238,7 +231,7 @@ public class PersonsOverviewController {
                 stage.showAndWait();
             }
         });
-        menuItem4.setOnAction(new EventHandler<>() {
+        menuItem3.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent event) {
                 FXMLLoader loader = new FXMLLoader();
@@ -246,7 +239,7 @@ public class PersonsOverviewController {
                 try {
                     loader.load();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logs.addInfoLog(e.getMessage());
                 }
 
                 Parent root = loader.getRoot();
@@ -261,8 +254,7 @@ public class PersonsOverviewController {
         cm.getItems().addAll(menuItem0,
                 new SeparatorMenuItem(), menuItem1,
                 new SeparatorMenuItem(), menuItem2,
-                new SeparatorMenuItem(), menuItem3,
-                new SeparatorMenuItem(), menuItem4);
+                new SeparatorMenuItem(), menuItem3);
 
         gp.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
             @Override

@@ -25,6 +25,7 @@ public class SqlUtils {
     private int inputDoor = doors.getInputHall();
     private int outputDoor = doors.getOutputHall();
     private int exitDoor = doors.getExitMag();
+    private boolean isClosed;
 
     public boolean openConnection(
             String serverAddress, String login, String asswd, String pathToDB) {
@@ -39,14 +40,14 @@ public class SqlUtils {
                     "jdbc:firebirdsql://" + serverAddress
                             + "/" + pathToDB, props);
             logs.addInfoLog("Connection to the server " + serverAddress + " was successful.");
+            isClosed  = this.con.isClosed();
+            System.out.println(isClosed);
             return true;
-        } catch (SQLException e) {
-            logs.addWarningLog(e.getMessage());
-            return false;
-        } catch (ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             logs.addWarningLog(e.getMessage());
             return false;
         } finally {
+//            if ((con != null) && (!con.isClosed())) {
 //                con.close();
         }
     }
@@ -70,6 +71,10 @@ public class SqlUtils {
         for (int i = 0; i < 16; i++) {
             otdels.add(departs.getDepartmentName(i));
         }
+
+//        HttpSession session = request.getSession();
+//        Part filePart = request.getPart("file");
+//        String role = (String)session.getAttribute("role");
 
         try {
             Statement stmt = con.createStatement();
@@ -100,7 +105,6 @@ public class SqlUtils {
                         persons.remove(person);
                     }
                 }
-
             }
 //            persons = sotrByDepartment(persons);
             for (int i = 0; i < persons.size(); i++) {
