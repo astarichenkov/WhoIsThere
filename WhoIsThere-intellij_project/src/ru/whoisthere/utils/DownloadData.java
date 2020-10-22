@@ -19,7 +19,6 @@ public class DownloadData extends Thread {
     private List<Person> persons = new ArrayList<Person>();
     private DateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
     private boolean dataDownloaded = false;
-    private ConnectionSettings settings = new ConnectionSettings();
     private int maxPersons = 0;
 
     public int getMaxPersons() {
@@ -32,7 +31,7 @@ public class DownloadData extends Thread {
             String dataTime = df.format(curDateTime);
             return dataTime;
         } else {
-            return null;
+            return "no data";
         }
 
     }
@@ -45,8 +44,6 @@ public class DownloadData extends Thread {
             TimerTask timerTask = new TimerTask() {
                 public void run() {
 
-                    if (sqlutil.openConnection(settings.getIp(), settings.getLogin(),
-                            settings.getAsswd(), settings.getPathToDB())) {
                         Date refreshingStart = new Date();
                         persons = sqlutil.execQuery();
                         Date refreshingEnd = new Date();
@@ -68,7 +65,7 @@ public class DownloadData extends Thread {
                         logs.addInfoLog("Data is loaded in "
                                 + (refreshingEnd.getTime() - refreshingStart.getTime()) / 1000
                                 + " seconds.");
-                    }
+//                    }
                 }
             };
             timer.schedule(timerTask, 0, 15000);

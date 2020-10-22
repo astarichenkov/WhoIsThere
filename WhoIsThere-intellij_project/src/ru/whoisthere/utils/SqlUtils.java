@@ -11,6 +11,7 @@ import java.util.List;
 
 import ru.whoisthere.model.Departments;
 import ru.whoisthere.model.Person;
+import ru.whoisthere.settings.ConnectionSettings;
 import ru.whoisthere.settings.DoorsReadersSettings;
 
 import java.sql.ResultSet;
@@ -25,36 +26,42 @@ public class SqlUtils {
     private int inputDoor = doors.getInputHall();
     private int outputDoor = doors.getOutputHall();
     private int exitDoor = doors.getExitMag();
-    private boolean isClosed;
+    private List<Person> persons = new ArrayList<Person>();
+    private ConnectionSettings settings = new ConnectionSettings();
+//    private boolean isConnectionClosed;
 
-    public boolean openConnection(
-            String serverAddress, String login, String asswd, String pathToDB) {
-
-        Properties props = new Properties();
-        props.setProperty("user", login);
-        props.setProperty("password", asswd);
-        props.setProperty("encoding", "UTF8");
-        try {
-            Class.forName("org.firebirdsql.jdbc.FBDriver");
-            this.con = DriverManager.getConnection(
-                    "jdbc:firebirdsql://" + serverAddress
-                            + "/" + pathToDB, props);
-            logs.addInfoLog("Connection to the server " + serverAddress + " was successful.");
-            isClosed  = this.con.isClosed();
-            System.out.println(isClosed);
-            return true;
-        } catch (SQLException | ClassNotFoundException e) {
-            logs.addWarningLog(e.getMessage());
-            return false;
-        } finally {
-//            if ((con != null) && (!con.isClosed())) {
-//                con.close();
-        }
-    }
+//    public boolean openConnection(
+//            String serverAddress, String login, String asswd, String pathToDB) {
+//
+////        Properties props = new Properties();
+////        props.setProperty("user", login);
+////        props.setProperty("password", asswd);
+////        props.setProperty("encoding", "UTF8");
+//        try {
+//            Class.forName("org.firebirdsql.jdbc.FBDriver");
+//            this.con = DriverManager.getConnection(
+//                    "jdbc:firebirdsql://" + serverAddress
+//                            + "/" + pathToDB, props);
+//            logs.addInfoLog("Connection to the server " + serverAddress + " was successful.");
+//            return true;
+//        } catch (SQLException | ClassNotFoundException e) {
+//            logs.addWarningLog(e.getMessage());
+//            return false;
+//        } finally {
+//            try {
+//                if ((con != null) && (con.isClosed())) {
+//                    con.close();
+//                }
+//            } catch (SQLException e) {
+//                e.getMessage();
+//            }
+//        }
+//    }
 
     public boolean closeConnection() {
         try {
             this.con.close();
+            System.out.println(this.con.isClosed());
             logs.addInfoLog("Disconnecting from the server.");
             return true;
         } catch (SQLException e) {
@@ -64,10 +71,7 @@ public class SqlUtils {
     }
 
     public List<Person> execQuery() {
-        List<Person> persons = new ArrayList<Person>();
-        String host;
-
-        ArrayList otdels = new ArrayList();
+        ArrayList<String> otdels = new ArrayList<String>();
         for (int i = 0; i < 16; i++) {
             otdels.add(departs.getDepartmentName(i));
         }
@@ -75,10 +79,17 @@ public class SqlUtils {
 //        HttpSession session = request.getSession();
 //        Part filePart = request.getPart("file");
 //        String role = (String)session.getAttribute("role");
-
+        String serverAddress = settings.getIp();
+        String pathToDB = settings.getPathToDB();
         try {
+            Class.forName("org.firebirdsql.jdbc.FBDriver");
+            this.con = DriverManager.getConnection(
+                    "jdbc:firebirdsql://" + serverAddress
+                            + "/" + pathToDB, getProperties());
+            logs.addInfoLog("Connection to the server " + serverAddress + " was successful.");
+
             Statement stmt = con.createStatement();
-            host = InetAddress.getLocalHost().getCanonicalHostName();
+            String host = InetAddress.getLocalHost().getCanonicalHostName();
             ResultSet rs = null;
             if (host.contains("leroymerlin")) {
                 rs = stmt.executeQuery(getEvents());
@@ -106,7 +117,6 @@ public class SqlUtils {
                     }
                 }
             }
-//            persons = sotrByDepartment(persons);
             for (int i = 0; i < persons.size(); i++) {
                 String name = persons.get(i).getName();
                 String surname = persons.get(i).getSurname();
@@ -122,7 +132,7 @@ public class SqlUtils {
             stmt.close();
             logs.addInfoLog("Employee data is received. " + persons.size() + " records.");
         } catch (
-                SQLException | UnknownHostException e) {
+                SQLException | UnknownHostException | ClassNotFoundException e) {
             logs.addWarningLog(e.getMessage());
         } finally {
             closeConnection();
@@ -149,6 +159,14 @@ public class SqlUtils {
                 + "' AND EVENTS.LNAME2 = '" + surname
                 + "' AND CARDS.PHOTO IS NOT NULL)";
         return queryStr;
+    }
+
+    public Properties getProperties() {
+        Properties props = new Properties();
+        props.setProperty("user", settings.getLogin());
+        props.setProperty("password", settings.getAsswd());
+        props.setProperty("encoding", "UTF8");
+        return props;
     }
 
 
