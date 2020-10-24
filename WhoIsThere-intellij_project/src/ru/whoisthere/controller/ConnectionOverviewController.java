@@ -5,10 +5,7 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
-import java.sql.ResultSet;
-import java.util.Properties;
 import java.util.ResourceBundle;
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -17,6 +14,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import ru.whoisthere.utils.Loging;
 import ru.whoisthere.settings.ConnectionSettings;
+import ru.whoisthere.utils.SanitizePath;
 
 public class ConnectionOverviewController implements Initializable {
     private static Loging logs = new Loging();
@@ -44,6 +42,8 @@ public class ConnectionOverviewController implements Initializable {
     public void saveAndExit() {
         String userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
         File file = new File(userDir, "connection.txt");
+//        String filename = SanitizePath.sanitizePathTraversal("connection.txt");
+//        File file = new File(filename);
 
         String host = "";
         try {
@@ -72,7 +72,6 @@ public class ConnectionOverviewController implements Initializable {
         }
     }
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ConnectionSettings connectionSettings = new ConnectionSettings();
@@ -80,6 +79,5 @@ public class ConnectionOverviewController implements Initializable {
         passwordField.setText(connectionSettings.getAsswd());
         pathToDBField.setText(connectionSettings.getPathToDB());
         ipAddressField.setText(connectionSettings.getIp());
-
     }
 }

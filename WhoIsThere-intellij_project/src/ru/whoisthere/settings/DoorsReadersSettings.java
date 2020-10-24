@@ -1,6 +1,7 @@
 package ru.whoisthere.settings;
 
 import ru.whoisthere.utils.Loging;
+import ru.whoisthere.utils.SanitizePath;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -36,6 +37,8 @@ public class DoorsReadersSettings {
     private void readFile() {
         String userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
         File file = new File(userDir, "doorsReaders.txt");
+//        String filename = SanitizePath.sanitizePathTraversal("doorsReaders.txt");
+//        File file = new File(filename);
 
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(

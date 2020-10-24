@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import ru.whoisthere.utils.Loging;
 import ru.whoisthere.model.Departments;
+import ru.whoisthere.utils.SanitizePath;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -95,6 +96,8 @@ public class DepartsOverviewController implements Initializable {
     public void saveAndExit() {
         String userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
         File file = new File(userDir, "departs.txt");
+//        String filename = SanitizePath.sanitizePathTraversal("departs.txt");
+//        File file = new File(filename);
 
         String host = "";
         try {

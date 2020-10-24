@@ -2,6 +2,7 @@ package ru.whoisthere.model;
 
 import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
 import ru.whoisthere.utils.Loging;
+import ru.whoisthere.utils.SanitizePath;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -9,11 +10,13 @@ import java.util.*;
 
 public class Departments {
     private static Loging logs = new Loging();
-    private List<List<String>> departs = new ArrayList<List<String>>();
+    private List<List<String>> departs = new ArrayList<>();
 
     public Departments() {
         String userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
         File file = new File(userDir, "departs.txt");
+//        String filename = SanitizePath.sanitizePathTraversal("departs.txt");
+//        File file = new File(filename);
 
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(

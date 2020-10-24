@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import ru.whoisthere.utils.Loging;
 import ru.whoisthere.settings.DoorsReadersSettings;
+import ru.whoisthere.utils.SanitizePath;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -45,6 +46,8 @@ public class DoorsReadersOverviewController implements Initializable {
     public void saveAndExit() {
         String userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
         File file = new File(userDir, "doorsReaders.txt");
+//        String filename = SanitizePath.sanitizePathTraversal("doorsReaders.txt");
+//        File file = new File(filename);
 
         String host = "";
         try {
