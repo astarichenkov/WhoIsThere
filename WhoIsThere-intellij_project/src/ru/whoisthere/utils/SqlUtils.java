@@ -3,10 +3,9 @@ package ru.whoisthere.utils;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import ru.whoisthere.model.Departments;
@@ -14,8 +13,6 @@ import ru.whoisthere.model.Person;
 import ru.whoisthere.settings.ConnectionSettings;
 import ru.whoisthere.settings.DoorsReadersSettings;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Properties;
 
 public class SqlUtils {
@@ -28,6 +25,7 @@ public class SqlUtils {
     private int exitDoor = doors.getExitMag();
     private List<Person> persons = new ArrayList<Person>();
     private ConnectionSettings settings = new ConnectionSettings();
+    private final String encoding = "UTF8";
 
     public boolean closeConnection() {
         try {
@@ -46,9 +44,6 @@ public class SqlUtils {
             otdels.add(departs.getDepartmentName(i));
         }
 
-//        HttpSession session = request.getSession();
-//        Part filePart = request.getPart("file");
-//        String role = (String)session.getAttribute("role");
         String serverAddress = settings.getIp();
         String pathToDB = settings.getPathToDB();
         try {
@@ -62,7 +57,7 @@ public class SqlUtils {
             String host = InetAddress.getLocalHost().getCanonicalHostName();
             ResultSet rs = null;
             if (host.contains("leroymerlin")) {
-                rs = stmt.executeQuery(getEvents());
+                rs = getEvents();
             }
 
             while (rs.next()) {
@@ -92,7 +87,7 @@ public class SqlUtils {
                 String surname = persons.get(i).getSurname();
 
                 if (host.contains("leroymerlin")) {
-                    rs = stmt.executeQuery(getPersons(name, surname));
+                    rs = getPersons(name, surname);
                 }
                 if (rs.next()) {
                     persons.get(i).setPhoto(rs.getBytes(4));
@@ -111,31 +106,70 @@ public class SqlUtils {
         return persons;
     }
 
-    private String getEvents() {
+//    private String getEvents() {
+//        String queryStr = "SELECT events.lname1, events.lname2, events.ldepartment, EVENTS.LPOST, EVENTS.POBJECT"
+//                + " from events where ((d = (SELECT MAX(D) FROM EVENTS) )"
+//                + " AND (POBJECT = " + inputDoor + " OR POBJECT = " + outputDoor
+//                + " OR POBJECT = " + exitDoor + ")) ORDER BY LNAME1, T ASC";
+//        return queryStr;
+//    }
+
+    private ResultSet getEvents() throws SQLException {
+
         String queryStr = "SELECT events.lname1, events.lname2, events.ldepartment, EVENTS.LPOST, EVENTS.POBJECT"
                 + " from events where ((d = (SELECT MAX(D) FROM EVENTS) )"
-                + " AND (POBJECT = " + inputDoor + " OR POBJECT = " + outputDoor
-                + " OR POBJECT = " + exitDoor + ")) ORDER BY LNAME1, T ASC";
-        return queryStr;
+                + " AND (POBJECT = ? OR POBJECT = ? OR POBJECT = ?)) ORDER BY LNAME1, T ASC";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = con.prepareStatement(queryStr);
+            preparedStatement.setInt(1, inputDoor);
+            preparedStatement.setInt(2, outputDoor);
+            preparedStatement.setInt(3, exitDoor);
+        } catch (SQLException e) {
+            logs.addInfoLog(e.getMessage());
+        }
+        return preparedStatement.executeQuery();
     }
 
-    private String getPersons(String name, String surname) {
+//    private String getPersons(String name, String surname) {
+//        String queryStr = "SELECT DISTINCT events.lname1, events.lname2, events.ldepartment,"
+//                + " CARDS.PHOTO, EVENTS.POBJECT from events JOIN CARDS ON"
+//                + " (EVENTS.LNAME1 = CARDS.NAME1 AND EVENTS.LNAME2 = CARDS.NAME2) where"
+//                + " (d = (SELECT MAX(D) FROM EVENTS) AND "
+//                + " (POBJECT = " + inputDoor + " OR POBJECT = " + exitDoor + ")"
+//                + " AND EVENTS.LNAME1 = '" + name
+//                + "' AND EVENTS.LNAME2 = '" + surname
+//                + "' AND CARDS.PHOTO IS NOT NULL)";
+//        return queryStr;
+//    }
+
+    private ResultSet getPersons(String name, String surname) throws SQLException {
         String queryStr = "SELECT DISTINCT events.lname1, events.lname2, events.ldepartment,"
                 + " CARDS.PHOTO, EVENTS.POBJECT from events JOIN CARDS ON"
                 + " (EVENTS.LNAME1 = CARDS.NAME1 AND EVENTS.LNAME2 = CARDS.NAME2) where"
                 + " (d = (SELECT MAX(D) FROM EVENTS) AND "
-                + " (POBJECT = " + inputDoor + " OR POBJECT = " + exitDoor + ")"
-                + " AND EVENTS.LNAME1 = '" + name
-                + "' AND EVENTS.LNAME2 = '" + surname
-                + "' AND CARDS.PHOTO IS NOT NULL)";
-        return queryStr;
+                + " (POBJECT = ? OR POBJECT = ?)"
+                + " AND EVENTS.LNAME1 = ?"
+                + " AND EVENTS.LNAME2 = ?"
+                + " AND CARDS.PHOTO IS NOT NULL)";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = con.prepareStatement(queryStr);
+            preparedStatement.setInt(1, inputDoor);
+            preparedStatement.setInt(2, exitDoor);
+            preparedStatement.setString(3, name);
+            preparedStatement.setString(4, surname);
+        } catch (SQLException e) {
+            logs.addInfoLog(e.getMessage());
+        }
+        return preparedStatement.executeQuery();
     }
 
     public Properties getProperties() {
         Properties props = new Properties();
         props.setProperty("user", settings.getLogin());
         props.setProperty("password", settings.getAsswd());
-        props.setProperty("encoding", "UTF8");
+        props.setProperty("encoding", encoding);
         return props;
     }
 }

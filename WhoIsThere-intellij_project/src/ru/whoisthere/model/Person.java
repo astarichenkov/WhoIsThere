@@ -1,5 +1,7 @@
 package ru.whoisthere.model;
 
+import ru.whoisthere.utils.Loging;
+
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -10,6 +12,7 @@ import java.util.Objects;
 import javax.imageio.ImageIO;
 
 public class Person {
+    private static Loging logs = new Loging();
     private String name;
     private String surname;
     private String department;
@@ -69,7 +72,7 @@ public class Person {
             double imgRatio = imgHeight / imgWidth;
             img = resize(img, (int) (100 * imgRatio), 100);
         } catch (IOException e) {
-            System.out.println("error in biToImage()");
+            logs.addInfoLog(e.getMessage());
         }
 
         return img;
