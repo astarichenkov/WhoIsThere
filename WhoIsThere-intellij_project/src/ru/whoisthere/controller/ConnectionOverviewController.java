@@ -5,6 +5,7 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -58,7 +59,9 @@ public class ConnectionOverviewController implements Initializable {
                                     file), StandardCharsets.UTF_8))) {
                 writer.write(loginField.getText());
                 writer.newLine();
-                writer.write(passwordField.getText());
+                String encodedAsswd = Base64.getEncoder().encodeToString(
+                        passwordField.getText().getBytes());
+                writer.write(encodedAsswd);
                 writer.newLine();
                 writer.write(ipAddressField.getText());
                 writer.newLine();

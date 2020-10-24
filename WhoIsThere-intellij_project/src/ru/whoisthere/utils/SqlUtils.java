@@ -23,7 +23,7 @@ public class SqlUtils {
     private int inputDoor = doors.getInputHall();
     private int outputDoor = doors.getOutputHall();
     private int exitDoor = doors.getExitMag();
-    private List<Person> persons = new ArrayList<Person>();
+    private List<Person> persons = new ArrayList<>();
     private ConnectionSettings settings = new ConnectionSettings();
     private final String encoding = "UTF8";
 
@@ -39,7 +39,7 @@ public class SqlUtils {
     }
 
     public List<Person> execQuery() {
-        ArrayList<String> otdels = new ArrayList<String>();
+        ArrayList<String> otdels = new ArrayList<>();
         for (int i = 0; i < 16; i++) {
             otdels.add(departs.getDepartmentName(i));
         }
@@ -77,20 +77,18 @@ public class SqlUtils {
                     continue;
                 }
                 if (pObject == outputDoor || pObject == exitDoor) {
-                    if (persons.contains(person)) {
-                        persons.remove(person);
-                    }
+                    persons.remove(person);
                 }
             }
-            for (int i = 0; i < persons.size(); i++) {
-                String name = persons.get(i).getName();
-                String surname = persons.get(i).getSurname();
+            for (Person person : persons) {
+                String name = person.getName();
+                String surname = person.getSurname();
 
                 if (host.contains("leroymerlin")) {
                     rs = getPersons(name, surname);
                 }
                 if (rs.next()) {
-                    persons.get(i).setPhoto(rs.getBytes(4));
+                    person.setPhoto(rs.getBytes(4));
                 }
             }
             rs.close();
@@ -106,17 +104,9 @@ public class SqlUtils {
         return persons;
     }
 
-//    private String getEvents() {
-//        String queryStr = "SELECT events.lname1, events.lname2, events.ldepartment, EVENTS.LPOST, EVENTS.POBJECT"
-//                + " from events where ((d = (SELECT MAX(D) FROM EVENTS) )"
-//                + " AND (POBJECT = " + inputDoor + " OR POBJECT = " + outputDoor
-//                + " OR POBJECT = " + exitDoor + ")) ORDER BY LNAME1, T ASC";
-//        return queryStr;
-//    }
-
     private ResultSet getEvents() throws SQLException {
-
-        String queryStr = "SELECT events.lname1, events.lname2, events.ldepartment, EVENTS.LPOST, EVENTS.POBJECT"
+        String queryStr = "SELECT events.lname1, events.lname2, events.ldepartment,"
+                + " EVENTS.LPOST, EVENTS.POBJECT"
                 + " from events where ((d = (SELECT MAX(D) FROM EVENTS) )"
                 + " AND (POBJECT = ? OR POBJECT = ? OR POBJECT = ?)) ORDER BY LNAME1, T ASC";
         PreparedStatement preparedStatement = null;
@@ -130,18 +120,6 @@ public class SqlUtils {
         }
         return preparedStatement.executeQuery();
     }
-
-//    private String getPersons(String name, String surname) {
-//        String queryStr = "SELECT DISTINCT events.lname1, events.lname2, events.ldepartment,"
-//                + " CARDS.PHOTO, EVENTS.POBJECT from events JOIN CARDS ON"
-//                + " (EVENTS.LNAME1 = CARDS.NAME1 AND EVENTS.LNAME2 = CARDS.NAME2) where"
-//                + " (d = (SELECT MAX(D) FROM EVENTS) AND "
-//                + " (POBJECT = " + inputDoor + " OR POBJECT = " + exitDoor + ")"
-//                + " AND EVENTS.LNAME1 = '" + name
-//                + "' AND EVENTS.LNAME2 = '" + surname
-//                + "' AND CARDS.PHOTO IS NOT NULL)";
-//        return queryStr;
-//    }
 
     private ResultSet getPersons(String name, String surname) throws SQLException {
         String queryStr = "SELECT DISTINCT events.lname1, events.lname2, events.ldepartment,"
@@ -168,7 +146,9 @@ public class SqlUtils {
     public Properties getProperties() {
         Properties props = new Properties();
         props.setProperty("user", settings.getLogin());
-        props.setProperty("password", settings.getAsswd());
+        byte[] decodedBytes = Base64.getDecoder().decode(settings.getAsswd());
+        String decodedAsswd = new String(decodedBytes);
+        props.setProperty("password", decodedAsswd);
         props.setProperty("encoding", encoding);
         return props;
     }
