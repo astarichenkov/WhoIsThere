@@ -1,11 +1,11 @@
 package ru.whoisthere.settings;
 
 import ru.whoisthere.utils.Loging;
-import ru.whoisthere.utils.SanitizePath;
 
 import java.io.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
-import java.util.Properties;
 
 import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
 
@@ -21,23 +21,42 @@ public class ConnectionSettings {
     }
 
     private void readFile() {
-        String userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
-        File file = new File(userDir, "connection.txt");
-//        String filename = SanitizePath.sanitizePathTraversal("connection.txt");
-//        File file = new File(filename);
+        String host = "";
+        String role = "";
+        try {
+            host = InetAddress.getLocalHost().getCanonicalHostName();
+        } catch (UnknownHostException e) {
+            logs.addInfoLog(e.getMessage());
+        }
+        if (host.contains("leroymerlin")) {
+            role = "ADMIN";
+        }
 
-        try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(
-                        new FileInputStream(
-                                file), StandardCharsets.UTF_8))) {
-            this.user = escapeHtml4(reader.readLine());
-            this.asswd = escapeHtml4(reader.readLine());
-            this.ip = escapeHtml4(reader.readLine());
-            this.pathToDB = escapeHtml4(reader.readLine());
+        if (role.equals("ADMIN")) {
+            String userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
+            try {
+                userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
+            } catch (SecurityException e) {
+                logs.addInfoLog(e.getMessage());
+            }
+            File file = new File(userDir, "connection.txt");
+            file.setExecutable(false);
+            file.setReadable(true);
+            file.setWritable(true);
 
-            logs.addInfoLog("Settings file connection.txt read.");
-        } catch (IOException e) {
-            logs.addInfoLog(e.getMessage() + " File reading error connection.txt");
+            try (BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(
+                            new FileInputStream(
+                                    file), StandardCharsets.UTF_8))) {
+                this.user = escapeHtml4(reader.readLine());
+                this.asswd = escapeHtml4(reader.readLine());
+                this.ip = escapeHtml4(reader.readLine());
+                this.pathToDB = escapeHtml4(reader.readLine());
+
+                logs.addInfoLog("Settings file connection.txt read.");
+            } catch (IOException e) {
+                logs.addInfoLog(e.getMessage() + " File reading error connection.txt");
+            }
         }
     }
 

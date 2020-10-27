@@ -80,54 +80,49 @@ public class PersonsOverviewController {
     private Label departLabel15;
 
     public void refreshScreen() {
-        try {
-            clearData();
-            persons = downloadData.getPersons();
-            Date refreshingStart = new Date();
-            logs.addInfoLog("Start updating the interface: " + refreshingStart);
-            int maxPersons = downloadData.getMaxPersons();
+        clearData();
+        persons = downloadData.getPersons();
+        Date refreshingStart = new Date();
+        logs.addInfoLog("Start updating the interface: " + refreshingStart);
+        int maxPersons = downloadData.getMaxPersons();
 
-            Stage stage = (Stage) gp.getScene().getWindow();
-            gp.prefHeightProperty().bind(stage.heightProperty().subtract(40));
+        Stage stage = (Stage) gp.getScene().getWindow();
+        gp.prefHeightProperty().bind(stage.heightProperty().subtract(40));
 
-            for (int i = 0; i < 16; i++) {
-                VBox column = (VBox) gp.lookup("#col" + i);
-                column.prefHeightProperty().bind(gp.prefHeightProperty().subtract(40));
-                column.prefWidthProperty().bind(
-                        gp.getColumnConstraints().get(0).prefWidthProperty());
-                column.setAlignment(Pos.TOP_CENTER);
-            }
-
-            for (Person person : persons) {
-                for (int i = 0; i < 16; i++) {
-                    if (person.getDepartment().equals(departs.getDepartmentName(i))) {
-                        VBox mynode = (VBox) gp.lookup("#col" + i);
-
-                        Image photo = SwingFXUtils.toFXImage(person.getPhoto(), null);
-                        ImageView personPhoto = new ImageView(photo);
-                        double imgRatio = setImageRatio(photo);
-
-                        personPhoto.fitWidthProperty().bind(
-                                mynode.prefWidthProperty().multiply(imgRatio));
-                        personPhoto.fitHeightProperty().bind(
-                                mynode.prefHeightProperty().divide(maxPersons).subtract(40));
-                        personPhoto.setPreserveRatio(true);
-
-                        mynode.getChildren().addAll(
-                                personPhoto, new Label(person.getName()), new Label(
-                                        person.getSurname()));
-                    }
-                }
-            }
-
-            Date refreshingEnd = new Date();
-            logs.addInfoLog("Interface updated for: "
-                    + (refreshingEnd.getTime() - refreshingStart.getTime()) / 1000 + " seconds.");
-            dataUpdated.setText(downloadData.getDataTime());
-        } catch (Exception e) {
-            logs.addWarningLog(e.getMessage());
+        for (int i = 0; i < 16; i++) {
+            VBox column = (VBox) gp.lookup("#col" + i);
+            column.prefHeightProperty().bind(gp.prefHeightProperty().subtract(40));
+            column.prefWidthProperty().bind(
+                    gp.getColumnConstraints().get(0).prefWidthProperty());
+            column.setAlignment(Pos.TOP_CENTER);
         }
 
+        for (Person person : persons) {
+            for (int i = 0; i < 16; i++) {
+                if (person.getDepartment().equals(departs.getDepartmentName(i))) {
+                    VBox mynode = (VBox) gp.lookup("#col" + i);
+
+                    Image photo = SwingFXUtils.toFXImage(person.getPhoto(), null);
+                    ImageView personPhoto = new ImageView(photo);
+                    double imgRatio = setImageRatio(photo);
+
+                    personPhoto.fitWidthProperty().bind(
+                            mynode.prefWidthProperty().multiply(imgRatio));
+                    personPhoto.fitHeightProperty().bind(
+                            mynode.prefHeightProperty().divide(maxPersons).subtract(40));
+                    personPhoto.setPreserveRatio(true);
+
+                    mynode.getChildren().addAll(
+                            personPhoto, new Label(person.getName()), new Label(
+                                    person.getSurname()));
+                }
+            }
+        }
+
+        Date refreshingEnd = new Date();
+        logs.addInfoLog("Interface updated for: "
+                + (refreshingEnd.getTime() - refreshingStart.getTime()) / 1000 + " seconds.");
+        dataUpdated.setText(downloadData.getDataTime());
     }
 
     private double setImageRatio(Image photo) {
@@ -168,11 +163,9 @@ public class PersonsOverviewController {
         departLabel13.setText(departs.getDepartments().get(13).get(1));
         departLabel14.setText(departs.getDepartments().get(14).get(1));
         departLabel15.setText(departs.getDepartments().get(15).get(1));
-        try {
-            downloadData.start();
-        } catch (Exception e) {
-            e.getMessage();
-        }
+
+        downloadData.start();
+
         ContextMenu cm = new ContextMenu();
         MenuItem menuItem0 = new MenuItem();
         MenuItem menuItem1 = new MenuItem("Настройки соединения с БД");
@@ -289,10 +282,5 @@ public class PersonsOverviewController {
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
 
-    }
-
-    public void stop() {
-        logs.addInfoLog("Close program");
-        return;
     }
 }

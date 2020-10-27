@@ -1,6 +1,5 @@
 package ru.whoisthere.utils;
 
-import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,7 +10,6 @@ import java.util.TimerTask;
 
 import ru.whoisthere.model.Departments;
 import ru.whoisthere.model.Person;
-import ru.whoisthere.settings.ConnectionSettings;
 
 public class DownloadData extends Thread {
     private static Loging logs = new Loging();
@@ -39,7 +37,6 @@ public class DownloadData extends Thread {
     @Override
     public void run() {
         Timer timer = new Timer();
-        try {
             SqlUtils sqlutil = new SqlUtils();
             TimerTask timerTask = new TimerTask() {
                 public void run() {
@@ -65,15 +62,10 @@ public class DownloadData extends Thread {
                         logs.addInfoLog("Data is loaded in "
                                 + (refreshingEnd.getTime() - refreshingStart.getTime()) / 1000
                                 + " seconds.");
-//                    }
                 }
             };
             timer.schedule(timerTask, 0, 15000);
-
-        } catch (Exception e) {
             dataDownloaded = false;
-            logs.addWarningLog(e.getMessage());
-        }
     }
 
     public List<Person> getPersons() {

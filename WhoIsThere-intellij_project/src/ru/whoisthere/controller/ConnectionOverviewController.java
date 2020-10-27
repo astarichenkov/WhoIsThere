@@ -7,6 +7,7 @@ import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.ResourceBundle;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -15,7 +16,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import ru.whoisthere.utils.Loging;
 import ru.whoisthere.settings.ConnectionSettings;
-import ru.whoisthere.utils.SanitizePath;
 
 public class ConnectionOverviewController implements Initializable {
     private static Loging logs = new Loging();
@@ -41,18 +41,30 @@ public class ConnectionOverviewController implements Initializable {
     }
 
     public void saveAndExit() {
-        String userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
-        File file = new File(userDir, "connection.txt");
-//        String filename = SanitizePath.sanitizePathTraversal("connection.txt");
-//        File file = new File(filename);
-
         String host = "";
+        String role = "";
         try {
             host = InetAddress.getLocalHost().getCanonicalHostName();
         } catch (UnknownHostException e) {
-            logs.addInfoLog("error in getLocalHost");
+            logs.addInfoLog(e.getMessage());
         }
         if (host.contains("leroymerlin")) {
+            role = "ADMIN";
+        }
+
+        if (role.equals("ADMIN")) {
+            String userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
+            try {
+                userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
+            } catch (SecurityException e) {
+                logs.addInfoLog(e.getMessage());
+            }
+
+            File file = new File(userDir, "connection.txt");
+            file.setExecutable(false);
+            file.setReadable(true);
+            file.setWritable(true);
+
             try (BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(
                             new FileOutputStream(

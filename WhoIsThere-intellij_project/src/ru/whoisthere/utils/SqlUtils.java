@@ -55,8 +55,12 @@ public class SqlUtils {
 
             Statement stmt = con.createStatement();
             String host = InetAddress.getLocalHost().getCanonicalHostName();
-            ResultSet rs = null;
+            String role = "";
             if (host.contains("leroymerlin")) {
+                role = "ADMIN";
+            }
+            ResultSet rs = null;
+            if (role.equals("ADMIN")) {
                 rs = getEvents();
             }
 
@@ -84,7 +88,7 @@ public class SqlUtils {
                 String name = person.getName();
                 String surname = person.getSurname();
 
-                if (host.contains("leroymerlin")) {
+                if (role.equals("ADMIN")) {
                     rs = getPersons(name, surname);
                 }
                 if (rs.next()) {
@@ -94,8 +98,8 @@ public class SqlUtils {
             rs.close();
             stmt.close();
             logs.addInfoLog("Employee data is received. " + persons.size() + " records.");
-        } catch (
-                SQLException | UnknownHostException | ClassNotFoundException e) {
+        } catch (SQLException | UnknownHostException
+                | ClassNotFoundException | NullPointerException e) {
             logs.addWarningLog(e.getMessage());
         } finally {
             closeConnection();

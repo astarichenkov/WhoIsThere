@@ -1,11 +1,11 @@
 package ru.whoisthere.settings;
 
 import ru.whoisthere.utils.Loging;
-import ru.whoisthere.utils.SanitizePath;
 
 import java.io.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
-import java.util.Properties;
 
 public class DoorsReadersSettings {
     private static Loging logs = new Loging();
@@ -35,22 +35,41 @@ public class DoorsReadersSettings {
     }
 
     private void readFile() {
-        String userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
-        File file = new File(userDir, "doorsReaders.txt");
-//        String filename = SanitizePath.sanitizePathTraversal("doorsReaders.txt");
-//        File file = new File(filename);
+        String host = "";
+        String role = "";
+        try {
+            host = InetAddress.getLocalHost().getCanonicalHostName();
+        } catch (UnknownHostException e) {
+            logs.addInfoLog(e.getMessage());
+        }
+        if (host.contains("leroymerlin")) {
+            role = "ADMIN";
+        }
 
-        try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(
-                        new FileInputStream(
-                                file), StandardCharsets.UTF_8))) {
-            this.inputHall = Integer.parseInt(reader.readLine());
-            this.outputHall = Integer.parseInt(reader.readLine());
-            this.inputMag = Integer.parseInt(reader.readLine());
-            this.exitMag = Integer.parseInt(reader.readLine());
-            logs.addInfoLog("Settings file doors.txt read.");
-        } catch (IOException e) {
-            logs.addInfoLog("File reading error doors.txt");
+        if (role.equals("ADMIN")) {
+            String userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
+            try {
+                userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
+            } catch (SecurityException e) {
+                logs.addInfoLog(e.getMessage());
+            }
+            File file = new File(userDir, "doorsReaders.txt");
+            file.setExecutable(false);
+            file.setReadable(true);
+            file.setWritable(true);
+
+            try (BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(
+                            new FileInputStream(
+                                    file), StandardCharsets.UTF_8))) {
+                this.inputHall = Integer.parseInt(reader.readLine());
+                this.outputHall = Integer.parseInt(reader.readLine());
+                this.inputMag = Integer.parseInt(reader.readLine());
+                this.exitMag = Integer.parseInt(reader.readLine());
+                logs.addInfoLog("Settings file doors.txt read.");
+            } catch (IOException e) {
+                logs.addInfoLog(e.getMessage() + "File reading error doors.txt");
+            }
         }
     }
 }
