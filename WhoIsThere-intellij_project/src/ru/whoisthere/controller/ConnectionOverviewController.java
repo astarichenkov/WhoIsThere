@@ -41,25 +41,24 @@ public class ConnectionOverviewController implements Initializable {
     }
 
     public void saveAndExit() {
-        String host = "";
+//        String host = "";
         String role = "";
-        System.out.println(1);
-        try {
-            host = InetAddress.getLocalHost().getCanonicalHostName();
-        } catch (UnknownHostException e) {
-            logs.addInfoLog(e.getMessage());
-        }
-        if (host.contains("leroymerlin")) {
+//        try {
+//            host = InetAddress.getLocalHost().getCanonicalHostName();
+//        } catch (UnknownHostException e) {
+//            logs.addInfoLog(e.getMessage());
+//        }
+//        if (host.contains("leroymerlin")) {
             role = "ADMIN";
-        }
-        System.out.println(2);
+//        }
+//        System.out.println(2);
         if (role.equals("ADMIN")) {
-            String userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
-            try {
-                userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
-            } catch (SecurityException e) {
-                logs.addInfoLog(e.getMessage());
-            }
+//            String userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
+//            try {
+//                userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
+//            } catch (SecurityException e) {
+//                logs.addInfoLog(e.getMessage());
+//            }
 
             File file = new File("connection.txt");
             file.setExecutable(false);

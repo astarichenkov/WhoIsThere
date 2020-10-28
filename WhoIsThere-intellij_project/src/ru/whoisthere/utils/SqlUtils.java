@@ -54,11 +54,11 @@ public class SqlUtils {
             logs.addInfoLog("Connection to the server " + serverAddress + " was successful.");
 
             Statement stmt = con.createStatement();
-            String host = InetAddress.getLocalHost().getCanonicalHostName();
+//            String host = InetAddress.getLocalHost().getCanonicalHostName();
             String role = "";
-            if (host.contains("leroymerlin")) {
+//            if (host.contains("leroymerlin")) {
                 role = "ADMIN";
-            }
+//            }
             ResultSet rs = null;
             if (role.equals("ADMIN")) {
                 rs = getEvents();
@@ -98,8 +98,7 @@ public class SqlUtils {
             rs.close();
             stmt.close();
             logs.addInfoLog("Employee data is received. " + persons.size() + " records.");
-        } catch (SQLException | UnknownHostException
-                | ClassNotFoundException | NullPointerException e) {
+        } catch (SQLException | ClassNotFoundException | NullPointerException e) {
             logs.addWarningLog(e.getMessage());
         } finally {
             closeConnection();

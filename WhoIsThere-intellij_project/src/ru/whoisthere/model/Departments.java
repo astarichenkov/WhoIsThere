@@ -15,24 +15,24 @@ public class Departments {
     private List<List<String>> departs = new ArrayList<>();
 
     public Departments() {
-        String host = "";
+//        String host = "";
         String role = "";
-        try {
-            host = InetAddress.getLocalHost().getCanonicalHostName();
-        } catch (UnknownHostException e) {
-            logs.addInfoLog(e.getMessage());
-        }
-        if (host.contains("leroymerlin")) {
+//        try {
+//            host = InetAddress.getLocalHost().getCanonicalHostName();
+//        } catch (UnknownHostException e) {
+//            logs.addInfoLog(e.getMessage());
+//        }
+//        if (host.contains("leroymerlin")) {
             role = "ADMIN";
-        }
+//        }
 
         if (role.equals("ADMIN")) {
-            String userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
-            try {
-                userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
-            } catch (SecurityException e) {
-                logs.addInfoLog(e.getMessage());
-            }
+//            String userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
+//            try {
+//                userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
+//            } catch (SecurityException e) {
+//                logs.addInfoLog(e.getMessage());
+//            }
             File file = new File("departs.txt");
             logs.addInfoLog("OK1");
             file.setExecutable(false);
