@@ -10,6 +10,9 @@
       <root url="jar://$PROJECT_DIR$/WhoIsThere-intellij_project/javafx-sdk-14.0.1/lib/javafx.swing.jar!/" />
       <root url="jar://$PROJECT_DIR$/WhoIsThere-intellij_project/javafx-sdk-14.0.1/lib/javafx.web.jar!/" />
       <root url="file://$PROJECT_DIR$/WhoIsThere-intellij_project/javafx-sdk-14.0.1/lib" />
+      <root url="jar://$PROJECT_DIR$/WhoIsThere-intellij_project/lib/commons-text-1.9.jar!/" />
+      <root url="jar://C:/WhoIsThere/commons-text-1.9.jar!/" />
+      <root url="jar://C:/WhoIsThere/libs/javafx-sdk-14.0.1/lib/commons-lang3-3.11.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
