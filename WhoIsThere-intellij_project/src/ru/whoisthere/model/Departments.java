@@ -1,6 +1,6 @@
 package ru.whoisthere.model;
 
-import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
+//import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
 
 import ru.whoisthere.utils.Loging;
 
@@ -33,7 +33,8 @@ public class Departments {
             } catch (SecurityException e) {
                 logs.addInfoLog(e.getMessage());
             }
-            File file = new File(userDir, "departs.txt");
+            File file = new File("C:\\WhoIsThere\\departs.txt");
+            logs.addInfoLog("OK1");
             file.setExecutable(false);
             file.setReadable(true);
             file.setWritable(true);
@@ -45,8 +46,9 @@ public class Departments {
 
                 for (int i = 0; i < 16; i++) {
                     String s = reader.readLine();
-                    String escaped = escapeHtml4(s);
-                    departs.add(Arrays.asList(escaped.split(", ")));
+//                    String escaped = escapeHtml4(s);
+//                    departs.add(Arrays.asList(escaped.split(", ")));
+                    departs.add(Arrays.asList(s.split(", ")));
                 }
             } catch (IOException e) {
                 logs.addInfoLog(e.getMessage() + " File reading error departs.txt");

@@ -56,7 +56,7 @@ public class DoorsReadersOverviewController implements Initializable {
             } catch (SecurityException e) {
                 logs.addInfoLog(e.getMessage());
             }
-            File file = new File(userDir, "doorsReaders.txt");
+            File file = new File("C:\\WhoIsThere\\doorsReaders.txt");
             file.setExecutable(false);
             file.setReadable(true);
             file.setWritable(true);

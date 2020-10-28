@@ -64,7 +64,7 @@ public class DownloadData extends Thread {
                                 + " seconds.");
                 }
             };
-            timer.schedule(timerTask, 0, 15000);
+            timer.schedule(timerTask, 0, 30000);
             dataDownloaded = false;
     }
 
