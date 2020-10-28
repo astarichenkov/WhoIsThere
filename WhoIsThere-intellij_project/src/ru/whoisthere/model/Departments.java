@@ -33,7 +33,7 @@ public class Departments {
             } catch (SecurityException e) {
                 logs.addInfoLog(e.getMessage());
             }
-            File file = new File("C:\\WhoIsThere\\departs.txt");
+            File file = new File("departs.txt");
             logs.addInfoLog("OK1");
             file.setExecutable(false);
             file.setReadable(true);

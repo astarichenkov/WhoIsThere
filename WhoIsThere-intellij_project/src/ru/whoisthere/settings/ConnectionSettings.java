@@ -39,7 +39,7 @@ public class ConnectionSettings {
             } catch (SecurityException e) {
                 logs.addInfoLog(e.getMessage());
             }
-            File file = new File("C:\\WhoIsThere\\connection.txt");
+            File file = new File("connection.txt");
             file.setExecutable(false);
             file.setReadable(true);
             file.setWritable(true);

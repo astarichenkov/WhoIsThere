@@ -53,7 +53,7 @@ public class DoorsReadersSettings {
             } catch (SecurityException e) {
                 logs.addInfoLog(e.getMessage());
             }
-            File file = new File("C:\\WhoIsThere\\doorsReaders.txt");
+            File file = new File("doorsReaders.txt");
             file.setExecutable(false);
             file.setReadable(true);
             file.setWritable(true);

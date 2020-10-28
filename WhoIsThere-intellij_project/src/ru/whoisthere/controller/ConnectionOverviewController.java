@@ -43,6 +43,7 @@ public class ConnectionOverviewController implements Initializable {
     public void saveAndExit() {
         String host = "";
         String role = "";
+        System.out.println(1);
         try {
             host = InetAddress.getLocalHost().getCanonicalHostName();
         } catch (UnknownHostException e) {
@@ -51,7 +52,7 @@ public class ConnectionOverviewController implements Initializable {
         if (host.contains("leroymerlin")) {
             role = "ADMIN";
         }
-
+        System.out.println(2);
         if (role.equals("ADMIN")) {
             String userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
             try {
@@ -60,7 +61,7 @@ public class ConnectionOverviewController implements Initializable {
                 logs.addInfoLog(e.getMessage());
             }
 
-            File file = new File("C:\\WhoIsThere\\connection.txt");
+            File file = new File("connection.txt");
             file.setExecutable(false);
             file.setReadable(true);
             file.setWritable(true);

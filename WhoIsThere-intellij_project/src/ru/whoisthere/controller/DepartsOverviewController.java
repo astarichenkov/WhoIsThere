@@ -111,7 +111,7 @@ public class DepartsOverviewController implements Initializable {
             } catch (SecurityException e) {
                 logs.addInfoLog(e.getMessage());
             }
-            File file = new File("C:\\WhoIsThere\\departs.txt");
+            File file = new File("departs.txt");
             file.setExecutable(false);
             file.setReadable(true);
             file.setWritable(true);
