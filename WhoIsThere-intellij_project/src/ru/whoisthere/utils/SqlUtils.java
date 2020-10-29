@@ -94,7 +94,9 @@ public class SqlUtils {
                 if (rs.next()) {
                     person.setPhoto(rs.getBytes(4));
                 }
+                System.out.println(person);
             }
+
             rs.close();
             stmt.close();
             logs.addInfoLog("Employee data is received. " + persons.size() + " records.");

@@ -31,16 +31,23 @@ import ru.whoisthere.utils.Loging;
 import ru.whoisthere.model.Departments;
 import ru.whoisthere.model.Person;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 
 public class PersonsOverviewController {
     private static Loging logs = new Loging();
     private Departments departs = new Departments();
     private DownloadData downloadData = new DownloadData();
-    private List<Person> persons = new ArrayList<>();
+    private List<Person> persons = Collections.synchronizedList(new ArrayList<>());
 
     @FXML
     private GridPane gp = new GridPane();
@@ -82,7 +89,19 @@ public class PersonsOverviewController {
     public void refreshScreen() {
         clearData();
         persons = downloadData.getPersons();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         Date refreshingStart = new Date();
+
+        try {
+            downloadData.join();
+        } catch (InterruptedException e) {
+            logs.addWarningLog("waiting for downloadData " + e.getMessage());
+        }
+
         logs.addInfoLog("Start updating the interface: " + refreshingStart);
         int maxPersons = downloadData.getMaxPersons();
 
@@ -102,7 +121,7 @@ public class PersonsOverviewController {
                 if (person.getDepartment().equals(departs.getDepartmentName(i))) {
                     VBox mynode = (VBox) gp.lookup("#col" + i);
 
-                    Image photo = SwingFXUtils.toFXImage(person.getPhoto(), null);
+                    Image photo = SwingFXUtils.toFXImage(biToImage(person.getPhoto()), null);
                     ImageView personPhoto = new ImageView(photo);
                     double imgRatio = setImageRatio(photo);
 
@@ -129,6 +148,31 @@ public class PersonsOverviewController {
         double imgWidth = photo.getWidth();
         double imgHeight = photo.getHeight();
         return 1 * imgWidth / imgHeight;
+    }
+
+    public BufferedImage biToImage(byte[] ph) {
+        BufferedImage img = null;
+        try {
+            img = ImageIO.read(new ByteArrayInputStream(ph));
+            double imgWidth = img.getWidth();
+            double imgHeight = img.getHeight();
+            double imgRatio = imgHeight / imgWidth;
+            img = resize(img, (int) (100 * imgRatio), 100);
+        } catch (IOException e) {
+            logs.addWarningLog(e.getMessage());
+        } catch (NullPointerException e) {
+            return new BufferedImage(100, 100, TYPE_INT_RGB);
+        }
+        return img;
+    }
+
+    private static BufferedImage resize(BufferedImage img, int height, int width) {
+        java.awt.Image tmp = img.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
+        BufferedImage resized = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = resized.createGraphics();
+        g2d.drawImage(tmp, 0, 0, null);
+        g2d.dispose();
+        return resized;
     }
 
     private void clearData() {

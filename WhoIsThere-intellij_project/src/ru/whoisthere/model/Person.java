@@ -17,10 +17,11 @@ public class Person {
     private static Loging logs = new Loging();
     private String name;
     private String surname;
+
     private String department;
+
     private String post;
     private byte[] ph;
-
     public Person(String name, String surname, String department, String post, byte[] ph) {
         this.name = name;
         this.surname = surname;
@@ -57,43 +58,46 @@ public class Person {
         return this.department;
     }
 
+    public byte[] getPhoto() {
+        return ph;
+    }
+
     public String getPost() {
         return post;
     }
 
-    public BufferedImage getPhoto() {
-        return biToImage();
-    }
 
-    public BufferedImage biToImage() {
-        BufferedImage img = null;
-        try {
-            img = ImageIO.read(new ByteArrayInputStream(this.ph));
-            double imgWidth = img.getWidth();
-            double imgHeight = img.getHeight();
-            double imgRatio = imgHeight / imgWidth;
-            img = resize(img, (int) (100 * imgRatio), 100);
-        } catch (IOException e) {
-            logs.addWarningLog(e.getMessage());
-        } catch (NullPointerException e) {
-            return new BufferedImage(100, 100, TYPE_INT_RGB);
-        }
-        return img;
-    }
 
-    private static BufferedImage resize(BufferedImage img, int height, int width) {
-        Image tmp = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        BufferedImage resized = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = resized.createGraphics();
-        g2d.drawImage(tmp, 0, 0, null);
-        g2d.dispose();
-        return resized;
-    }
+//    public BufferedImage biToImage() {
+//        BufferedImage img = null;
+//        try {
+//            img = ImageIO.read(new ByteArrayInputStream(this.ph));
+//            double imgWidth = img.getWidth();
+//            double imgHeight = img.getHeight();
+//            double imgRatio = imgHeight / imgWidth;
+//            img = resize(img, (int) (100 * imgRatio), 100);
+//        } catch (IOException e) {
+//            logs.addWarningLog(e.getMessage());
+//        } catch (NullPointerException e) {
+//            return new BufferedImage(100, 100, TYPE_INT_RGB);
+//        }
+//        return img;
+//    }
+
+//    private static BufferedImage resize(BufferedImage img, int height, int width) {
+//        Image tmp = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+//        BufferedImage resized = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+//        Graphics2D g2d = resized.createGraphics();
+//        g2d.drawImage(tmp, 0, 0, null);
+//        g2d.dispose();
+//        return resized;
+//    }
 
     @Override
     public String toString() {
         return "Person{"
-                + "name='" + name + '\''
+                + (ph == null)
+                + " name='" + name + '\''
                 + ", surname='" + surname + '\''
                 + ", department='" + department + '\''
                 + '}';

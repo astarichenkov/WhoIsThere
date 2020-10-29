@@ -2,11 +2,7 @@ package ru.whoisthere.utils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 import ru.whoisthere.model.Departments;
 import ru.whoisthere.model.Person;
@@ -14,7 +10,7 @@ import ru.whoisthere.model.Person;
 public class DownloadData extends Thread {
     private static Loging logs = new Loging();
     private Departments otdels = new Departments();
-    private List<Person> persons = new ArrayList<Person>();
+    private List<Person> persons = Collections.synchronizedList(new ArrayList<>());
     private DateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
     private boolean dataDownloaded = false;
     private int maxPersons = 0;
