@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.Objects;
 import javax.imageio.ImageIO;
 
+import static java.awt.image.BufferedImage.TYPE_INT_RGB;
+
 public class Person {
     private static Loging logs = new Loging();
     private String name;
@@ -72,9 +74,10 @@ public class Person {
             double imgRatio = imgHeight / imgWidth;
             img = resize(img, (int) (100 * imgRatio), 100);
         } catch (IOException e) {
-            logs.addInfoLog(e.getMessage());
+            logs.addWarningLog(e.getMessage());
+        } catch (NullPointerException e) {
+            return new BufferedImage(100, 100, TYPE_INT_RGB);
         }
-
         return img;
     }
 
