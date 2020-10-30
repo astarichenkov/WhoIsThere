@@ -7,7 +7,7 @@ import java.util.*;
 import ru.whoisthere.model.Departments;
 import ru.whoisthere.model.Person;
 
-public class DownloadData extends Thread {
+public class DownloadData {
     private static Loging logs = new Loging();
     private Departments otdels = new Departments();
     private List<Person> persons = Collections.synchronizedList(new ArrayList<>());
@@ -30,41 +30,31 @@ public class DownloadData extends Thread {
 
     }
 
-    @Override
     public void run() {
-        Timer timer = new Timer();
-            SqlUtils sqlutil = new SqlUtils();
-            TimerTask timerTask = new TimerTask() {
-                public void run() {
-
-                        Date refreshingStart = new Date();
-                        persons = sqlutil.execQuery();
-                        Date refreshingEnd = new Date();
-                        int colCount = 16;
-
-                        for (int i = 0; i < colCount; i++) {
-                            int personsInOtdel = 0;
-                            for (Person person : persons) {
-                                if (person.getDepartment().equals(otdels.getDepartmentName(i))) {
-                                    personsInOtdel += 1;
-                                }
-                            }
-                            if (personsInOtdel > maxPersons) {
-                                maxPersons = personsInOtdel;
-                            }
-                        }
-
-                        dataDownloaded = true;
-                        logs.addInfoLog("Data is loaded in "
-                                + (refreshingEnd.getTime() - refreshingStart.getTime()) / 1000
-                                + " seconds.");
+        SqlUtils sqlutil = new SqlUtils();
+        Date refreshingStart = new Date();
+        persons = sqlutil.execQuery();
+        Date refreshingEnd = new Date();
+        int colCount = 16;
+        for (int i = 0; i < colCount; i++) {
+            int personsInOtdel = 0;
+            for (Person person : persons) {
+                if (person.getDepartment().equals(otdels.getDepartmentName(i))) {
+                    personsInOtdel += 1;
                 }
-            };
-            timer.schedule(timerTask, 0, 20000);
-            dataDownloaded = false;
+            }
+            if (personsInOtdel > maxPersons) {
+                maxPersons = personsInOtdel;
+            }
+        }
+        dataDownloaded = true;
+        logs.addInfoLog("Data is loaded in "
+                + (refreshingEnd.getTime() - refreshingStart.getTime()) / 1000
+                + " seconds.");
     }
 
     public List<Person> getPersons() {
+        run();
         if (persons != null) {
             return persons;
         } else {

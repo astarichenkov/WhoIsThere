@@ -30,6 +30,7 @@ import ru.whoisthere.utils.DownloadData;
 import ru.whoisthere.utils.Loging;
 import ru.whoisthere.model.Departments;
 import ru.whoisthere.model.Person;
+import ru.whoisthere.utils.SqlUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -46,7 +47,6 @@ import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 public class PersonsOverviewController {
     private static Loging logs = new Loging();
     private Departments departs = new Departments();
-    private DownloadData downloadData = new DownloadData();
     private List<Person> persons = Collections.synchronizedList(new ArrayList<>());
 
     @FXML
@@ -88,22 +88,14 @@ public class PersonsOverviewController {
 
     public void refreshScreen() {
         clearData();
+//        SqlUtils sqlUtils = new SqlUtils();
+//        persons = sqlUtils.execQuery();
+//        int maxPersons = 10;
+        DownloadData downloadData = new DownloadData();
         persons = downloadData.getPersons();
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Date refreshingStart = new Date();
-
-        try {
-            downloadData.join();
-        } catch (InterruptedException e) {
-            logs.addWarningLog("waiting for downloadData " + e.getMessage());
-        }
-
-        logs.addInfoLog("Start updating the interface: " + refreshingStart);
         int maxPersons = downloadData.getMaxPersons();
+        Date refreshingStart = new Date();
+        logs.addInfoLog("Start updating the interface: " + refreshingStart);
 
         Stage stage = (Stage) gp.getScene().getWindow();
         gp.prefHeightProperty().bind(stage.heightProperty().subtract(40));
@@ -141,7 +133,7 @@ public class PersonsOverviewController {
         Date refreshingEnd = new Date();
         logs.addInfoLog("Interface updated for: "
                 + (refreshingEnd.getTime() - refreshingStart.getTime()) / 1000 + " seconds.");
-        dataUpdated.setText(downloadData.getDataTime());
+//        dataUpdated.setText(downloadData.getDataTime());
     }
 
     private double setImageRatio(Image photo) {
@@ -208,7 +200,6 @@ public class PersonsOverviewController {
         departLabel14.setText(departs.getDepartments().get(14).get(1));
         departLabel15.setText(departs.getDepartments().get(15).get(1));
 
-        downloadData.start();
 
         ContextMenu cm = new ContextMenu();
         MenuItem menuItem0 = new MenuItem();
