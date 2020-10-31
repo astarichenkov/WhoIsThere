@@ -49,7 +49,7 @@ public class ConnectionOverviewController implements Initializable {
 //            logs.addInfoLog(e.getMessage());
 //        }
 //        if (host.contains("leroymerlin")) {
-            role = "ADMIN";
+        role = "ADMIN";
 //        }
 //        System.out.println(2);
         if (role.equals("ADMIN")) {
@@ -65,19 +65,32 @@ public class ConnectionOverviewController implements Initializable {
             file.setReadable(true);
             file.setWritable(true);
 
-            try (BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(
-                            new FileOutputStream(
-                                    file), StandardCharsets.UTF_8))) {
-                writer.write(loginField.getText());
-                writer.newLine();
+            try {
+                FileWriter fileWriter = new FileWriter(file, StandardCharsets.UTF_8);
+                fileWriter.write(loginField.getText());
+                fileWriter.write(System.lineSeparator());
                 String encodedAsswd = Base64.getEncoder().encodeToString(
                         passwordField.getText().getBytes());
-                writer.write(encodedAsswd);
-                writer.newLine();
-                writer.write(ipAddressField.getText());
-                writer.newLine();
-                writer.write(pathToDBField.getText());
+                fileWriter.write(encodedAsswd);
+                fileWriter.write(System.lineSeparator());
+                fileWriter.write(ipAddressField.getText());
+                fileWriter.write(System.lineSeparator());
+                fileWriter.write(pathToDBField.getText());
+                fileWriter.flush();
+//            try (BufferedWriter writer = new BufferedWriter(
+//                    new OutputStreamWriter(
+//                            new FileOutputStream(
+//                                    file), StandardCharsets.UTF_8))) {
+//                writer.write(loginField.getText());
+//                writer.newLine();
+//                String encodedAsswd = Base64.getEncoder().encodeToString(
+//                        passwordField.getText().getBytes());
+//                writer.write(encodedAsswd);
+//                writer.newLine();
+//                writer.write(ipAddressField.getText());
+//                writer.newLine();
+//
+//                writer.write(pathToDBField.getText());
                 logs.addInfoLog("Settings was successfully recorded to file connection.txt");
                 Stage stage = (Stage) okButton.getScene().getWindow();
                 stage.close();
@@ -85,6 +98,7 @@ public class ConnectionOverviewController implements Initializable {
                 logs.addInfoLog(e.getMessage() + " File reading error connection.txt");
             }
         }
+
     }
 
     @Override

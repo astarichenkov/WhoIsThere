@@ -10,6 +10,7 @@ import java.util.List;
 
 import ru.whoisthere.model.Departments;
 import ru.whoisthere.model.Person;
+import ru.whoisthere.model.PhotoCache;
 import ru.whoisthere.settings.ConnectionSettings;
 import ru.whoisthere.settings.DoorsReadersSettings;
 
@@ -60,9 +61,9 @@ public class SqlUtils {
                 role = "ADMIN";
 //            }
             ResultSet rs = null;
-            if (role.equals("ADMIN")) {
+//            if (role.equals("ADMIN")) {
                 rs = getEvents();
-            }
+//            }
 
             while (rs.next()) {
                 Person person = new Person(
@@ -84,17 +85,27 @@ public class SqlUtils {
                     persons.remove(person);
                 }
             }
+
             for (Person person : persons) {
                 String name = person.getName();
                 String surname = person.getSurname();
 
-                if (role.equals("ADMIN")) {
-                    rs = getPersons(name, surname);
+                if (PhotoCache.personsCacheContains(person)) {
+                    Person buffPerson = PhotoCache.getPersonFromCache(person);
+                    person.setPhoto(buffPerson.getPhoto());
+//                    System.out.println(person + "фото уже есть");
+                    continue;
                 }
+
+//                if (role.equals("ADMIN")) {
+                    rs = getPersons(name, surname);
+//                }
                 if (rs.next()) {
                     person.setPhoto(rs.getBytes(4));
+                    PhotoCache.addPersonToCache(person);
+                    System.out.println(person + "фото загружено");
+
                 }
-                System.out.println(person);
             }
 
             rs.close();
@@ -157,4 +168,9 @@ public class SqlUtils {
         props.setProperty("encoding", encoding);
         return props;
     }
+
+    public Person getPersonFromCache(Person person) {
+        return PhotoCache.getPersonFromCache(person);
+    }
+
 }
