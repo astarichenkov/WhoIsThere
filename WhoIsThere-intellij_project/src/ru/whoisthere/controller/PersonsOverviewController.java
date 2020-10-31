@@ -94,6 +94,8 @@ public class PersonsOverviewController {
         DownloadData downloadData = new DownloadData();
         persons = downloadData.getPersons();
         int maxPersons = downloadData.getMaxPersons();
+        System.out.println(downloadData.getMaxPersons() + " Max persons");
+//        int maxPersons = 5;
         Date refreshingStart = new Date();
         logs.addInfoLog("Start updating the interface: " + refreshingStart);
 
@@ -113,7 +115,7 @@ public class PersonsOverviewController {
                 if (person.getDepartment().equals(departs.getDepartmentName(i))) {
                     VBox mynode = (VBox) gp.lookup("#col" + i);
 
-                    Image photo = SwingFXUtils.toFXImage(biToImage(person.getPhoto()), null);
+                    Image photo = SwingFXUtils.toFXImage(person.getPhoto(), null);
                     ImageView personPhoto = new ImageView(photo);
                     double imgRatio = setImageRatio(photo);
 
@@ -133,7 +135,7 @@ public class PersonsOverviewController {
         Date refreshingEnd = new Date();
         logs.addInfoLog("Interface updated for: "
                 + (refreshingEnd.getTime() - refreshingStart.getTime()) / 1000 + " seconds.");
-//        dataUpdated.setText(downloadData.getDataTime());
+        dataUpdated.setText(downloadData.getDataTime());
     }
 
     private double setImageRatio(Image photo) {
@@ -142,30 +144,30 @@ public class PersonsOverviewController {
         return 1 * imgWidth / imgHeight;
     }
 
-    public BufferedImage biToImage(byte[] ph) {
-        BufferedImage img = null;
-        try {
-            img = ImageIO.read(new ByteArrayInputStream(ph));
-            double imgWidth = img.getWidth();
-            double imgHeight = img.getHeight();
-            double imgRatio = imgHeight / imgWidth;
-            img = resize(img, (int) (100 * imgRatio), 100);
-        } catch (IOException e) {
-            logs.addWarningLog(e.getMessage());
-        } catch (NullPointerException e) {
-            return new BufferedImage(100, 100, TYPE_INT_RGB);
-        }
-        return img;
-    }
-
-    private static BufferedImage resize(BufferedImage img, int height, int width) {
-        java.awt.Image tmp = img.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
-        BufferedImage resized = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = resized.createGraphics();
-        g2d.drawImage(tmp, 0, 0, null);
-        g2d.dispose();
-        return resized;
-    }
+//    public BufferedImage biToImage(byte[] ph) {
+//        BufferedImage img = null;
+//        try {
+//            img = ImageIO.read(new ByteArrayInputStream(ph));
+//            double imgWidth = img.getWidth();
+//            double imgHeight = img.getHeight();
+//            double imgRatio = imgHeight / imgWidth;
+//            img = resize(img, (int) (100 * imgRatio), 100);
+//        } catch (IOException e) {
+//            logs.addWarningLog(e.getMessage());
+//        } catch (NullPointerException e) {
+//            return new BufferedImage(100, 100, TYPE_INT_RGB);
+//        }
+//        return img;
+//    }
+//
+//    private static BufferedImage resize(BufferedImage img, int height, int width) {
+//        java.awt.Image tmp = img.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
+//        BufferedImage resized = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+//        Graphics2D g2d = resized.createGraphics();
+//        g2d.drawImage(tmp, 0, 0, null);
+//        g2d.dispose();
+//        return resized;
+//    }
 
     private void clearData() {
         for (Node n : gp.getChildren()) {
@@ -308,7 +310,7 @@ public class PersonsOverviewController {
         });
 
         Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(30.0), new EventHandler<ActionEvent>() {
+                new KeyFrame(Duration.seconds(5.0), new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
                         refreshScreen();

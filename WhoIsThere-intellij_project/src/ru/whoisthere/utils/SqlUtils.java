@@ -1,6 +1,7 @@
 package ru.whoisthere.utils;
 
 
+import java.awt.image.BufferedImage;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.*;
@@ -15,6 +16,8 @@ import ru.whoisthere.settings.ConnectionSettings;
 import ru.whoisthere.settings.DoorsReadersSettings;
 
 import java.util.Properties;
+
+import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 
 public class SqlUtils {
     private static Loging logs = new Loging();
@@ -68,7 +71,7 @@ public class SqlUtils {
             while (rs.next()) {
                 Person person = new Person(
                         rs.getString(1), rs.getString(2),
-                        rs.getString(3), rs.getString(4), new byte[10]);
+                        rs.getString(3), rs.getString(4), new BufferedImage(100, 100, TYPE_INT_RGB));
                 if (person.getName() == null || person.getSurname() == null
                         || person.getDepartment() == null) {
                     continue;
@@ -101,7 +104,8 @@ public class SqlUtils {
                     rs = getPersons(name, surname);
 //                }
                 if (rs.next()) {
-                    person.setPhoto(rs.getBytes(4));
+                    BufferedImage buffer = PhotoCache.biToImage(rs.getBytes(4));
+                    person.setPhoto(buffer);
                     PhotoCache.addPersonToCache(person);
                     System.out.println(person + "фото загружено");
 

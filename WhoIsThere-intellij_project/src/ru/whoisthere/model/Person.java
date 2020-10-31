@@ -21,8 +21,10 @@ public class Person {
     private String department;
 
     private String post;
-    private byte[] ph;
-    public Person(String name, String surname, String department, String post, byte[] ph) {
+    private BufferedImage ph;
+
+    public Person(String name, String surname,
+                  String department, String post, BufferedImage ph) {
         this.name = name;
         this.surname = surname;
         this.department = department;
@@ -42,8 +44,8 @@ public class Person {
         this.department = department;
     }
 
-    public void setPhoto(byte[] ph) {
-        this.ph = Arrays.copyOf(ph, ph.length);
+    public void setPhoto(BufferedImage ph) {
+        this.ph = ph;
     }
 
     public String getName() {
@@ -58,14 +60,13 @@ public class Person {
         return this.department;
     }
 
-    public byte[] getPhoto() {
+    public BufferedImage getPhoto() {
         return ph;
     }
 
     public String getPost() {
         return post;
     }
-
 
 
 //    public BufferedImage biToImage() {
