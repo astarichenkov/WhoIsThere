@@ -185,22 +185,22 @@ public class PersonsOverviewController {
 
     @FXML
     public void initialize() {
-        departLabel00.setText(departs.getDepartments().get(0).get(1));
-        departLabel01.setText(departs.getDepartments().get(1).get(1));
-        departLabel02.setText(departs.getDepartments().get(2).get(1));
-        departLabel03.setText(departs.getDepartments().get(3).get(1));
-        departLabel04.setText(departs.getDepartments().get(4).get(1));
-        departLabel05.setText(departs.getDepartments().get(5).get(1));
-        departLabel06.setText(departs.getDepartments().get(6).get(1));
-        departLabel07.setText(departs.getDepartments().get(7).get(1));
-        departLabel08.setText(departs.getDepartments().get(8).get(1));
-        departLabel09.setText(departs.getDepartments().get(9).get(1));
-        departLabel10.setText(departs.getDepartments().get(10).get(1));
-        departLabel11.setText(departs.getDepartments().get(11).get(1));
-        departLabel12.setText(departs.getDepartments().get(12).get(1));
-        departLabel13.setText(departs.getDepartments().get(13).get(1));
-        departLabel14.setText(departs.getDepartments().get(14).get(1));
-        departLabel15.setText(departs.getDepartments().get(15).get(1));
+        departLabel00.setText(departs.getDepartmentTitle(0));
+        departLabel01.setText(departs.getDepartmentTitle(1));
+        departLabel02.setText(departs.getDepartmentTitle(2));
+        departLabel03.setText(departs.getDepartmentTitle(3));
+        departLabel04.setText(departs.getDepartmentTitle(4));
+        departLabel05.setText(departs.getDepartmentTitle(5));
+        departLabel06.setText(departs.getDepartmentTitle(6));
+        departLabel07.setText(departs.getDepartmentTitle(7));
+        departLabel08.setText(departs.getDepartmentTitle(8));
+        departLabel09.setText(departs.getDepartmentTitle(9));
+        departLabel10.setText(departs.getDepartmentTitle(10));
+        departLabel11.setText(departs.getDepartmentTitle(11));
+        departLabel12.setText(departs.getDepartmentTitle(12));
+        departLabel13.setText(departs.getDepartmentTitle(13));
+        departLabel14.setText(departs.getDepartmentTitle(14));
+        departLabel15.setText(departs.getDepartmentTitle(15));
 
 
         ContextMenu cm = new ContextMenu();

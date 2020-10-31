@@ -37,13 +37,9 @@ public class Departments {
         }
     }
 
-    public int getOtdelsCount() {
-        return departs.size();
-    }
-
-    public String getDepartmentTitle(int otdelIndex) {
-        if (otdelIndex < departs.size()) {
-            return departs.get(otdelIndex).get(1);
+    public String getDepartmentTitle(int index) {
+        if (index < departs.size()) {
+            return departs.get(index).get(1);
         } else {
             return null;
         }

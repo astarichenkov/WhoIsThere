@@ -107,7 +107,7 @@ public class SqlUtils {
                     BufferedImage buffer = PhotoCache.biToImage(rs.getBytes(4));
                     person.setPhoto(buffer);
                     PhotoCache.addPersonToCache(person);
-                    System.out.println(person + "фото загружено");
+                    System.out.println(person + " фото загружено");
 
                 }
             }
