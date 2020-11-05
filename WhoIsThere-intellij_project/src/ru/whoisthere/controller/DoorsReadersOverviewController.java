@@ -5,18 +5,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import ru.whoisthere.utils.Loging;
+import ru.whoisthere.utils.Logging;
 import ru.whoisthere.settings.DoorsReadersSettings;
 
 import java.io.*;
-import java.net.InetAddress;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
 public class DoorsReadersOverviewController implements Initializable {
-    private static Loging logs = new Loging();
+    private static Logging logs = new Logging();
     @FXML
     private TextField logInToTheStore;
 

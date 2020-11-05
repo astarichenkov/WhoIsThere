@@ -1,9 +1,7 @@
 package ru.whoisthere.controller;
 
 import java.io.*;
-import java.net.InetAddress;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.ResourceBundle;
@@ -14,11 +12,11 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import ru.whoisthere.utils.Loging;
+import ru.whoisthere.utils.Logging;
 import ru.whoisthere.settings.ConnectionSettings;
 
 public class ConnectionOverviewController implements Initializable {
-    private static Loging logs = new Loging();
+    private static Logging logs = new Logging();
 
     @FXML
     private PasswordField passwordField;

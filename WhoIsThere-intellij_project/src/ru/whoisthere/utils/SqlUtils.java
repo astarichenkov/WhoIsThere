@@ -2,12 +2,8 @@ package ru.whoisthere.utils;
 
 
 import java.awt.image.BufferedImage;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
+import java.util.*;
 
 import ru.whoisthere.model.Departments;
 import ru.whoisthere.model.Person;
@@ -15,29 +11,28 @@ import ru.whoisthere.model.PhotoCache;
 import ru.whoisthere.settings.ConnectionSettings;
 import ru.whoisthere.settings.DoorsReadersSettings;
 
-import java.util.Properties;
-
 import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 
 public class SqlUtils {
-    private static Loging logs = new Loging();
+    //    private static Loging logs = new Loging();
     private Departments departs = new Departments();
     private Connection con;
     private DoorsReadersSettings doors = new DoorsReadersSettings();
-    private int inputDoor = doors.getInputHall();
-    private int outputDoor = doors.getOutputHall();
+    private int inputHall = doors.getInputHall();
+    private int outputHall = doors.getOutputHall();
+    private int inputMag = doors.getInputMag();
     private int exitDoor = doors.getExitMag();
-    private List<Person> persons = new ArrayList<>();
+    private List<Person> persons = Collections.synchronizedList(new ArrayList<>());
     private ConnectionSettings settings = new ConnectionSettings();
     private final String encoding = "UTF8";
 
     public boolean closeConnection() {
         try {
             this.con.close();
-            logs.addInfoLog("Disconnecting from the server.");
+//            Logging.addInfoLog("Disconnecting from the server.");
             return true;
         } catch (SQLException e) {
-            logs.addWarningLog(e.getMessage());
+            Logging.addWarningLog(e.getMessage());
             return false;
         }
     }
@@ -55,18 +50,12 @@ public class SqlUtils {
             this.con = DriverManager.getConnection(
                     "jdbc:firebirdsql://" + serverAddress
                             + "/" + pathToDB, getProperties());
-            logs.addInfoLog("Connection to the server " + serverAddress + " was successful.");
+//            Logging.addInfoLog("Connection to the server " + serverAddress + " was successful.");
 
             Statement stmt = con.createStatement();
-//            String host = InetAddress.getLocalHost().getCanonicalHostName();
-            String role = "";
-//            if (host.contains("leroymerlin")) {
-                role = "ADMIN";
-//            }
+            String role = "ADMIN";
             ResultSet rs = null;
-//            if (role.equals("ADMIN")) {
-                rs = getEvents();
-//            }
+            rs = getEvents();
 
             while (rs.next()) {
                 Person person = new Person(
@@ -78,65 +67,122 @@ public class SqlUtils {
                 }
                 int pObject = rs.getInt(5);
 
-                if (pObject == inputDoor) {
+                if (pObject == inputMag || pObject == inputHall || pObject == outputHall) {
+                    if (pObject == inputHall) {
+                        person.setPresent(true);
+                    } else {
+                        person.setPresent(false);
+                    }
+
                     if (!persons.contains(person) && otdels.contains(person.getDepartment())) {
+                        persons.add(person);
+                    } else if (otdels.contains(person.getDepartment())) {
+                        persons.remove(person);
                         persons.add(person);
                     }
                     continue;
                 }
-                if (pObject == outputDoor || pObject == exitDoor) {
+
+                if (pObject == exitDoor) {
                     persons.remove(person);
                 }
             }
 
+            List<Person> persons2 = new ArrayList<>();
             for (Person person : persons) {
                 String name = person.getName();
                 String surname = person.getSurname();
+                BufferedImage buffer = new BufferedImage(30, 30, TYPE_INT_RGB);
 
                 if (PhotoCache.personsCacheContains(person)) {
                     Person buffPerson = PhotoCache.getPersonFromCache(person);
                     person.setPhoto(buffPerson.getPhoto());
-//                    System.out.println(person + "фото уже есть");
-                    continue;
-                }
-
-//                if (role.equals("ADMIN")) {
+                    persons2.add(person);
+                } else {
                     rs = getPersons(name, surname);
-//                }
-                if (rs.next()) {
-                    BufferedImage buffer = PhotoCache.biToImage(rs.getBytes(4));
+                    if (rs.next()) {
+                        buffer = PhotoCache.biToImage(rs.getBytes(4));
+                    }
                     person.setPhoto(buffer);
                     PhotoCache.addPersonToCache(person);
-                    System.out.println(person + " фото загружено");
-
+                    Logging.addInfoLog(person + " photo downloaded");
+                    persons2.add(person);
                 }
             }
+            persons = persons2;
 
             rs.close();
             stmt.close();
-            logs.addInfoLog("Employee data is received. " + persons.size() + " records.");
+            Logging.addInfoLog("Employee data is received. " + persons.size() + " records.");
         } catch (SQLException | ClassNotFoundException | NullPointerException e) {
-            logs.addWarningLog(e.getMessage());
+            Logging.addWarningLog(e.getMessage());
         } finally {
             closeConnection();
         }
 
-        return persons;
+        return sortByPresent(sotrByDepartment(persons));
+    }
+
+    private ArrayList<Person> sotrByDepartment(List<Person> persons) {
+        ArrayList<Person> directors = new ArrayList<>();
+        ArrayList<Person> managers = new ArrayList<>();
+        ArrayList<Person> others = new ArrayList<>();
+        for (Person person : persons) {
+            String post = person.getPost();
+            if (post == null) {
+                continue;
+            }
+//            System.out.println(person.getName() + " " + person.getSurname() + " " + post);
+            if (post.contains("Руководитель")) {
+//                person.setDepartment("Директор");
+                directors.add(person);
+            }
+            if (post.contains("Менеджер")) {
+                managers.add(person);
+            }
+            if (!post.contains("Менеджер") && !post.contains("Руководитель")) {
+                others.add(person);
+            }
+        }
+        List<Person> personsSorted = new ArrayList<>(directors);
+        personsSorted.addAll(managers);
+        personsSorted.addAll(others);
+
+        return new ArrayList<>(personsSorted);
+    }
+
+    private ArrayList<Person> sortByPresent(List<Person> persons) {
+        ArrayList<Person> present = new ArrayList<>();
+        ArrayList<Person> notPresent = new ArrayList<>();
+        for (Person person : persons) {
+            if (person.isPresent()) {
+                present.add(person);
+            } else {
+                notPresent.add(person);
+            }
+        }
+        List<Person> personsSorted = new ArrayList<>(present);
+        personsSorted.addAll(notPresent);
+        return new ArrayList<>(personsSorted);
     }
 
     private ResultSet getEvents() throws SQLException {
         String queryStr = "SELECT events.lname1, events.lname2, events.ldepartment,"
                 + " EVENTS.LPOST, EVENTS.POBJECT"
                 + " from events where ((d = (SELECT MAX(D) FROM EVENTS) )"
-                + " AND (POBJECT = ? OR POBJECT = ? OR POBJECT = ?)) ORDER BY LNAME1, T ASC";
+                + " AND (POBJECT = ? OR POBJECT = ? OR POBJECT = ? OR POBJECT = ?)) ORDER BY LNAME1, T ASC";
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = con.prepareStatement(queryStr);
-            preparedStatement.setInt(1, inputDoor);
-            preparedStatement.setInt(2, outputDoor);
-            preparedStatement.setInt(3, exitDoor);
+            preparedStatement.setInt(1, inputHall);
+            preparedStatement.setInt(2, outputHall);
+            preparedStatement.setInt(3, inputMag);
+            preparedStatement.setInt(4, exitDoor);
+//            preparedStatement.setInt(1, 62);
+//            preparedStatement.setInt(2, 62);
+//            preparedStatement.setInt(3, 62);
         } catch (SQLException e) {
-            logs.addInfoLog(e.getMessage());
+            Logging.addInfoLog(e.getMessage());
         }
         return preparedStatement.executeQuery();
     }
@@ -153,12 +199,12 @@ public class SqlUtils {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = con.prepareStatement(queryStr);
-            preparedStatement.setInt(1, inputDoor);
+            preparedStatement.setInt(1, inputHall);
             preparedStatement.setInt(2, exitDoor);
             preparedStatement.setString(3, name);
             preparedStatement.setString(4, surname);
         } catch (SQLException e) {
-            logs.addInfoLog(e.getMessage());
+            Logging.addInfoLog(e.getMessage());
         }
         return preparedStatement.executeQuery();
     }
@@ -172,9 +218,4 @@ public class SqlUtils {
         props.setProperty("encoding", encoding);
         return props;
     }
-
-    public Person getPersonFromCache(Person person) {
-        return PhotoCache.getPersonFromCache(person);
-    }
-
 }

@@ -14,6 +14,7 @@ public class PhotoCache {
     private static List<Person> personsCache = new ArrayList<>();
 
     public static void addPersonToCache(Person person) {
+        personsCache.remove(person);
         personsCache.add(person);
     }
 

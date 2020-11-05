@@ -1,16 +1,14 @@
 package ru.whoisthere.settings;
 
-import ru.whoisthere.utils.Loging;
+import ru.whoisthere.utils.Logging;
 
 import java.io.*;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 
 import static org.apache.commons.text.StringEscapeUtils.*;
 
 public class ConnectionSettings {
-    private Loging logs = new Loging();
+    private Logging logs = new Logging();
     private String user;
     private String asswd;
     private String ip;

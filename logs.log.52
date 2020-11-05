@@ -1,0 +1,22 @@
+нояб. 05, 2020 1:58:47 PM ru.whoisthere.utils.Logging addInfoLog
+INFO: Settings file connection.txt read.
+нояб. 05, 2020 1:58:47 PM ru.whoisthere.utils.Logging addInfoLog
+INFO: Employee data is received. 92 records.
+нояб. 05, 2020 1:58:47 PM ru.whoisthere.utils.Logging addInfoLog
+INFO: Data is loaded in 50 ms.
+нояб. 05, 2020 1:58:52 PM ru.whoisthere.utils.Logging addInfoLog
+INFO: Settings file doors.txt read.
+нояб. 05, 2020 1:58:52 PM ru.whoisthere.utils.Logging addInfoLog
+INFO: Settings file connection.txt read.
+нояб. 05, 2020 1:58:52 PM ru.whoisthere.utils.Logging addInfoLog
+INFO: Employee data is received. 92 records.
+нояб. 05, 2020 1:58:52 PM ru.whoisthere.utils.Logging addInfoLog
+INFO: Data is loaded in 48 ms.
+нояб. 05, 2020 1:58:57 PM ru.whoisthere.utils.Logging addInfoLog
+INFO: Settings file doors.txt read.
+нояб. 05, 2020 1:58:57 PM ru.whoisthere.utils.Logging addInfoLog
+INFO: Settings file connection.txt read.
+нояб. 05, 2020 1:58:57 PM ru.whoisthere.utils.Logging addInfoLog
+INFO: Employee data is received. 92 records.
+нояб. 05, 2020 1:58:57 PM ru.whoisthere.utils.Logging addInfoLog
+INFO: Data is loaded in 49 ms.

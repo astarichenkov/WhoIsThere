@@ -1,27 +1,19 @@
 package ru.whoisthere.model;
 
-import ru.whoisthere.utils.Loging;
+import ru.whoisthere.utils.Logging;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.Objects;
-import javax.imageio.ImageIO;
-
-import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 
 public class Person {
-    private static Loging logs = new Loging();
+    private static Logging logs = new Logging();
     private String name;
     private String surname;
-
     private String department;
-
     private String post;
     private BufferedImage ph;
+    private boolean isPresent;
+
 
     public Person(String name, String surname,
                   String department, String post, BufferedImage ph) {
@@ -30,6 +22,14 @@ public class Person {
         this.department = department;
         this.post = post;
         this.ph = ph;
+    }
+
+    public boolean isPresent() {
+        return isPresent;
+    }
+
+    public void setPresent(boolean present) {
+        isPresent = present;
     }
 
     public void setName(String name) {

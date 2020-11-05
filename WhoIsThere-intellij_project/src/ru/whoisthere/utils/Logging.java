@@ -6,11 +6,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-public class Loging {
+public class Logging {
     private static Logger logger = Logger.getLogger("Logs");
     private static FileHandler fh;
 
-    public Loging() {
+    public Logging() {
         try {
             fh = new FileHandler("logs.log");
             logger.addHandler(fh);
@@ -21,13 +21,13 @@ public class Loging {
         }
     }
 
-    public void addInfoLog(String info) {
+    public static void addInfoLog(String info) {
         if (info != null) {
             logger.log(Level.INFO, info);
         }
     }
 
-    public void addWarningLog(String warning) {
+    public static void addWarningLog(String warning) {
         if (warning != null) {
             logger.log(Level.WARNING, warning);
         }

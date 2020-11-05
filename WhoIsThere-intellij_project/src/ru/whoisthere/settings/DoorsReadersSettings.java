@@ -1,14 +1,12 @@
 package ru.whoisthere.settings;
 
-import ru.whoisthere.utils.Loging;
+import ru.whoisthere.utils.Logging;
 
 import java.io.*;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 
 public class DoorsReadersSettings {
-    private static Loging logs = new Loging();
+    private static Logging logs = new Logging();
     private int inputHall;
     private int outputHall;
     private int inputMag;

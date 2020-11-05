@@ -1,6 +1,6 @@
 package ru.whoisthere.model;
 
-import ru.whoisthere.utils.Loging;
+import ru.whoisthere.utils.Logging;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -9,7 +9,7 @@ import java.util.*;
 import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
 
 public class Departments {
-    private static Loging logs = new Loging();
+    private static Logging logs = new Logging();
     private List<List<String>> departs = new ArrayList<>();
 
     public Departments() {

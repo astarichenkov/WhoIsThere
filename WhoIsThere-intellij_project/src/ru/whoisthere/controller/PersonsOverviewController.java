@@ -15,6 +15,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
@@ -27,25 +28,18 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import ru.whoisthere.utils.DownloadData;
-import ru.whoisthere.utils.Loging;
+import ru.whoisthere.utils.Logging;
 import ru.whoisthere.model.Departments;
 import ru.whoisthere.model.Person;
-import ru.whoisthere.utils.SqlUtils;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import static java.awt.image.BufferedImage.TYPE_INT_RGB;
-
 public class PersonsOverviewController {
-    private static Loging logs = new Loging();
+    private static Logging logs = new Logging();
     private Departments departs = new Departments();
     private List<Person> persons = Collections.synchronizedList(new ArrayList<>());
 
@@ -94,10 +88,10 @@ public class PersonsOverviewController {
         DownloadData downloadData = new DownloadData();
         persons = downloadData.getPersons();
         int maxPersons = downloadData.getMaxPersons();
-        System.out.println(downloadData.getMaxPersons() + " Max persons");
+//        System.out.println(downloadData.getMaxPersons() + " Max persons");
 //        int maxPersons = 5;
         Date refreshingStart = new Date();
-        logs.addInfoLog("Start updating the interface: " + refreshingStart);
+//        logs.addInfoLog("Start updating the interface: " + refreshingStart);
 
         Stage stage = (Stage) gp.getScene().getWindow();
         gp.prefHeightProperty().bind(stage.heightProperty().subtract(40));
@@ -116,7 +110,14 @@ public class PersonsOverviewController {
                     VBox mynode = (VBox) gp.lookup("#col" + i);
 
                     Image photo = SwingFXUtils.toFXImage(person.getPhoto(), null);
+
                     ImageView personPhoto = new ImageView(photo);
+                    ColorAdjust grayScale = new ColorAdjust();
+                    grayScale.setSaturation(-1);
+                    if (!person.isPresent()) {
+                        personPhoto.setEffect(grayScale);
+                    }
+
                     double imgRatio = setImageRatio(photo);
 
                     personPhoto.fitWidthProperty().bind(
@@ -134,7 +135,7 @@ public class PersonsOverviewController {
 
         Date refreshingEnd = new Date();
         logs.addInfoLog("Interface updated for: "
-                + (refreshingEnd.getTime() - refreshingStart.getTime()) / 1000 + " seconds.");
+                + (refreshingEnd.getTime() - refreshingStart.getTime()) + " ms.");
         dataUpdated.setText(downloadData.getDataTime());
     }
 
@@ -143,31 +144,6 @@ public class PersonsOverviewController {
         double imgHeight = photo.getHeight();
         return 1 * imgWidth / imgHeight;
     }
-
-//    public BufferedImage biToImage(byte[] ph) {
-//        BufferedImage img = null;
-//        try {
-//            img = ImageIO.read(new ByteArrayInputStream(ph));
-//            double imgWidth = img.getWidth();
-//            double imgHeight = img.getHeight();
-//            double imgRatio = imgHeight / imgWidth;
-//            img = resize(img, (int) (100 * imgRatio), 100);
-//        } catch (IOException e) {
-//            logs.addWarningLog(e.getMessage());
-//        } catch (NullPointerException e) {
-//            return new BufferedImage(100, 100, TYPE_INT_RGB);
-//        }
-//        return img;
-//    }
-//
-//    private static BufferedImage resize(BufferedImage img, int height, int width) {
-//        java.awt.Image tmp = img.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
-//        BufferedImage resized = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-//        Graphics2D g2d = resized.createGraphics();
-//        g2d.drawImage(tmp, 0, 0, null);
-//        g2d.dispose();
-//        return resized;
-//    }
 
     private void clearData() {
         for (Node n : gp.getChildren()) {
