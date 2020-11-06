@@ -14,7 +14,6 @@ import ru.whoisthere.settings.DoorsReadersSettings;
 import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 
 public class SqlUtils {
-    //    private static Loging logs = new Loging();
     private Departments departs = new Departments();
     private Connection con;
     private DoorsReadersSettings doors = new DoorsReadersSettings();
@@ -35,7 +34,6 @@ public class SqlUtils {
 
             try {
                 rs = getPersons(name, surname);
-                System.out.println(name + " " + surname);
                 if (rs.next()) {
                     buffer = PhotoCache.biToImage(rs.getBytes(4));
                 }
@@ -117,18 +115,14 @@ public class SqlUtils {
                 PhotoCache.load(false);
             }
 
-//            List<Person> persons2 = new ArrayList<>();
             for (Person person : persons) {
                 String name = person.getName();
                 String surname = person.getSurname();
-
-//                BufferedImage buffer = new BufferedImage(30, 30, TYPE_INT_RGB);
-                BufferedImage buffer = null;
+                BufferedImage buffer = new BufferedImage(100, 100, TYPE_INT_RGB);
 
                 if (PhotoCache.personsCacheContains(person)) {
                     Person buffPerson = PhotoCache.getPersonFromCache(person);
                     person.setPhoto(buffPerson.getPhoto());
-//                    persons2.add(person);
                 } else {
                     rs2 = getPersons(name, surname);
                     if (rs2.next()) {
@@ -137,11 +131,8 @@ public class SqlUtils {
                     person.setPhoto(buffer);
                     PhotoCache.addPersonToCache(person);
                     Logging.addInfoLog(person + " photo downloaded");
-//                    persons2.add(person);
                 }
             }
-//            persons = persons2;
-
             rs.close();
             stmt.close();
             Logging.addInfoLog("Employee data is received. " + persons.size() + " records.");
@@ -150,11 +141,10 @@ public class SqlUtils {
         } finally {
             closeConnection();
         }
-
-        return sortByPresent(sotrByDepartment(persons));
+        return sortByPresent(sortByDepartment(persons));
     }
 
-    private ArrayList<Person> sotrByDepartment(List<Person> persons) {
+    private ArrayList<Person> sortByDepartment(List<Person> persons) {
         ArrayList<Person> directors = new ArrayList<>();
         ArrayList<Person> managers = new ArrayList<>();
         ArrayList<Person> others = new ArrayList<>();
@@ -163,9 +153,7 @@ public class SqlUtils {
             if (post == null) {
                 continue;
             }
-//            System.out.println(person.getName() + " " + person.getSurname() + " " + post);
             if (post.contains("Руководитель")) {
-//                person.setDepartment("Директор");
                 directors.add(person);
             }
             if (post.contains("Менеджер")) {
@@ -178,25 +166,16 @@ public class SqlUtils {
         List<Person> personsSorted = new ArrayList<>(directors);
         personsSorted.addAll(managers);
         personsSorted.addAll(others);
-
         return new ArrayList<>(personsSorted);
     }
 
 
     private ArrayList<Person> sortByPresent(List<Person> persons) {
-        ArrayList<Person> present = new ArrayList<>();
-        ArrayList<Person> notPresent = new ArrayList<>();
-        for (Person person : persons) {
-            if (person.isPresent()) {
-                present.add(person);
-            } else {
-                notPresent.add(person);
-            }
-        }
-        List<Person> personsSorted = new ArrayList<>(present);
-        personsSorted.addAll(notPresent);
-        return new ArrayList<>(personsSorted);
+        Comparator<Person> comparator = Comparator.comparing(Person::isPresent);
+        persons.sort(comparator.reversed());
+        return new ArrayList<>(persons);
     }
+
 
     private ResultSet getEvents() throws SQLException {
         String queryStr = "SELECT events.lname1, events.lname2, events.ldepartment,"
@@ -210,9 +189,6 @@ public class SqlUtils {
             preparedStatement.setInt(2, outputHall);
             preparedStatement.setInt(3, inputMag);
             preparedStatement.setInt(4, exitDoor);
-//            preparedStatement.setInt(1, 62);
-//            preparedStatement.setInt(2, 62);
-//            preparedStatement.setInt(3, 62);
         } catch (SQLException e) {
             Logging.addInfoLog(e.getMessage());
         }

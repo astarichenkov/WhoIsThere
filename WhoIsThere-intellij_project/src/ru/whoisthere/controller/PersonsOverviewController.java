@@ -11,19 +11,17 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.*;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -82,22 +80,16 @@ public class PersonsOverviewController {
 
     public void refreshScreen() {
         clearData();
-//        SqlUtils sqlUtils = new SqlUtils();
-//        persons = sqlUtils.execQuery();
-//        int maxPersons = 10;
         DownloadData downloadData = new DownloadData();
         persons = downloadData.getPersons();
-        int maxPersons = downloadData.getMaxPersons();
-//        System.out.println(downloadData.getMaxPersons() + " Max persons");
-//        int maxPersons = 5;
+//        int maxPersons = 9;
+//        int maxPersons = downloadData.getMaxPersons();
         Date refreshingStart = new Date();
-//        logs.addInfoLog("Start updating the interface: " + refreshingStart);
-
         Stage stage = (Stage) gp.getScene().getWindow();
         gp.prefHeightProperty().bind(stage.heightProperty().subtract(40));
 
         for (int i = 0; i < 16; i++) {
-            VBox column = (VBox) gp.lookup("#col" + i);
+            FlowPane column = (FlowPane) gp.lookup("#col" + i);
             column.prefHeightProperty().bind(gp.prefHeightProperty().subtract(40));
             column.prefWidthProperty().bind(
                     gp.getColumnConstraints().get(0).prefWidthProperty());
@@ -107,7 +99,9 @@ public class PersonsOverviewController {
         for (Person person : persons) {
             for (int i = 0; i < 16; i++) {
                 if (person.getDepartment().equals(departs.getDepartmentName(i))) {
-                    VBox mynode = (VBox) gp.lookup("#col" + i);
+                    FlowPane mynode = (FlowPane) gp.lookup("#col" + i);
+                    mynode.setHgap(5);
+                    mynode.setVgap(5);
 
                     Image photo = SwingFXUtils.toFXImage(person.getPhoto(), null);
 
@@ -123,12 +117,20 @@ public class PersonsOverviewController {
                     personPhoto.fitWidthProperty().bind(
                             mynode.prefWidthProperty().multiply(imgRatio));
                     personPhoto.fitHeightProperty().bind(
-                            mynode.prefHeightProperty().divide(maxPersons).subtract(40));
+                            mynode.prefHeightProperty().divide(9.2).subtract(40));
                     personPhoto.setPreserveRatio(true);
 
-                    mynode.getChildren().addAll(
-                            personPhoto, new Label(person.getName()), new Label(
-                                    person.getSurname()));
+
+                    Label label = new Label(person.getName() + " " + System.lineSeparator()
+                            + person.getSurname(), personPhoto);
+//                    label.setWrapText(true);
+                    label.setMaxWidth(55);
+                    label.setFont(Font.font("Roboto", 8.5));
+//                    label.setStyle("-fx-border-color: black;");
+                    label.setContentDisplay(ContentDisplay.TOP);
+                    label.setAlignment(Pos.BOTTOM_RIGHT);
+                    mynode.getChildren().addAll(label);
+
                 }
             }
         }
@@ -150,7 +152,7 @@ public class PersonsOverviewController {
             if (n instanceof Pane) {
                 for (Node n1 : ((Pane) n).getChildren()) {
                     if (n1.getStyleClass().toString().equals("columns")) {
-                        VBox node = (VBox) n1;
+                        FlowPane node = (FlowPane) n1;
                         persons = null;
                         node.getChildren().clear();
                     }

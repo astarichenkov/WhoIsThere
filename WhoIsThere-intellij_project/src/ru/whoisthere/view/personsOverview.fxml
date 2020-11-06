@@ -1,38 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
 
 <AnchorPane minHeight="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.whoisthere.controller.PersonsOverviewController">
    <children>
        <GridPane fx:id="gp" style="-fx-background-color: white;" styleClass="headers" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
            <columnConstraints>
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
            </columnConstraints>
            <rowConstraints>
                <RowConstraints maxHeight="-Infinity" minHeight="20.0" prefHeight="20.0" valignment="TOP" vgrow="SOMETIMES" />
@@ -42,11 +33,11 @@
            <children>
                <AnchorPane GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
                    <children>
-                       <VBox id="col0" layoutY="83.0" maxHeight="1.7976931348623157E308" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                       <FlowPane id="col0" layoutY="83.0" maxHeight="1.7976931348623157E308" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <padding>
                                <Insets top="5.0" />
                            </padding>
-                       </VBox>
+                       </FlowPane>
                    </children>
                    <opaqueInsets>
                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -54,137 +45,137 @@
                </AnchorPane>
                <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="1">
                    <children>
-                       <VBox id="col1" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                       <FlowPane id="col1" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <padding>
                                <Insets top="5.0" />
                            </padding>
-                       </VBox>
+                       </FlowPane>
                    </children>
                </AnchorPane>
                <AnchorPane GridPane.columnIndex="2" GridPane.rowIndex="1">
                    <children>
-                       <VBox id="col2" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                       <FlowPane id="col2" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <padding>
                                <Insets top="5.0" />
                            </padding>
-                       </VBox>
+                       </FlowPane>
                    </children>
                </AnchorPane>
                <AnchorPane GridPane.columnIndex="3" GridPane.rowIndex="1">
                    <children>
-                       <VBox id="col3" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                       <FlowPane id="col3" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <padding>
                                <Insets top="5.0" />
                            </padding>
-                       </VBox>
+                       </FlowPane>
                    </children>
                </AnchorPane>
                <AnchorPane GridPane.columnIndex="4" GridPane.rowIndex="1">
                    <children>
-                       <VBox id="col4" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                       <FlowPane id="col4" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <padding>
                                <Insets top="5.0" />
                            </padding>
-                       </VBox>
+                       </FlowPane>
                    </children>
                </AnchorPane>
                <AnchorPane GridPane.columnIndex="5" GridPane.rowIndex="1">
                    <children>
-                       <VBox id="col5" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                       <FlowPane id="col5" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <padding>
                                <Insets top="5.0" />
                            </padding>
-                       </VBox>
+                       </FlowPane>
                    </children>
                </AnchorPane>
                <AnchorPane GridPane.columnIndex="6" GridPane.rowIndex="1">
                    <children>
-                       <VBox id="col6" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                       <FlowPane id="col6" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <padding>
                                <Insets top="5.0" />
                            </padding>
-                       </VBox>
+                       </FlowPane>
                    </children>
                </AnchorPane>
                <AnchorPane GridPane.columnIndex="7" GridPane.rowIndex="1">
                    <children>
-                       <VBox id="col7" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                       <FlowPane id="col7" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <padding>
                                <Insets top="5.0" />
                            </padding>
-                       </VBox>
+                       </FlowPane>
                    </children>
                </AnchorPane>
                <AnchorPane GridPane.columnIndex="8" GridPane.rowIndex="1">
                    <children>
-                       <VBox id="col8" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                       <FlowPane id="col8" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <padding>
                                <Insets top="5.0" />
                            </padding>
-                       </VBox>
+                       </FlowPane>
                    </children>
                </AnchorPane>
                <AnchorPane GridPane.columnIndex="9" GridPane.rowIndex="1">
                    <children>
-                       <VBox id="col9" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                       <FlowPane id="col9" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <padding>
                                <Insets top="5.0" />
                            </padding>
-                       </VBox>
+                       </FlowPane>
                    </children>
                </AnchorPane>
                <AnchorPane GridPane.columnIndex="10" GridPane.rowIndex="1">
                    <children>
-                       <VBox id="col10" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                       <FlowPane id="col10" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <padding>
                                <Insets top="5.0" />
                            </padding>
-                       </VBox>
+                       </FlowPane>
                    </children>
                </AnchorPane>
                <AnchorPane GridPane.columnIndex="11" GridPane.rowIndex="1">
                    <children>
-                       <VBox id="col11" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                       <FlowPane id="col11" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <padding>
                                <Insets top="5.0" />
                            </padding>
-                       </VBox>
+                       </FlowPane>
                    </children>
                </AnchorPane>
                <AnchorPane GridPane.columnIndex="12" GridPane.rowIndex="1">
                    <children>
-                       <VBox id="col12" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                       <FlowPane id="col12" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <padding>
                                <Insets top="5.0" />
                            </padding>
-                       </VBox>
+                       </FlowPane>
                    </children>
                </AnchorPane>
                <AnchorPane GridPane.columnIndex="13" GridPane.rowIndex="1">
                    <children>
-                       <VBox id="col13" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                       <FlowPane id="col13" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <padding>
                                <Insets top="5.0" />
                            </padding>
-                       </VBox>
+                       </FlowPane>
                    </children>
                </AnchorPane>
                <AnchorPane GridPane.columnIndex="14" GridPane.rowIndex="1">
                    <children>
-                       <VBox id="col14" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                       <FlowPane id="col14" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <padding>
                                <Insets top="5.0" />
                            </padding>
-                       </VBox>
+                       </FlowPane>
                    </children>
                </AnchorPane>
                <AnchorPane GridPane.columnIndex="15" GridPane.rowIndex="1">
                    <children>
-                       <VBox id="col15" layoutX="-2.0" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0">
+                       <FlowPane id="col15" layoutX="-2.0" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0">
                            <padding>
                                <Insets top="5.0" />
                            </padding>
-                       </VBox>
+                       </FlowPane>
                    </children>
                </AnchorPane>
                <Label fx:id="departLabel00" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="Дирекция" textAlignment="CENTER" />
