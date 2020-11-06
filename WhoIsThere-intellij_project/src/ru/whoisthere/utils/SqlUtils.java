@@ -26,6 +26,29 @@ public class SqlUtils {
     private ConnectionSettings settings = new ConnectionSettings();
     private final String encoding = "UTF8";
 
+    private void downloadPhotosToCache() {
+        ResultSet rs;
+        BufferedImage buffer = new BufferedImage(30, 30, TYPE_INT_RGB);
+        for (Person person : persons) {
+            String name = person.getName();
+            String surname = person.getSurname();
+
+            try {
+                rs = getPersons(name, surname);
+                System.out.println(name + " " + surname);
+                if (rs.next()) {
+                    buffer = PhotoCache.biToImage(rs.getBytes(4));
+                }
+            } catch (SQLException e) {
+                Logging.addInfoLog(e.getMessage());
+            }
+            person.setPhoto(buffer);
+            PhotoCache.addPersonToCache(person);
+            Logging.addInfoLog(person + " photo downloaded");
+        }
+        Logging.addInfoLog("***Personn photos loaded to cache***");
+    }
+
     public boolean closeConnection() {
         try {
             this.con.close();
@@ -56,6 +79,7 @@ public class SqlUtils {
             String role = "ADMIN";
             ResultSet rs = null;
             rs = getEvents();
+            ResultSet rs2;
 
             while (rs.next()) {
                 Person person = new Person(
@@ -88,28 +112,35 @@ public class SqlUtils {
                 }
             }
 
-            List<Person> persons2 = new ArrayList<>();
+            if (PhotoCache.isEmpty()) {
+                downloadPhotosToCache();
+                PhotoCache.load(false);
+            }
+
+//            List<Person> persons2 = new ArrayList<>();
             for (Person person : persons) {
                 String name = person.getName();
                 String surname = person.getSurname();
-                BufferedImage buffer = new BufferedImage(30, 30, TYPE_INT_RGB);
+
+//                BufferedImage buffer = new BufferedImage(30, 30, TYPE_INT_RGB);
+                BufferedImage buffer = null;
 
                 if (PhotoCache.personsCacheContains(person)) {
                     Person buffPerson = PhotoCache.getPersonFromCache(person);
                     person.setPhoto(buffPerson.getPhoto());
-                    persons2.add(person);
+//                    persons2.add(person);
                 } else {
-                    rs = getPersons(name, surname);
-                    if (rs.next()) {
-                        buffer = PhotoCache.biToImage(rs.getBytes(4));
+                    rs2 = getPersons(name, surname);
+                    if (rs2.next()) {
+                        buffer = PhotoCache.biToImage(rs2.getBytes(4));
                     }
                     person.setPhoto(buffer);
                     PhotoCache.addPersonToCache(person);
                     Logging.addInfoLog(person + " photo downloaded");
-                    persons2.add(person);
+//                    persons2.add(person);
                 }
             }
-            persons = persons2;
+//            persons = persons2;
 
             rs.close();
             stmt.close();
@@ -150,6 +181,7 @@ public class SqlUtils {
 
         return new ArrayList<>(personsSorted);
     }
+
 
     private ArrayList<Person> sortByPresent(List<Person> persons) {
         ArrayList<Person> present = new ArrayList<>();
@@ -192,7 +224,7 @@ public class SqlUtils {
                 + " CARDS.PHOTO, EVENTS.POBJECT from events JOIN CARDS ON"
                 + " (EVENTS.LNAME1 = CARDS.NAME1 AND EVENTS.LNAME2 = CARDS.NAME2) where"
                 + " (d = (SELECT MAX(D) FROM EVENTS) AND "
-                + " (POBJECT = ? OR POBJECT = ?)"
+                + " (POBJECT = ? OR POBJECT = ? OR POBJECT = ? OR POBJECT = ?)"
                 + " AND EVENTS.LNAME1 = ?"
                 + " AND EVENTS.LNAME2 = ?"
                 + " AND CARDS.PHOTO IS NOT NULL)";
@@ -200,9 +232,11 @@ public class SqlUtils {
         try {
             preparedStatement = con.prepareStatement(queryStr);
             preparedStatement.setInt(1, inputHall);
-            preparedStatement.setInt(2, exitDoor);
-            preparedStatement.setString(3, name);
-            preparedStatement.setString(4, surname);
+            preparedStatement.setInt(2, outputHall);
+            preparedStatement.setInt(3, inputMag);
+            preparedStatement.setInt(4, exitDoor);
+            preparedStatement.setString(5, name);
+            preparedStatement.setString(6, surname);
         } catch (SQLException e) {
             Logging.addInfoLog(e.getMessage());
         }

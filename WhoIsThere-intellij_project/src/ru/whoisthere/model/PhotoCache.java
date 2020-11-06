@@ -12,6 +12,15 @@ import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 
 public class PhotoCache {
     private static List<Person> personsCache = new ArrayList<>();
+    private static boolean isEmpty = true;
+
+    public static boolean isEmpty() {
+        return isEmpty;
+    }
+
+    public static void load(boolean isEmpty) {
+        PhotoCache.isEmpty = isEmpty;
+    }
 
     public static void addPersonToCache(Person person) {
         personsCache.remove(person);
