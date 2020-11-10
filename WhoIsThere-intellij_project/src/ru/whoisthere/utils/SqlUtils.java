@@ -12,6 +12,7 @@ import ru.whoisthere.settings.ConnectionSettings;
 import ru.whoisthere.settings.DoorsReadersSettings;
 
 import static java.awt.image.BufferedImage.TYPE_INT_RGB;
+import static ru.whoisthere.utils.Logging.addInfoLog;
 
 public class SqlUtils {
     private Departments departs = new Departments();
@@ -38,13 +39,13 @@ public class SqlUtils {
                     buffer = PhotoCache.biToImage(rs.getBytes(4));
                 }
             } catch (SQLException e) {
-                Logging.addInfoLog(e.getMessage());
+                addInfoLog(e.getMessage());
             }
             person.setPhoto(buffer);
             PhotoCache.addPersonToCache(person);
-            Logging.addInfoLog(person + " photo downloaded");
+            addInfoLog(person + " photo downloaded");
         }
-        Logging.addInfoLog("***Personn photos loaded to cache***");
+        addInfoLog("***Personn photos loaded to cache***");
     }
 
     public boolean closeConnection() {
@@ -130,12 +131,12 @@ public class SqlUtils {
                     }
                     person.setPhoto(buffer);
                     PhotoCache.addPersonToCache(person);
-                    Logging.addInfoLog(person + " photo downloaded");
+                    addInfoLog(person + " photo downloaded");
                 }
             }
             rs.close();
             stmt.close();
-            Logging.addInfoLog("Employee data is received. " + persons.size() + " records.");
+            addInfoLog("Employee data is received. " + persons.size() + " records.");
         } catch (SQLException | ClassNotFoundException | NullPointerException e) {
             Logging.addWarningLog(e.getMessage());
         } finally {
@@ -179,7 +180,7 @@ public class SqlUtils {
 
     private ResultSet getEvents() throws SQLException {
         String queryStr = "SELECT events.lname1, events.lname2, events.ldepartment,"
-                + " EVENTS.LPOST, EVENTS.POBJECT"
+                + " EVENTS.LPOST, EVENTS.POBJECT, EVENTS.T"
                 + " from events where ((d = (SELECT MAX(D) FROM EVENTS) )"
                 + " AND (POBJECT = ? OR POBJECT = ? OR POBJECT = ? OR POBJECT = ?)) ORDER BY LNAME1, T ASC";
         PreparedStatement preparedStatement = null;
@@ -190,7 +191,7 @@ public class SqlUtils {
             preparedStatement.setInt(3, inputMag);
             preparedStatement.setInt(4, exitDoor);
         } catch (SQLException e) {
-            Logging.addInfoLog(e.getMessage());
+            addInfoLog(e.getMessage());
         }
         return preparedStatement.executeQuery();
     }
@@ -214,7 +215,7 @@ public class SqlUtils {
             preparedStatement.setString(5, name);
             preparedStatement.setString(6, surname);
         } catch (SQLException e) {
-            Logging.addInfoLog(e.getMessage());
+            addInfoLog(e.getMessage());
         }
         return preparedStatement.executeQuery();
     }

@@ -16,7 +16,7 @@ public class Main extends javafx.application.Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        primaryStage.setFullScreen(true);
+        primaryStage.setFullScreen(false);
         primaryStage.setTitle("Кто в зале!?");
 
         Parent layout = FXMLLoader.load(getClass().getResource("view/personsOverview.fxml"));
@@ -24,10 +24,5 @@ public class Main extends javafx.application.Application {
         Scene scene = new Scene(layout);
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
-
-    @Override
-    public void stop() {
-        System.exit(0);
     }
 }

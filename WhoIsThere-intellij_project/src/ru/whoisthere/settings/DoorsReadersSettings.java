@@ -5,8 +5,10 @@ import ru.whoisthere.utils.Logging;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
+import static ru.whoisthere.utils.Logging.addInfoLog;
+
 public class DoorsReadersSettings {
-    private static Logging logs = new Logging();
+//    private static Logging logs = new Logging();
     private int inputHall;
     private int outputHall;
     private int inputMag;
@@ -64,9 +66,9 @@ public class DoorsReadersSettings {
                 this.outputHall = Integer.parseInt(reader.readLine());
                 this.inputMag = Integer.parseInt(reader.readLine());
                 this.exitMag = Integer.parseInt(reader.readLine());
-                logs.addInfoLog("Settings file doors.txt read.");
+                addInfoLog("Settings file doors.txt read.");
             } catch (IOException e) {
-                logs.addInfoLog(e.getMessage() + "File reading error doors.txt");
+                addInfoLog(e.getMessage() + "File reading error doors.txt");
             }
         }
     }

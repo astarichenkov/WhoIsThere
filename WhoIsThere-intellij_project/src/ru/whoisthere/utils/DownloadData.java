@@ -7,8 +7,10 @@ import java.util.*;
 import ru.whoisthere.model.Departments;
 import ru.whoisthere.model.Person;
 
+import static ru.whoisthere.utils.Logging.addInfoLog;
+
 public class DownloadData {
-    private static Logging logs = new Logging();
+//    private static Logging logs = new Logging();
     private Departments otdels = new Departments();
     private List<Person> persons = Collections.synchronizedList(new ArrayList<>());
     private DateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
@@ -48,7 +50,7 @@ public class DownloadData {
             }
         }
         dataDownloaded = true;
-        logs.addInfoLog("Data is loaded in "
+        addInfoLog("Data is loaded in "
                 + (refreshingEnd.getTime() - refreshingStart.getTime())
                 + " ms.");
     }

@@ -13,6 +13,7 @@ public class Person {
     private String post;
     private BufferedImage ph;
     private boolean isPresent;
+    private int timeAmount;
 
 
     public Person(String name, String surname,

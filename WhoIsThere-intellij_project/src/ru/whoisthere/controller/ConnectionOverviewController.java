@@ -12,11 +12,11 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import ru.whoisthere.utils.Logging;
 import ru.whoisthere.settings.ConnectionSettings;
 
+import static ru.whoisthere.utils.Logging.addInfoLog;
+
 public class ConnectionOverviewController implements Initializable {
-    private static Logging logs = new Logging();
 
     @FXML
     private PasswordField passwordField;
@@ -39,32 +39,14 @@ public class ConnectionOverviewController implements Initializable {
     }
 
     public void saveAndExit() {
-//        String host = "";
-        String role = "";
-//        try {
-//            host = InetAddress.getLocalHost().getCanonicalHostName();
-//        } catch (UnknownHostException e) {
-//            logs.addInfoLog(e.getMessage());
-//        }
-//        if (host.contains("leroymerlin")) {
-        role = "ADMIN";
-//        }
-//        System.out.println(2);
+        String role = "ADMIN";
         if (role.equals("ADMIN")) {
-//            String userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
-//            try {
-//                userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
-//            } catch (SecurityException e) {
-//                logs.addInfoLog(e.getMessage());
-//            }
-
             File file = new File("connection.txt");
             file.setExecutable(false);
             file.setReadable(true);
             file.setWritable(true);
 
-            try {
-                FileWriter fileWriter = new FileWriter(file, StandardCharsets.UTF_8);
+            try (FileWriter fileWriter = new FileWriter(file, StandardCharsets.UTF_8)) {
                 fileWriter.write(loginField.getText());
                 fileWriter.write(System.lineSeparator());
                 String encodedAsswd = Base64.getEncoder().encodeToString(
@@ -75,25 +57,12 @@ public class ConnectionOverviewController implements Initializable {
                 fileWriter.write(System.lineSeparator());
                 fileWriter.write(pathToDBField.getText());
                 fileWriter.flush();
-//            try (BufferedWriter writer = new BufferedWriter(
-//                    new OutputStreamWriter(
-//                            new FileOutputStream(
-//                                    file), StandardCharsets.UTF_8))) {
-//                writer.write(loginField.getText());
-//                writer.newLine();
-//                String encodedAsswd = Base64.getEncoder().encodeToString(
-//                        passwordField.getText().getBytes());
-//                writer.write(encodedAsswd);
-//                writer.newLine();
-//                writer.write(ipAddressField.getText());
-//                writer.newLine();
-//
-//                writer.write(pathToDBField.getText());
-                logs.addInfoLog("Settings was successfully recorded to file connection.txt");
+
+                addInfoLog("Settings was successfully recorded to file connection.txt");
                 Stage stage = (Stage) okButton.getScene().getWindow();
                 stage.close();
             } catch (IOException e) {
-                logs.addInfoLog(e.getMessage() + " File reading error connection.txt");
+                addInfoLog(e.getMessage() + " File reading error connection.txt");
             }
         }
 

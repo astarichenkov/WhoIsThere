@@ -13,8 +13,10 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
+import static ru.whoisthere.utils.Logging.addInfoLog;
+
 public class DepartsOverviewController implements Initializable {
-    private static Logging logs = new Logging();
+//    private static Logging logs = new Logging();
 
     @FXML
     private Button okButton;
@@ -90,69 +92,51 @@ public class DepartsOverviewController implements Initializable {
     }
 
     public void saveAndExit() {
-//        String host = "";
-        String role = "";
-//        try {
-//            host = InetAddress.getLocalHost().getCanonicalHostName();
-//        } catch (UnknownHostException e) {
-//            logs.addInfoLog(e.getMessage());
-//        }
-//        if (host.contains("leroymerlin")) {
-            role = "ADMIN";
-//        }
-
+        String role = "ADMIN";
         if (role.equals("ADMIN")) {
-//            String userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
-//            try {
-//                userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
-//            } catch (SecurityException e) {
-//                logs.addInfoLog(e.getMessage());
-//            }
+
             File file = new File("departs.txt");
             file.setExecutable(false);
             file.setReadable(true);
             file.setWritable(true);
 
-            try (BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(
-                            new FileOutputStream(
-                                    file), StandardCharsets.UTF_8))) {
+            try (FileWriter writer = new FileWriter(file, StandardCharsets.UTF_8)) {
                 writer.write(departKey00.getText() + ", " + departLabel00.getText());
-                writer.newLine();
+                writer.write(System.lineSeparator());
                 writer.write(departKey01.getText() + ", " + departLabel01.getText());
-                writer.newLine();
+                writer.write(System.lineSeparator());
                 writer.write(departKey02.getText() + ", " + departLabel02.getText());
-                writer.newLine();
+                writer.write(System.lineSeparator());
                 writer.write(departKey03.getText() + ", " + departLabel03.getText());
-                writer.newLine();
+                writer.write(System.lineSeparator());
                 writer.write(departKey04.getText() + ", " + departLabel04.getText());
-                writer.newLine();
+                writer.write(System.lineSeparator());
                 writer.write(departKey05.getText() + ", " + departLabel05.getText());
-                writer.newLine();
+                writer.write(System.lineSeparator());
                 writer.write(departKey06.getText() + ", " + departLabel06.getText());
-                writer.newLine();
+                writer.write(System.lineSeparator());
                 writer.write(departKey07.getText() + ", " + departLabel07.getText());
-                writer.newLine();
+                writer.write(System.lineSeparator());
                 writer.write(departKey08.getText() + ", " + departLabel08.getText());
-                writer.newLine();
+                writer.write(System.lineSeparator());
                 writer.write(departKey09.getText() + ", " + departLabel09.getText());
-                writer.newLine();
+                writer.write(System.lineSeparator());
                 writer.write(departKey10.getText() + ", " + departLabel10.getText());
-                writer.newLine();
+                writer.write(System.lineSeparator());
                 writer.write(departKey11.getText() + ", " + departLabel11.getText());
-                writer.newLine();
+                writer.write(System.lineSeparator());
                 writer.write(departKey12.getText() + ", " + departLabel12.getText());
-                writer.newLine();
+                writer.write(System.lineSeparator());
                 writer.write(departKey13.getText() + ", " + departLabel13.getText());
-                writer.newLine();
+                writer.write(System.lineSeparator());
                 writer.write(departKey14.getText() + ", " + departLabel14.getText());
-                writer.newLine();
+                writer.write(System.lineSeparator());
                 writer.write(departKey15.getText() + ", " + departLabel15.getText());
-                logs.addInfoLog("Settings was successfully recorded to file departs.txt");
+                addInfoLog("Settings was successfully recorded to file departs.txt");
                 Stage stage = (Stage) okButton.getScene().getWindow();
                 stage.close();
             } catch (IOException e) {
-                logs.addInfoLog(e.getMessage() + " File reading error departs.txt");
+                addInfoLog(e.getMessage() + " File reading error departs.txt");
             }
         }
     }

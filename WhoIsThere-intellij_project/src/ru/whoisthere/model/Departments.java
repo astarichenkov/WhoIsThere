@@ -7,9 +7,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
+import static ru.whoisthere.utils.Logging.addInfoLog;
 
 public class Departments {
-    private static Logging logs = new Logging();
+//    private static Logging logs = new Logging();
     private List<List<String>> departs = new ArrayList<>();
 
     public Departments() {
@@ -32,7 +33,7 @@ public class Departments {
                     departs.add(Arrays.asList(escaped.split(", ")));
                 }
             } catch (IOException e) {
-                logs.addInfoLog(e.getMessage() + " File reading error departs.txt");
+                addInfoLog(e.getMessage() + " File reading error departs.txt");
             }
         }
     }

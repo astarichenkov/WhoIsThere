@@ -6,9 +6,10 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 import static org.apache.commons.text.StringEscapeUtils.*;
+import static ru.whoisthere.utils.Logging.addInfoLog;
 
 public class ConnectionSettings {
-    private Logging logs = new Logging();
+//    private Logging logs = new Logging();
     private String user;
     private String asswd;
     private String ip;
@@ -52,9 +53,9 @@ public class ConnectionSettings {
                 this.ip = escapeHtml4(reader.readLine());
                 this.pathToDB = escapeHtml4(reader.readLine());
 
-                logs.addInfoLog("Settings file connection.txt read.");
+                addInfoLog("Settings file connection.txt read.");
             } catch (IOException e) {
-                logs.addInfoLog(e.getMessage() + " File reading error connection.txt");
+                addInfoLog(e.getMessage() + " File reading error connection.txt");
             }
         }
     }

@@ -36,8 +36,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import static ru.whoisthere.utils.Logging.addInfoLog;
+
 public class PersonsOverviewController {
-    private static Logging logs = new Logging();
+//    private static Logging logs = new Logging();
     private Departments departs = new Departments();
     private List<Person> persons = Collections.synchronizedList(new ArrayList<>());
 
@@ -125,6 +127,7 @@ public class PersonsOverviewController {
                             + person.getSurname(), personPhoto);
 //                    label.setWrapText(true);
                     label.setMaxWidth(55);
+//                    label.setMinWidth(55);
                     label.setFont(Font.font("Roboto", 8.5));
 //                    label.setStyle("-fx-border-color: black;");
                     label.setContentDisplay(ContentDisplay.TOP);
@@ -136,7 +139,7 @@ public class PersonsOverviewController {
         }
 
         Date refreshingEnd = new Date();
-        logs.addInfoLog("Interface updated for: "
+        addInfoLog("Interface updated for: "
                 + (refreshingEnd.getTime() - refreshingStart.getTime()) + " ms.");
         dataUpdated.setText(downloadData.getDataTime());
     }
@@ -209,7 +212,7 @@ public class PersonsOverviewController {
                 try {
                     loader.load();
                 } catch (IOException e) {
-                    logs.addInfoLog(e.getMessage());
+                    addInfoLog(e.getMessage());
                 }
 
                 Parent root = loader.getRoot();
@@ -228,7 +231,7 @@ public class PersonsOverviewController {
                 try {
                     loader.load();
                 } catch (IOException e) {
-                    logs.addInfoLog(e.getMessage());
+                    addInfoLog(e.getMessage());
                 }
 
                 Parent root = loader.getRoot();
@@ -247,7 +250,7 @@ public class PersonsOverviewController {
                 try {
                     loader.load();
                 } catch (IOException e) {
-                    logs.addInfoLog(e.getMessage());
+                    addInfoLog(e.getMessage());
                 }
 
                 Parent root = loader.getRoot();

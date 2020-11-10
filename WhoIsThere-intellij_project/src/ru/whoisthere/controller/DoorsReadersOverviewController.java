@@ -13,8 +13,10 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
+import static ru.whoisthere.utils.Logging.addInfoLog;
+
 public class DoorsReadersOverviewController implements Initializable {
-    private static Logging logs = new Logging();
+    //    private static Logging logs = new Logging();
     @FXML
     private TextField logInToTheStore;
 
@@ -36,45 +38,27 @@ public class DoorsReadersOverviewController implements Initializable {
     }
 
     public void saveAndExit() {
-//        String host = "";
-        String role = "";
-//        try {
-//            host = InetAddress.getLocalHost().getCanonicalHostName();
-//        } catch (UnknownHostException e) {
-//            logs.addInfoLog(e.getMessage());
-//        }
-//        if (host.contains("leroymerlin")) {
-            role = "ADMIN";
-//        }
+        String role = "ADMIN";
 
         if (role.equals("ADMIN")) {
-//            String userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
-//            try {
-//                userDir = new File(System.getProperty("user.dir")).getAbsolutePath();
-//            } catch (SecurityException e) {
-//                logs.addInfoLog(e.getMessage());
-//            }
             File file = new File("doorsReaders.txt");
             file.setExecutable(false);
             file.setReadable(true);
             file.setWritable(true);
 
-            try (BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(
-                            new FileOutputStream(
-                                    file), StandardCharsets.UTF_8))) {
+            try (FileWriter writer = new FileWriter(file, StandardCharsets.UTF_8)) {
                 writer.write(loginToTheHall.getText());
-                writer.newLine();
+                writer.write(System.lineSeparator());
                 writer.write(exitTheHall.getText());
-                writer.newLine();
+                writer.write(System.lineSeparator());
                 writer.write(logInToTheStore.getText());
-                writer.newLine();
+                writer.write(System.lineSeparator());
                 writer.write(exitOfTheStore.getText());
-                logs.addInfoLog("Settings was successfully recorded to file doorsReaders.txt");
+                addInfoLog("Settings was successfully recorded to file doorsReaders.txt");
                 Stage stage = (Stage) okButton.getScene().getWindow();
                 stage.close();
             } catch (IOException e) {
-                logs.addInfoLog(e.getMessage() + " File reading error doorsReaders.txt");
+                addInfoLog(e.getMessage() + " File reading error doorsReaders.txt");
             }
         }
     }
