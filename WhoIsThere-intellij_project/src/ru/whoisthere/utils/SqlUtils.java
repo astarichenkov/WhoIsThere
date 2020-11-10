@@ -23,7 +23,7 @@ public class SqlUtils {
     private int inputMag = doors.getInputMag();
     private int exitDoor = doors.getExitMag();
     private List<Person> persons = Collections.synchronizedList(new ArrayList<>());
-    private ConnectionSettings settings = new ConnectionSettings();
+//    private ConnectionSettings settings = new ConnectionSettings();
     private final String encoding = "UTF8";
 
     private void downloadPhotosToCache() {
@@ -49,15 +49,15 @@ public class SqlUtils {
     }
 
     public boolean closeConnection() {
-        try {
-            this.con.close();
+//        try {
+//            this.con.close();
 //            Logging.addInfoLog("Disconnecting from the server.");
             return true;
-        } catch (SQLException e) {
-            Logging.addWarningLog(e.getMessage());
-            return false;
+//        } catch (SQLException e) {
+//            Logging.addWarningLog(e.getMessage());
+//            return false;
         }
-    }
+
 
     public List<Person> execQuery() {
         ArrayList<String> otdels = new ArrayList<>();
@@ -65,8 +65,8 @@ public class SqlUtils {
             otdels.add(departs.getDepartmentName(i));
         }
 
-        String serverAddress = settings.getIp();
-        String pathToDB = settings.getPathToDB();
+        String serverAddress = ConnectionSettings.getIp();
+        String pathToDB = ConnectionSettings.getPathToDB();
         try {
             Class.forName("org.firebirdsql.jdbc.FBDriver");
             this.con = DriverManager.getConnection(
@@ -222,8 +222,8 @@ public class SqlUtils {
 
     public Properties getProperties() {
         Properties props = new Properties();
-        props.setProperty("user", settings.getLogin());
-        byte[] decodedBytes = Base64.getDecoder().decode(settings.getAsswd());
+        props.setProperty("user", ConnectionSettings.getLogin());
+        byte[] decodedBytes = Base64.getDecoder().decode(ConnectionSettings.getAsswd());
         String decodedAsswd = new String(decodedBytes);
         props.setProperty("password", decodedAsswd);
         props.setProperty("encoding", encoding);

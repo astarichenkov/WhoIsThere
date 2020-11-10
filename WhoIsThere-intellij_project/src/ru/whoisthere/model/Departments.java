@@ -1,7 +1,5 @@
 package ru.whoisthere.model;
 
-import ru.whoisthere.utils.Logging;
-
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -10,12 +8,10 @@ import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
 import static ru.whoisthere.utils.Logging.addInfoLog;
 
 public class Departments {
-//    private static Logging logs = new Logging();
     private List<List<String>> departs = new ArrayList<>();
 
     public Departments() {
-        String role = "";
-        role = "ADMIN";
+        String role = "ADMIN";
         if (role.equals("ADMIN")) {
             File file = new File("departs.txt");
             file.setExecutable(false);
@@ -23,9 +19,7 @@ public class Departments {
             file.setWritable(true);
 
             try (BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(
-                            new FileInputStream(
-                                    file), StandardCharsets.UTF_8))) {
+                    new FileReader(file, StandardCharsets.UTF_8))) {
 
                 for (int i = 0; i < 16; i++) {
                     String s = reader.readLine();
