@@ -4,6 +4,7 @@ package ru.whoisthere.utils;
 import java.awt.image.BufferedImage;
 import java.sql.*;
 import java.util.*;
+import java.util.concurrent.Executors;
 
 import ru.whoisthere.model.Departments;
 import ru.whoisthere.model.Person;
@@ -17,11 +18,11 @@ import static ru.whoisthere.utils.Logging.addInfoLog;
 public class SqlUtils {
     private Departments departs = new Departments();
     private Connection con;
-    private DoorsReadersSettings doors = new DoorsReadersSettings();
-    private int inputHall = doors.getInputHall();
-    private int outputHall = doors.getOutputHall();
-    private int inputMag = doors.getInputMag();
-    private int exitDoor = doors.getExitMag();
+//    private DoorsReadersSettings doors = new DoorsReadersSettings();
+    private int inputHall = DoorsReadersSettings.getInputHall();
+    private int outputHall = DoorsReadersSettings.getOutputHall();
+    private int inputMag = DoorsReadersSettings.getInputMag();
+    private int exitDoor = DoorsReadersSettings.getExitMag();
     private List<Person> persons = Collections.synchronizedList(new ArrayList<>());
 //    private ConnectionSettings settings = new ConnectionSettings();
     private final String encoding = "UTF8";

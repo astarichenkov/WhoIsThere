@@ -61,6 +61,7 @@ public class ConnectionOverviewController implements Initializable {
                 addInfoLog("Settings was successfully recorded to file connection.txt");
                 Stage stage = (Stage) okButton.getScene().getWindow();
                 stage.close();
+//                ConnectionSettings.readFile();
             } catch (IOException e) {
                 addInfoLog(e.getMessage() + " File reading error connection.txt");
             }
@@ -70,10 +71,9 @@ public class ConnectionOverviewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ConnectionSettings connectionSettings = new ConnectionSettings();
-        loginField.setText(connectionSettings.getLogin());
-        passwordField.setText(connectionSettings.getAsswd());
-        pathToDBField.setText(connectionSettings.getPathToDB());
-        ipAddressField.setText(connectionSettings.getIp());
+        loginField.setText(ConnectionSettings.getLogin());
+        passwordField.setText(ConnectionSettings.getAsswd());
+        pathToDBField.setText(ConnectionSettings.getPathToDB());
+        ipAddressField.setText(ConnectionSettings.getIp());
     }
 }

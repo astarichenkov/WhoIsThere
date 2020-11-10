@@ -291,7 +291,7 @@ public class PersonsOverviewController {
         });
 
         Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(5.0), new EventHandler<ActionEvent>() {
+                new KeyFrame(Duration.seconds(5), new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
                         refreshScreen();

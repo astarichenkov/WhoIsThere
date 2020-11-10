@@ -57,6 +57,7 @@ public class DoorsReadersOverviewController implements Initializable {
                 addInfoLog("Settings was successfully recorded to file doorsReaders.txt");
                 Stage stage = (Stage) okButton.getScene().getWindow();
                 stage.close();
+//                DoorsReadersSettings.readFile();
             } catch (IOException e) {
                 addInfoLog(e.getMessage() + " File reading error doorsReaders.txt");
             }
@@ -65,10 +66,9 @@ public class DoorsReadersOverviewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        DoorsReadersSettings doorsReadersSettings = new DoorsReadersSettings();
-        loginToTheHall.setText(String.valueOf(doorsReadersSettings.getInputHall()));
-        exitTheHall.setText(String.valueOf(doorsReadersSettings.getOutputHall()));
-        logInToTheStore.setText(String.valueOf(doorsReadersSettings.getInputMag()));
-        exitOfTheStore.setText(String.valueOf(doorsReadersSettings.getExitMag()));
+        loginToTheHall.setText(String.valueOf(DoorsReadersSettings.getInputHall()));
+        exitTheHall.setText(String.valueOf(DoorsReadersSettings.getOutputHall()));
+        logInToTheStore.setText(String.valueOf(DoorsReadersSettings.getInputMag()));
+        exitOfTheStore.setText(String.valueOf(DoorsReadersSettings.getExitMag()));
     }
 }

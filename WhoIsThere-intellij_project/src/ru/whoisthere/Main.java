@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ru.whoisthere.settings.ConnectionSettings;
+import ru.whoisthere.settings.DoorsReadersSettings;
 
 import java.io.IOException;
 
@@ -20,6 +21,7 @@ public class Main extends javafx.application.Application {
         primaryStage.setFullScreen(false);
         primaryStage.setTitle("Кто в зале!?");
         ConnectionSettings.readFile();
+        DoorsReadersSettings.readFile();
         Parent layout = FXMLLoader.load(getClass().getResource("view/personsOverview.fxml"));
 
         Scene scene = new Scene(layout);
