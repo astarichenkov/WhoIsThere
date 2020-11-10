@@ -141,7 +141,11 @@ public class SqlUtils {
         } catch (SQLException | ClassNotFoundException | NullPointerException e) {
             Logging.addWarningLog(e.getMessage());
         } finally {
-            closeConnection();
+            try {
+                this.con.close();
+            } catch (SQLException e) {
+                addInfoLog(e.getMessage() + "Error in close connection");
+            }
         }
         return sortByPresent(sortByDepartment(persons));
     }
