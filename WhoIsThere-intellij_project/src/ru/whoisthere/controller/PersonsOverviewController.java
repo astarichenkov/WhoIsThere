@@ -39,7 +39,6 @@ import java.util.List;
 import static ru.whoisthere.utils.Logging.addInfoLog;
 
 public class PersonsOverviewController {
-//    private static Logging logs = new Logging();
     private Departments departs = new Departments();
     private List<Person> persons = Collections.synchronizedList(new ArrayList<>());
 
@@ -211,8 +210,8 @@ public class PersonsOverviewController {
                 loader.setLocation(getClass().getResource("/ru/whoisthere/view/connectionOverview.fxml"));
                 try {
                     loader.load();
-                } catch (IOException e) {
-                    addInfoLog(e.getMessage());
+                } catch (NullPointerException | IOException e) {
+                    addInfoLog(e.getMessage() + "Error in getResource connectionOverview.fxml");
                 }
 
                 Parent root = loader.getRoot();
@@ -230,8 +229,8 @@ public class PersonsOverviewController {
                 loader.setLocation(getClass().getResource("/ru/whoisthere/view/doorsReadersOverview.fxml"));
                 try {
                     loader.load();
-                } catch (IOException e) {
-                    addInfoLog(e.getMessage());
+                } catch (NullPointerException | IOException e) {
+                    addInfoLog(e.getMessage() + "Error in getResource doorsReadersOverview.fxml");
                 }
 
                 Parent root = loader.getRoot();
@@ -249,8 +248,8 @@ public class PersonsOverviewController {
                 loader.setLocation(getClass().getResource("/ru/whoisthere/view/departsOverview.fxml"));
                 try {
                     loader.load();
-                } catch (IOException e) {
-                    addInfoLog(e.getMessage());
+                } catch (NullPointerException | IOException e) {
+                    addInfoLog(e.getMessage() + "Error in getResource departsOverview.fxml");
                 }
 
                 Parent root = loader.getRoot();

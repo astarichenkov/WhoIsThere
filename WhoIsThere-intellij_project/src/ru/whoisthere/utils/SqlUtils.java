@@ -49,15 +49,6 @@ public class SqlUtils {
         addInfoLog("***Personn photos loaded to cache***");
     }
 
-    public boolean closeConnection() {
-//        try {
-//            this.con.close();
-//            Logging.addInfoLog("Disconnecting from the server.");
-            return true;
-//        } catch (SQLException e) {
-//            Logging.addWarningLog(e.getMessage());
-//            return false;
-        }
 
 
     public List<Person> execQuery() {
@@ -80,35 +71,36 @@ public class SqlUtils {
             ResultSet rs = null;
             rs = getEvents();
             ResultSet rs2;
+            if (role.equals("ADMIN")) {
+                while (rs.next()) {
+                    Person person = new Person(
+                            rs.getString(1), rs.getString(2),
+                            rs.getString(3), rs.getString(4), new BufferedImage(100, 100, TYPE_INT_RGB));
+                    if (person.getName() == null || person.getSurname() == null
+                            || person.getDepartment() == null) {
+                        continue;
+                    }
+                    int pObject = rs.getInt(5);
 
-            while (rs.next()) {
-                Person person = new Person(
-                        rs.getString(1), rs.getString(2),
-                        rs.getString(3), rs.getString(4), new BufferedImage(100, 100, TYPE_INT_RGB));
-                if (person.getName() == null || person.getSurname() == null
-                        || person.getDepartment() == null) {
-                    continue;
-                }
-                int pObject = rs.getInt(5);
+                    if (pObject == inputMag || pObject == inputHall || pObject == outputHall) {
+                        if (pObject == inputHall) {
+                            person.setPresent(true);
+                        } else {
+                            person.setPresent(false);
+                        }
 
-                if (pObject == inputMag || pObject == inputHall || pObject == outputHall) {
-                    if (pObject == inputHall) {
-                        person.setPresent(true);
-                    } else {
-                        person.setPresent(false);
+                        if (!persons.contains(person) && otdels.contains(person.getDepartment())) {
+                            persons.add(person);
+                        } else if (otdels.contains(person.getDepartment())) {
+                            persons.remove(person);
+                            persons.add(person);
+                        }
+                        continue;
                     }
 
-                    if (!persons.contains(person) && otdels.contains(person.getDepartment())) {
-                        persons.add(person);
-                    } else if (otdels.contains(person.getDepartment())) {
+                    if (pObject == exitDoor) {
                         persons.remove(person);
-                        persons.add(person);
                     }
-                    continue;
-                }
-
-                if (pObject == exitDoor) {
-                    persons.remove(person);
                 }
             }
 
@@ -143,6 +135,7 @@ public class SqlUtils {
         } finally {
             try {
                 this.con.close();
+
             } catch (SQLException e) {
                 addInfoLog(e.getMessage() + "Error in close connection");
             }
@@ -226,6 +219,7 @@ public class SqlUtils {
     }
 
     public Properties getProperties() {
+//        Properties props = new Properties();
         Properties props = new Properties();
         props.setProperty("user", ConnectionSettings.getLogin());
         byte[] decodedBytes = Base64.getDecoder().decode(ConnectionSettings.getAsswd());

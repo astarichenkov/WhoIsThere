@@ -42,9 +42,13 @@ public class ConnectionOverviewController implements Initializable {
         String role = "ADMIN";
         if (role.equals("ADMIN")) {
             File file = new File("connection.txt");
-            file.setExecutable(false);
-            file.setReadable(true);
-            file.setWritable(true);
+            try {
+                file.setExecutable(false);
+                file.setReadable(true);
+                file.setWritable(true);
+            } catch (SecurityException e) {
+                addInfoLog(e.getMessage() + "Exception in set file attributes");
+            }
 
             try (FileWriter fileWriter = new FileWriter(file, StandardCharsets.UTF_8)) {
                 fileWriter.write(loginField.getText());

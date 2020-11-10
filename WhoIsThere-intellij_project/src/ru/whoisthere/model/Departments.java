@@ -14,9 +14,13 @@ public class Departments {
         String role = "ADMIN";
         if (role.equals("ADMIN")) {
             File file = new File("departs.txt");
-            file.setExecutable(false);
-            file.setReadable(true);
-            file.setWritable(true);
+            try {
+                file.setExecutable(false);
+                file.setReadable(true);
+                file.setWritable(true);
+            } catch (SecurityException e) {
+                addInfoLog(e.getMessage() + "Exception in set file attributes");
+            }
 
             try (BufferedReader reader = new BufferedReader(
                     new FileReader(file, StandardCharsets.UTF_8))) {

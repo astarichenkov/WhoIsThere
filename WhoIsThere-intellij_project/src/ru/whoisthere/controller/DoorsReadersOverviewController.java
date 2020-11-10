@@ -42,9 +42,13 @@ public class DoorsReadersOverviewController implements Initializable {
 
         if (role.equals("ADMIN")) {
             File file = new File("doorsReaders.txt");
-            file.setExecutable(false);
-            file.setReadable(true);
-            file.setWritable(true);
+            try {
+                file.setExecutable(false);
+                file.setReadable(true);
+                file.setWritable(true);
+            } catch (SecurityException e) {
+                addInfoLog(e.getMessage() + "Exception in set file attributes");
+            }
 
             try (FileWriter writer = new FileWriter(file, StandardCharsets.UTF_8)) {
                 writer.write(loginToTheHall.getText());
