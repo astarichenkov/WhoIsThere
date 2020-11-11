@@ -18,14 +18,12 @@ import static ru.whoisthere.utils.Logging.addInfoLog;
 public class SqlUtils {
     private Departments departs = new Departments();
     private Connection con;
-//    private DoorsReadersSettings doors = new DoorsReadersSettings();
     private int inputHall = DoorsReadersSettings.getInputHall();
     private int outputHall = DoorsReadersSettings.getOutputHall();
     private int inputMag = DoorsReadersSettings.getInputMag();
     private int exitDoor = DoorsReadersSettings.getExitMag();
     private List<Person> persons = Collections.synchronizedList(new ArrayList<>());
-//    private ConnectionSettings settings = new ConnectionSettings();
-    private final String encoding = "UTF8";
+//    private final String encoding = "UTF8";
 
     private void downloadPhotosToCache() {
         ResultSet rs;
@@ -219,13 +217,12 @@ public class SqlUtils {
     }
 
     public Properties getProperties() {
-//        Properties props = new Properties();
         Properties props = new Properties();
         props.setProperty("user", ConnectionSettings.getLogin());
         byte[] decodedBytes = Base64.getDecoder().decode(ConnectionSettings.getAsswd());
         String decodedAsswd = new String(decodedBytes);
         props.setProperty("password", decodedAsswd);
-        props.setProperty("encoding", encoding);
+//        props.setProperty("encoding", encoding);
         return props;
     }
 }

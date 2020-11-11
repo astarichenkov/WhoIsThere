@@ -1,7 +1,8 @@
 package ru.whoisthere.settings;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.List;
 
 import static ru.whoisthere.utils.Logging.addInfoLog;
 
@@ -43,12 +44,12 @@ public class DoorsReadersSettings {
                 addInfoLog(e.getMessage() + "Exception in set file attributes");
             }
 
-            try (BufferedReader reader = new BufferedReader(
-                    new FileReader(file, StandardCharsets.UTF_8))) {
-                inputHall = Integer.parseInt(reader.readLine());
-                outputHall = Integer.parseInt(reader.readLine());
-                inputMag = Integer.parseInt(reader.readLine());
-                exitMag = Integer.parseInt(reader.readLine());
+            try {
+                List<String> params = Files.readAllLines(file.toPath());
+                inputHall = Integer.parseInt(params.get(0));
+                outputHall = Integer.parseInt(params.get(1));
+                inputMag = Integer.parseInt(params.get(2));
+                exitMag = Integer.parseInt(params.get(3));
                 addInfoLog("Settings file doors.txt read.");
             } catch (IOException e) {
                 addInfoLog(e.getMessage() + "File reading error doors.txt");

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.awt.image.BufferedImage.TYPE_INT_RGB;
+import static ru.whoisthere.utils.Logging.addWarningLog;
 
 public class PhotoCache {
     private static List<Person> personsCache = new ArrayList<>();
@@ -49,7 +50,7 @@ public class PhotoCache {
             double imgRatio = imgHeight / imgWidth;
             img = resize(img, (int) (100 * imgRatio), 100);
         } catch (IOException e) {
-//            logs.addWarningLog(e.getMessage());
+            addWarningLog(e.getMessage());
         } catch (NullPointerException e) {
             return new BufferedImage(100, 100, TYPE_INT_RGB);
         }

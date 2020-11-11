@@ -1,9 +1,9 @@
 package ru.whoisthere.settings;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.List;
 
-import static org.apache.commons.text.StringEscapeUtils.*;
 import static ru.whoisthere.utils.Logging.addInfoLog;
 
 public class ConnectionSettings {
@@ -31,12 +31,12 @@ public class ConnectionSettings {
                 addInfoLog(e.getMessage() + "Exception in set file attributes");
             }
 
-            try (BufferedReader reader = new BufferedReader(
-                    new FileReader(file, StandardCharsets.UTF_8))) {
-                user = escapeHtml4(reader.readLine());
-                asswd = escapeHtml4(reader.readLine());
-                ip = escapeHtml4(reader.readLine());
-                pathToDB = escapeHtml4(reader.readLine());
+            try  {
+                List<String> params = Files.readAllLines(file.toPath());
+                user = params.get(0);
+                asswd = params.get(1);
+                ip = params.get(2);
+                pathToDB = params.get(3);
 
                 addInfoLog("Settings file connection.txt read.");
             } catch (IOException e) {

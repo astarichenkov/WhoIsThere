@@ -2,6 +2,7 @@ package ru.whoisthere.model;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.*;
 
 import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
@@ -22,11 +23,9 @@ public class Departments {
                 addInfoLog(e.getMessage() + "Exception in set file attributes");
             }
 
-            try (BufferedReader reader = new BufferedReader(
-                    new FileReader(file, StandardCharsets.UTF_8))) {
-
-                for (int i = 0; i < 16; i++) {
-                    String s = reader.readLine();
+            try {
+                List<String> lines = Files.readAllLines(file.toPath());
+                for (String s : lines) {
                     String escaped = escapeHtml4(s);
                     departs.add(Arrays.asList(escaped.split(", ")));
                 }

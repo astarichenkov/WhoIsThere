@@ -10,16 +10,15 @@ import ru.whoisthere.model.Person;
 import static ru.whoisthere.utils.Logging.addInfoLog;
 
 public class DownloadData {
-//    private static Logging logs = new Logging();
     private Departments otdels = new Departments();
     private List<Person> persons = Collections.synchronizedList(new ArrayList<>());
     private DateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
     private boolean dataDownloaded = false;
     private int maxPersons = 0;
 
-    public int getMaxPersons() {
-        return maxPersons;
-    }
+//    public int getMaxPersons() {
+//        return maxPersons;
+//    }
 
     public String getDataTime() {
         if (dataDownloaded) {

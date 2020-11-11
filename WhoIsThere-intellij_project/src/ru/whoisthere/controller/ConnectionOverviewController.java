@@ -3,7 +3,9 @@ package ru.whoisthere.controller;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -51,15 +53,21 @@ public class ConnectionOverviewController implements Initializable {
             }
 
             try (FileWriter fileWriter = new FileWriter(file, StandardCharsets.UTF_8)) {
-                fileWriter.write(loginField.getText());
-                fileWriter.write(System.lineSeparator());
+                List<String> params = new ArrayList<>();
+                params.add(loginField.getText());
+                params.add(System.lineSeparator());
                 String encodedAsswd = Base64.getEncoder().encodeToString(
                         passwordField.getText().getBytes());
-                fileWriter.write(encodedAsswd);
-                fileWriter.write(System.lineSeparator());
-                fileWriter.write(ipAddressField.getText());
-                fileWriter.write(System.lineSeparator());
-                fileWriter.write(pathToDBField.getText());
+                params.add(encodedAsswd);
+                params.add(System.lineSeparator());
+                params.add(ipAddressField.getText());
+                params.add(System.lineSeparator());
+                params.add(pathToDBField.getText());
+                params.add(System.lineSeparator());
+
+                for (String s : params) {
+                    fileWriter.write(s);
+                }
                 fileWriter.flush();
 
                 addInfoLog("Settings was successfully recorded to file connection.txt");
