@@ -1,8 +1,7 @@
 package ru.whoisthere.settings;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.util.List;
+import java.util.Properties;
 
 import static ru.whoisthere.utils.Logging.addInfoLog;
 
@@ -11,37 +10,44 @@ public class ConnectionSettings {
     private static String asswd;
     private static String ip;
     private static String pathToDB;
+    private static Properties props = new Properties();
 
     public ConnectionSettings() {
         readFile();
     }
 
     public static void readFile() {
+        File file = new File("connection.properties");
+        try {
+            file.setExecutable(false);
+            file.setReadable(true);
+            file.setWritable(true);
+        } catch (SecurityException e) {
+            addInfoLog(e.getMessage() + "Exception in set file attributes");
+        }
 
-        String role = "ADMIN";
+        try {
+            props.load(new FileReader(file));
+        } catch (IOException e) {
+            addInfoLog(e.getMessage() + "error loading connection.properties");
+        }
 
-        if (role.equals("ADMIN")) {
+        user = props.getProperty("user");
+        asswd = props.getProperty("asswd");
+        ip = props.getProperty("ip");
+        pathToDB = props.getProperty("pathToDB");
 
-            File file = new File("connection.txt");
-            try {
-                file.setExecutable(false);
-                file.setReadable(true);
-                file.setWritable(true);
-            } catch (SecurityException e) {
-                addInfoLog(e.getMessage() + "Exception in set file attributes");
-            }
+        addInfoLog("Settings file connection.properties read.");
+    }
 
-            try  {
-                List<String> params = Files.readAllLines(file.toPath());
-                user = params.get(0);
-                asswd = params.get(1);
-                ip = params.get(2);
-                pathToDB = params.get(3);
-
-                addInfoLog("Settings file connection.txt read.");
-            } catch (IOException e) {
-                addInfoLog(e.getMessage() + " File reading error connection.txt");
-            }
+    public static void writeToFile(Properties properties) {
+        File file = new File("connection.properties");
+        FileOutputStream fos;
+        try {
+            fos = new FileOutputStream(file);
+            properties.store(fos, "comments");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

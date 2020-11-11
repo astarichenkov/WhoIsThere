@@ -6,15 +6,13 @@ import java.awt.image.BufferedImage;
 import java.util.Objects;
 
 public class Person {
-    private static Logging logs = new Logging();
     private String name;
     private String surname;
     private String department;
     private String post;
     private BufferedImage ph;
     private boolean isPresent;
-    private int timeAmount;
-
+//    private int timeAmount;
 
     public Person(String name, String surname,
                   String department, String post, BufferedImage ph) {
@@ -35,14 +33,6 @@ public class Person {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
     }
 
     public void setPhoto(BufferedImage ph) {

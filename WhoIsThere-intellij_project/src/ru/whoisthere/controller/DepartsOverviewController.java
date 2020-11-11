@@ -5,7 +5,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import ru.whoisthere.utils.Logging;
 import ru.whoisthere.model.Departments;
 
 import java.io.*;
@@ -16,7 +15,6 @@ import java.util.ResourceBundle;
 import static ru.whoisthere.utils.Logging.addInfoLog;
 
 public class DepartsOverviewController implements Initializable {
-//    private static Logging logs = new Logging();
 
     @FXML
     private Button okButton;

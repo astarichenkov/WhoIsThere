@@ -5,7 +5,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import ru.whoisthere.utils.Logging;
 import ru.whoisthere.settings.DoorsReadersSettings;
 
 import java.io.*;
@@ -16,7 +15,6 @@ import java.util.ResourceBundle;
 import static ru.whoisthere.utils.Logging.addInfoLog;
 
 public class DoorsReadersOverviewController implements Initializable {
-    //    private static Logging logs = new Logging();
     @FXML
     private TextField logInToTheStore;
 
@@ -61,7 +59,6 @@ public class DoorsReadersOverviewController implements Initializable {
                 addInfoLog("Settings was successfully recorded to file doorsReaders.txt");
                 Stage stage = (Stage) okButton.getScene().getWindow();
                 stage.close();
-//                DoorsReadersSettings.readFile();
             } catch (IOException e) {
                 addInfoLog(e.getMessage() + " File reading error doorsReaders.txt");
             }

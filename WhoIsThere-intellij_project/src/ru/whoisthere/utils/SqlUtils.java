@@ -4,7 +4,6 @@ package ru.whoisthere.utils;
 import java.awt.image.BufferedImage;
 import java.sql.*;
 import java.util.*;
-import java.util.concurrent.Executors;
 
 import ru.whoisthere.model.Departments;
 import ru.whoisthere.model.Person;
@@ -23,7 +22,6 @@ public class SqlUtils {
     private int inputMag = DoorsReadersSettings.getInputMag();
     private int exitDoor = DoorsReadersSettings.getExitMag();
     private List<Person> persons = Collections.synchronizedList(new ArrayList<>());
-//    private final String encoding = "UTF8";
 
     private void downloadPhotosToCache() {
         ResultSet rs;
@@ -47,8 +45,6 @@ public class SqlUtils {
         addInfoLog("***Personn photos loaded to cache***");
     }
 
-
-
     public List<Person> execQuery() {
         ArrayList<String> otdels = new ArrayList<>();
         for (int i = 0; i < 16; i++) {
@@ -66,14 +62,14 @@ public class SqlUtils {
 
             Statement stmt = con.createStatement();
             String role = "ADMIN";
-            ResultSet rs = null;
-            rs = getEvents();
+            ResultSet rs = getEvents();
             ResultSet rs2;
             if (role.equals("ADMIN")) {
                 while (rs.next()) {
                     Person person = new Person(
                             rs.getString(1), rs.getString(2),
-                            rs.getString(3), rs.getString(4), new BufferedImage(100, 100, TYPE_INT_RGB));
+                            rs.getString(3), rs.getString(4),
+                            new BufferedImage(100, 100, TYPE_INT_RGB));
                     if (person.getName() == null || person.getSurname() == null
                             || person.getDepartment() == null) {
                         continue;
@@ -166,19 +162,18 @@ public class SqlUtils {
         return new ArrayList<>(personsSorted);
     }
 
-
     private ArrayList<Person> sortByPresent(List<Person> persons) {
         Comparator<Person> comparator = Comparator.comparing(Person::isPresent);
         persons.sort(comparator.reversed());
         return new ArrayList<>(persons);
     }
 
-
     private ResultSet getEvents() throws SQLException {
         String queryStr = "SELECT events.lname1, events.lname2, events.ldepartment,"
                 + " EVENTS.LPOST, EVENTS.POBJECT, EVENTS.T"
                 + " from events where ((d = (SELECT MAX(D) FROM EVENTS) )"
-                + " AND (POBJECT = ? OR POBJECT = ? OR POBJECT = ? OR POBJECT = ?)) ORDER BY LNAME1, T ASC";
+                + " AND (POBJECT = ? OR POBJECT = ? OR POBJECT = ? OR POBJECT = ?))"
+                + " ORDER BY LNAME1, T ASC";
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = con.prepareStatement(queryStr);
@@ -222,7 +217,10 @@ public class SqlUtils {
         byte[] decodedBytes = Base64.getDecoder().decode(ConnectionSettings.getAsswd());
         String decodedAsswd = new String(decodedBytes);
         props.setProperty("password", decodedAsswd);
-//        props.setProperty("encoding", encoding);
+        char[] a = {85, 84, 70};
+        String encoding = "";
+        encoding = encoding + a[0] + a[1] + a[2] + 8;
+        props.setProperty("encoding", encoding);
         return props;
     }
 }
