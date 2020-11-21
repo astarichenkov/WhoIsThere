@@ -165,23 +165,39 @@ public class PersonsOverviewController {
 
     @FXML
     public void initialize() {
-        departLabel00.setText(departs.getDepartmentTitle(0));
-        departLabel01.setText(departs.getDepartmentTitle(1));
-        departLabel02.setText(departs.getDepartmentTitle(2));
-        departLabel03.setText(departs.getDepartmentTitle(3));
-        departLabel04.setText(departs.getDepartmentTitle(4));
-        departLabel05.setText(departs.getDepartmentTitle(5));
-        departLabel06.setText(departs.getDepartmentTitle(6));
-        departLabel07.setText(departs.getDepartmentTitle(7));
-        departLabel08.setText(departs.getDepartmentTitle(8));
-        departLabel09.setText(departs.getDepartmentTitle(9));
-        departLabel10.setText(departs.getDepartmentTitle(10));
-        departLabel11.setText(departs.getDepartmentTitle(11));
-        departLabel12.setText(departs.getDepartmentTitle(12));
-        departLabel13.setText(departs.getDepartmentTitle(13));
-        departLabel14.setText(departs.getDepartmentTitle(14));
-        departLabel15.setText(departs.getDepartmentTitle(15));
+//        departLabel00.setText(departs.getDepartmentTitle(0));
+//        departLabel01.setText(departs.getDepartmentTitle(1));
+//        departLabel02.setText(departs.getDepartmentTitle(2));
+//        departLabel03.setText(departs.getDepartmentTitle(3));
+//        departLabel04.setText(departs.getDepartmentTitle(4));
+//        departLabel05.setText(departs.getDepartmentTitle(5));
+//        departLabel06.setText(departs.getDepartmentTitle(6));
+//        departLabel07.setText(departs.getDepartmentTitle(7));
+//        departLabel08.setText(departs.getDepartmentTitle(8));
+//        departLabel09.setText(departs.getDepartmentTitle(9));
+//        departLabel10.setText(departs.getDepartmentTitle(10));
+//        departLabel11.setText(departs.getDepartmentTitle(11));
+//        departLabel12.setText(departs.getDepartmentTitle(12));
+//        departLabel13.setText(departs.getDepartmentTitle(13));
+//        departLabel14.setText(departs.getDepartmentTitle(14));
+//        departLabel15.setText(departs.getDepartmentTitle(15));
 
+        departLabel00.setText("СПОК");
+        departLabel01.setText("1 отдел");
+        departLabel02.setText("2 отдел");
+        departLabel03.setText("3 отдел");
+        departLabel04.setText("4 отдел");
+        departLabel05.setText("5 отдел");
+        departLabel06.setText("6 отдел");
+        departLabel07.setText("7 отдел");
+        departLabel08.setText("8 отдел");
+        departLabel09.setText("9 отдел");
+        departLabel10.setText("10 отдел");
+        departLabel11.setText("11 отдел");
+        departLabel12.setText("12 отдел");
+        departLabel13.setText("13 отдел");
+        departLabel14.setText("14 отдел");
+        departLabel15.setText("15 отдел");
 
         ContextMenu cm = new ContextMenu();
         MenuItem menuItem0 = new MenuItem();

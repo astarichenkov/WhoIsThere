@@ -6,13 +6,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import ru.whoisthere.model.Departments;
+import ru.whoisthere.settings.ConnectionSettings;
 
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 import static ru.whoisthere.utils.Logging.addInfoLog;
+import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
+
 
 public class DepartsOverviewController implements Initializable {
 
@@ -89,11 +94,25 @@ public class DepartsOverviewController implements Initializable {
         stage.close();
     }
 
-    public void saveAndExit() {
-        String role = "ADMIN";
-        if (role.equals("ADMIN")) {
 
-            File file = new File("departs.txt");
+    public void writeToFile(Properties properties) {
+        File file = new File("departs.properties");
+        try {
+            file.setExecutable(false);
+            file.setReadable(false);
+            file.setWritable(true);
+        } catch (SecurityException e) {
+            addInfoLog(e.getMessage() + "Exception in set file attributes");
+        }
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            properties.store(fos, "comments");
+        } catch (IOException e) {
+            addInfoLog(e.getMessage() + "Exception in store properties");
+        }
+    }
+
+    public void saveAndExit() {
+            File file = new File("departs.properties");
             try {
                 file.setExecutable(false);
                 file.setReadable(true);
@@ -101,47 +120,29 @@ public class DepartsOverviewController implements Initializable {
             } catch (SecurityException e) {
                 addInfoLog(e.getMessage() + "Exception in set file attributes");
             }
+            Properties properties = new Properties();
+            properties.put("departKey00", escapeHtml4(departLabel00.getText()));
+            properties.put("departKey01", escapeHtml4(departLabel01.getText()));
+            properties.put("departKey02", escapeHtml4(departLabel02.getText()));
+            properties.put("departKey03", escapeHtml4(departLabel03.getText()));
+            properties.put("departKey04", escapeHtml4(departLabel04.getText()));
+            properties.put("departKey05", escapeHtml4(departLabel05.getText()));
+            properties.put("departKey06", escapeHtml4(departLabel06.getText()));
+            properties.put("departKey07", escapeHtml4(departLabel07.getText()));
+            properties.put("departKey08", escapeHtml4(departLabel08.getText()));
+            properties.put("departKey09", escapeHtml4(departLabel09.getText()));
+            properties.put("departKey10", escapeHtml4(departLabel10.getText()));
+            properties.put("departKey11", escapeHtml4(departLabel11.getText()));
+            properties.put("departKey12", escapeHtml4(departLabel12.getText()));
+            properties.put("departKey13", escapeHtml4(departLabel13.getText()));
+            properties.put("departKey14", escapeHtml4(departLabel14.getText()));
+            properties.put("departKey15", escapeHtml4(departLabel15.getText()));
+            writeToFile(properties);
 
-            try (FileWriter writer = new FileWriter(file, StandardCharsets.UTF_8)) {
-                writer.write(departKey00.getText() + ", " + departLabel00.getText());
-                writer.write(System.lineSeparator());
-                writer.write(departKey01.getText() + ", " + departLabel01.getText());
-                writer.write(System.lineSeparator());
-                writer.write(departKey02.getText() + ", " + departLabel02.getText());
-                writer.write(System.lineSeparator());
-                writer.write(departKey03.getText() + ", " + departLabel03.getText());
-                writer.write(System.lineSeparator());
-                writer.write(departKey04.getText() + ", " + departLabel04.getText());
-                writer.write(System.lineSeparator());
-                writer.write(departKey05.getText() + ", " + departLabel05.getText());
-                writer.write(System.lineSeparator());
-                writer.write(departKey06.getText() + ", " + departLabel06.getText());
-                writer.write(System.lineSeparator());
-                writer.write(departKey07.getText() + ", " + departLabel07.getText());
-                writer.write(System.lineSeparator());
-                writer.write(departKey08.getText() + ", " + departLabel08.getText());
-                writer.write(System.lineSeparator());
-                writer.write(departKey09.getText() + ", " + departLabel09.getText());
-                writer.write(System.lineSeparator());
-                writer.write(departKey10.getText() + ", " + departLabel10.getText());
-                writer.write(System.lineSeparator());
-                writer.write(departKey11.getText() + ", " + departLabel11.getText());
-                writer.write(System.lineSeparator());
-                writer.write(departKey12.getText() + ", " + departLabel12.getText());
-                writer.write(System.lineSeparator());
-                writer.write(departKey13.getText() + ", " + departLabel13.getText());
-                writer.write(System.lineSeparator());
-                writer.write(departKey14.getText() + ", " + departLabel14.getText());
-                writer.write(System.lineSeparator());
-                writer.write(departKey15.getText() + ", " + departLabel15.getText());
-                addInfoLog("Settings was successfully recorded to file departs.txt");
-                Stage stage = (Stage) okButton.getScene().getWindow();
-                stage.close();
-            } catch (IOException e) {
-                addInfoLog(e.getMessage() + " File reading error departs.txt");
-            }
+            addInfoLog("Settings was successfully recorded to file departs.properties");
+            Stage stage = (Stage) okButton.getScene().getWindow();
+            stage.close();
         }
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

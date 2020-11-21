@@ -22,7 +22,7 @@ public class ConnectionSettings {
         try {
             file.setExecutable(false);
             file.setReadable(true);
-            file.setWritable(true);
+            file.setWritable(false);
         } catch (SecurityException e) {
             addInfoLog(e.getMessage() + "Exception in set file attributes");
         }
@@ -45,12 +45,17 @@ public class ConnectionSettings {
 
     public static void writeToFile(Properties properties) {
         File file = new File("connection.properties");
-        FileOutputStream fos;
         try {
-            fos = new FileOutputStream(file);
+            file.setExecutable(false);
+            file.setReadable(false);
+            file.setWritable(true);
+        } catch (SecurityException e) {
+            addInfoLog(e.getMessage() + "Exception in set file attributes");
+        }
+        try (FileOutputStream fos = new FileOutputStream(file)) {
             properties.store(fos, "comments");
         } catch (IOException e) {
-            e.printStackTrace();
+            addInfoLog(e.getMessage() + "Exception in store properties");
         }
     }
 
