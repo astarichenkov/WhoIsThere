@@ -1,6 +1,7 @@
 package ru.whoisthere.settings;
 
 import java.io.*;
+import java.util.Base64;
 import java.util.Properties;
 
 import static ru.whoisthere.utils.Logging.addInfoLog;
@@ -33,7 +34,9 @@ public class ConnectionSettings {
         }
 
         user = props.getProperty("user");
-        asswd = props.getProperty("asswd");
+        String s = props.getProperty("asswd");
+        byte[] decodedBytes = Base64.getDecoder().decode(s);
+        asswd = new String(decodedBytes);
         ip = props.getProperty("ip");
         pathToDB = props.getProperty("pathToDB");
 

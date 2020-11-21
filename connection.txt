@@ -1,0 +1,4 @@
+SYSDBA
+bWFzdGVya2V5
+10.84.238.100
+C:/Program files (x86)/ForSec/ForSec 2.3 SQL/DB/ForSec.gdb

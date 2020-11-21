@@ -2,6 +2,8 @@ package ru.whoisthere.settings;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import static ru.whoisthere.utils.Logging.addInfoLog;
@@ -33,19 +35,21 @@ public class DoorsReadersSettings {
     }
 
     public static void readFile() {
+
         String role = "ADMIN";
         if (role.equals("ADMIN")) {
-            File file = new File("doorsReaders.txt");
+//            File file = new File("doorsReaders.txt");
+//            try {
+//                file.setExecutable(false);
+//                file.setReadable(true);
+//                file.setWritable(true);
+//            } catch (SecurityException e) {
+//                addInfoLog(e.getMessage() + "Exception in set file attributes");
+//            }
+            Path path = Paths.get("doorsReaders.txt");
             try {
-                file.setExecutable(false);
-                file.setReadable(true);
-                file.setWritable(true);
-            } catch (SecurityException e) {
-                addInfoLog(e.getMessage() + "Exception in set file attributes");
-            }
-
-            try {
-                List<String> params = Files.readAllLines(file.toPath());
+                List<String> params = Files.readAllLines(path);
+//);
                 inputHall = Integer.parseInt(params.get(0));
                 outputHall = Integer.parseInt(params.get(1));
                 inputMag = Integer.parseInt(params.get(2));

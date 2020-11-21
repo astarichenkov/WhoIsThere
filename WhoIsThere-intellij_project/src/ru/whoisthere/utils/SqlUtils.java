@@ -59,7 +59,6 @@ public class SqlUtils {
                     "jdbc:firebirdsql://" + serverAddress
                             + "/" + pathToDB, getProperties());
 //            Logging.addInfoLog("Connection to the server " + serverAddress + " was successful.");
-
             Statement stmt = con.createStatement();
             String role = "ADMIN";
             ResultSet rs = getEvents();
@@ -128,8 +127,9 @@ public class SqlUtils {
             Logging.addWarningLog(e.getMessage());
         } finally {
             try {
-                this.con.close();
-
+                if (con != null) {
+                    this.con.close();
+                }
             } catch (SQLException e) {
                 addInfoLog(e.getMessage() + "Error in close connection");
             }
@@ -214,9 +214,7 @@ public class SqlUtils {
     public Properties getProperties() {
         Properties props = new Properties();
         props.setProperty("user", ConnectionSettings.getLogin());
-        byte[] decodedBytes = Base64.getDecoder().decode(ConnectionSettings.getAsswd());
-        String decodedAsswd = new String(decodedBytes);
-        props.setProperty("password", decodedAsswd);
+        props.setProperty("password", ConnectionSettings.getAsswd());
         char[] a = {85, 84, 70};
         String encoding = "";
         encoding = encoding + a[0] + a[1] + a[2] + 8;
