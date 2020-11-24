@@ -89,27 +89,11 @@ public class DepartsOverviewController implements Initializable {
         stage.close();
     }
 
-    public void writeToFile(Properties properties) {
-        File file = new File("departs.properties");
-        try {
-            file.setExecutable(false);
-            file.setReadable(false);
-            file.setWritable(true);
-        } catch (SecurityException e) {
-            addInfoLog(e.getMessage() + "Exception in set file attributes");
-        }
-        try (FileOutputStream fos = new FileOutputStream(file)) {
-            properties.store(fos, "comments");
-        } catch (IOException e) {
-            addInfoLog(e.getMessage() + "Exception in store properties");
-        }
-    }
-
     public void saveAndExit() {
         File file = new File("departs.properties");
         try {
             file.setExecutable(false);
-            file.setReadable(true);
+            file.setReadable(false);
             file.setWritable(true);
         } catch (SecurityException e) {
             addInfoLog(e.getMessage() + "Exception in set file attributes");
@@ -131,7 +115,11 @@ public class DepartsOverviewController implements Initializable {
         properties.put("depart13", escapeHtml4(departKey13.getText()));
         properties.put("depart14", escapeHtml4(departKey14.getText()));
         properties.put("depart15", escapeHtml4(departKey15.getText()));
-        writeToFile(properties);
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            properties.store(fos, "comments");
+        } catch (IOException e) {
+            addInfoLog(e.getMessage() + "Exception in store departs.properties");
+        }
 
         addInfoLog("Settings was successfully recorded to file departs.properties");
         Stage stage = (Stage) okButton.getScene().getWindow();
@@ -141,7 +129,7 @@ public class DepartsOverviewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Departments departments = new Departments();
-        departLabel00.setText("ЧПОК");
+        departLabel00.setText("СПОК");
         departLabel01.setText("1 отдел");
         departLabel02.setText("2 отдел");
         departLabel03.setText("3 отдел");

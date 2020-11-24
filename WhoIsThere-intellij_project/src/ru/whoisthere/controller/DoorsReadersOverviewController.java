@@ -9,24 +9,21 @@ import ru.whoisthere.settings.DoorsReadersSettings;
 
 import java.io.*;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
+import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
 import static ru.whoisthere.utils.Logging.addInfoLog;
 
 public class DoorsReadersOverviewController implements Initializable {
     @FXML
     private TextField logInToTheStore;
-
     @FXML
     private TextField exitOfTheStore;
-
     @FXML
     private Button okButton;
-
     @FXML
     private TextField exitTheHall;
-
     @FXML
     private TextField loginToTheHall;
 
@@ -36,33 +33,26 @@ public class DoorsReadersOverviewController implements Initializable {
     }
 
     public void saveAndExit() {
-        String role = "ADMIN";
-
-        if (role.equals("ADMIN")) {
-            File file = new File("doorsReaders.txt");
-            try {
-                file.setExecutable(false);
-                file.setReadable(true);
-                file.setWritable(true);
-            } catch (SecurityException e) {
-                addInfoLog(e.getMessage() + "Exception in set file attributes");
-            }
-
-            try (FileWriter writer = new FileWriter(file, StandardCharsets.UTF_8)) {
-                writer.write(loginToTheHall.getText());
-                writer.write(System.lineSeparator());
-                writer.write(exitTheHall.getText());
-                writer.write(System.lineSeparator());
-                writer.write(logInToTheStore.getText());
-                writer.write(System.lineSeparator());
-                writer.write(exitOfTheStore.getText());
-                addInfoLog("Settings was successfully recorded to file doorsReaders.txt");
-                Stage stage = (Stage) okButton.getScene().getWindow();
-                stage.close();
-            } catch (IOException e) {
-                addInfoLog(e.getMessage() + " File reading error doorsReaders.txt");
-            }
+        File file = new File("doorsReaders.properties");
+        try {
+            file.setExecutable(false);
+            file.setReadable(false);
+            file.setWritable(true);
+        } catch (SecurityException e) {
+            addInfoLog(e.getMessage() + "Exception in set file attributes");
         }
+        Properties properties = new Properties();
+        properties.put("inputHall", escapeHtml4(loginToTheHall.getText()));
+        properties.put("outputHall", escapeHtml4(exitTheHall.getText()));
+        properties.put("inputMag", escapeHtml4(logInToTheStore.getText()));
+        properties.put("exitMag", escapeHtml4(exitOfTheStore.getText()));
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            properties.store(fos, "comments");
+        } catch (IOException e) {
+            addInfoLog(e.getMessage() + "Exception in store doorsReaders.properties");
+        }
+        Stage stage = (Stage) okButton.getScene().getWindow();
+        stage.close();
     }
 
     @Override

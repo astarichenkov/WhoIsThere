@@ -1,10 +1,7 @@
 package ru.whoisthere.settings;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
+import java.util.Properties;
 
 import static ru.whoisthere.utils.Logging.addInfoLog;
 
@@ -35,29 +32,29 @@ public class DoorsReadersSettings {
     }
 
     public static void readFile() {
+        File file = new File("doorsReaders.properties");
+        try {
+            file.setExecutable(false);
+            file.setReadable(true);
+            file.setWritable(false);
+        } catch (SecurityException e) {
+            addInfoLog(e.getMessage() + "Exception in set file attributes");
+        }
+        Properties props = new Properties();
+        try {
+            props.load(new FileReader(file));
+        } catch (IOException e) {
+            addInfoLog(e.getMessage() + "error loading doorsReaders.properties");
+        }
 
-        String role = "ADMIN";
-        if (role.equals("ADMIN")) {
-//            File file = new File("doorsReaders.txt");
-//            try {
-//                file.setExecutable(false);
-//                file.setReadable(true);
-//                file.setWritable(true);
-//            } catch (SecurityException e) {
-//                addInfoLog(e.getMessage() + "Exception in set file attributes");
-//            }
-            Path path = Paths.get("doorsReaders.txt");
-            try {
-                List<String> params = Files.readAllLines(path);
-//);
-                inputHall = Integer.parseInt(params.get(0));
-                outputHall = Integer.parseInt(params.get(1));
-                inputMag = Integer.parseInt(params.get(2));
-                exitMag = Integer.parseInt(params.get(3));
-                addInfoLog("Settings file doors.txt read.");
-            } catch (IOException e) {
-                addInfoLog(e.getMessage() + "File reading error doors.txt");
-            }
+        try {
+            inputHall = Integer.parseInt(props.getProperty("inputHall"));
+            outputHall = Integer.parseInt(props.getProperty("outputHall"));
+            inputMag = Integer.parseInt(props.getProperty("inputMag"));
+            exitMag = Integer.parseInt(props.getProperty("exitMag"));
+            addInfoLog("Settings file doorsReaders.properties read.");
+        } catch (NumberFormatException e) {
+            addInfoLog(e.getLocalizedMessage() + " error read doorsReaders.properties");
         }
     }
 }

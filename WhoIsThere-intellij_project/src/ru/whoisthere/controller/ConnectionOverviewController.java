@@ -37,8 +37,6 @@ public class ConnectionOverviewController implements Initializable {
     }
 
     public void saveAndExit() {
-        String role = "ADMIN";
-        if (role.equals("ADMIN")) {
             File file = new File("connection.properties");
             try {
                 file.setExecutable(false);
@@ -59,7 +57,6 @@ public class ConnectionOverviewController implements Initializable {
             addInfoLog("Settings was successfully recorded to file connection.txt");
             Stage stage = (Stage) okButton.getScene().getWindow();
             stage.close();
-        }
     }
 
     @Override
