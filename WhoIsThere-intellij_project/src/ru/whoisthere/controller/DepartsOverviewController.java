@@ -15,9 +15,7 @@ import java.util.ResourceBundle;
 import static ru.whoisthere.utils.Logging.addInfoLog;
 import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
 
-
 public class DepartsOverviewController implements Initializable {
-
     @FXML
     private Button okButton;
     @FXML
@@ -91,7 +89,6 @@ public class DepartsOverviewController implements Initializable {
         stage.close();
     }
 
-
     public void writeToFile(Properties properties) {
         File file = new File("departs.properties");
         try {
@@ -161,21 +158,21 @@ public class DepartsOverviewController implements Initializable {
         departLabel14.setText("14 отдел");
         departLabel15.setText("15 отдел");
 
-        departKey00.setText(departments.getDepartments().get(0));
-        departKey01.setText(departments.getDepartments().get(1));
-        departKey02.setText(departments.getDepartments().get(2));
-        departKey03.setText(departments.getDepartments().get(3));
-        departKey04.setText(departments.getDepartments().get(4));
-        departKey05.setText(departments.getDepartments().get(5));
-        departKey06.setText(departments.getDepartments().get(6));
-        departKey07.setText(departments.getDepartments().get(7));
-        departKey08.setText(departments.getDepartments().get(8));
-        departKey09.setText(departments.getDepartments().get(9));
-        departKey10.setText(departments.getDepartments().get(10));
-        departKey11.setText(departments.getDepartments().get(11));
-        departKey12.setText(departments.getDepartments().get(12));
-        departKey13.setText(departments.getDepartments().get(13));
-        departKey14.setText(departments.getDepartments().get(14));
-        departKey15.setText(departments.getDepartments().get(15));
+        departKey00.setText(escapeHtml4(departments.getDepartments().get(0)));
+        departKey01.setText(escapeHtml4(departments.getDepartments().get(1)));
+        departKey02.setText(escapeHtml4(departments.getDepartments().get(2)));
+        departKey03.setText(escapeHtml4(departments.getDepartments().get(3)));
+        departKey04.setText(escapeHtml4(departments.getDepartments().get(4)));
+        departKey05.setText(escapeHtml4(departments.getDepartments().get(5)));
+        departKey06.setText(escapeHtml4(departments.getDepartments().get(6)));
+        departKey07.setText(escapeHtml4(departments.getDepartments().get(7)));
+        departKey08.setText(escapeHtml4(departments.getDepartments().get(8)));
+        departKey09.setText(escapeHtml4(departments.getDepartments().get(9)));
+        departKey10.setText(escapeHtml4(departments.getDepartments().get(10)));
+        departKey11.setText(escapeHtml4(departments.getDepartments().get(11)));
+        departKey12.setText(escapeHtml4(departments.getDepartments().get(12)));
+        departKey13.setText(escapeHtml4(departments.getDepartments().get(13)));
+        departKey14.setText(escapeHtml4(departments.getDepartments().get(14)));
+        departKey15.setText(escapeHtml4(departments.getDepartments().get(15)));
     }
 }
