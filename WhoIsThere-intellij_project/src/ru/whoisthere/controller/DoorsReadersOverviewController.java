@@ -51,6 +51,7 @@ public class DoorsReadersOverviewController implements Initializable {
         } catch (IOException e) {
             addInfoLog(e.getMessage() + "Exception in store doorsReaders.properties");
         }
+        addInfoLog("Settings was successfully recorded to file doorsReaders.properties");
         Stage stage = (Stage) okButton.getScene().getWindow();
         stage.close();
     }

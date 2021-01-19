@@ -51,49 +51,45 @@ public class SqlUtils {
             otdels.add(departs.getDepartmentName(i));
         }
 
+        String url = ConnectionSettings.getUrl();
         String serverAddress = ConnectionSettings.getIp();
         String pathToDB = ConnectionSettings.getPathToDB();
         try {
             Class.forName("org.firebirdsql.jdbc.FBDriver");
             this.con = DriverManager.getConnection(
-                    "jdbc:firebirdsql://" + serverAddress
-                            + "/" + pathToDB, getProperties());
-//            Logging.addInfoLog("Connection to the server " + serverAddress + " was successful.");
+                    url + serverAddress + pathToDB, getProperties());
             Statement stmt = con.createStatement();
-            String role = "ADMIN";
             ResultSet rs = getEvents();
             ResultSet rs2;
-            if (role.equals("ADMIN")) {
-                while (rs.next()) {
-                    Person person = new Person(
-                            rs.getString(1), rs.getString(2),
-                            rs.getString(3), rs.getString(4),
-                            new BufferedImage(100, 100, TYPE_INT_RGB));
-                    if (person.getName() == null || person.getSurname() == null
-                            || person.getDepartment() == null) {
-                        continue;
-                    }
-                    int pObject = rs.getInt(5);
+            while (rs.next()) {
+                Person person = new Person(
+                        rs.getString(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4),
+                        new BufferedImage(100, 100, TYPE_INT_RGB));
+                if (person.getName() == null || person.getSurname() == null
+                        || person.getDepartment() == null) {
+                    continue;
+                }
+                int pObject = rs.getInt(5);
 
-                    if (pObject == inputMag || pObject == inputHall || pObject == outputHall) {
-                        if (pObject == inputHall) {
-                            person.setPresent(true);
-                        } else {
-                            person.setPresent(false);
-                        }
-
-                        if (!persons.contains(person) && otdels.contains(person.getDepartment())) {
-                            persons.add(person);
-                        } else if (otdels.contains(person.getDepartment())) {
-                            persons.remove(person);
-                            persons.add(person);
-                        }
-                        continue;
+                if (pObject == inputMag || pObject == inputHall || pObject == outputHall) {
+                    if (pObject == inputHall) {
+                        person.setPresent(true);
+                    } else {
+                        person.setPresent(false);
                     }
 
-                    if (pObject == exitDoor) {
+                    if (!persons.contains(person) && otdels.contains(person.getDepartment())) {
+                        persons.add(person);
+                    } else if (otdels.contains(person.getDepartment())) {
                         persons.remove(person);
+                        persons.add(person);
                     }
+                    continue;
+                }
+
+                if (pObject == exitDoor) {
+                    persons.remove(person);
                 }
             }
 
@@ -215,9 +211,7 @@ public class SqlUtils {
         Properties props = new Properties();
         props.setProperty("user", ConnectionSettings.getLogin());
         props.setProperty("password", ConnectionSettings.getAsswd());
-        char[] a = {85, 84, 70};
-        String encoding = "";
-        encoding = encoding + a[0] + a[1] + a[2] + 8;
+        String encoding = ConnectionSettings.getEncoding();
         props.setProperty("encoding", encoding);
         return props;
     }

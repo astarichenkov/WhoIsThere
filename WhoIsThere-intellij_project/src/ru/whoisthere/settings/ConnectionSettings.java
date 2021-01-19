@@ -7,10 +7,12 @@ import java.util.Properties;
 import static ru.whoisthere.utils.Logging.addInfoLog;
 
 public class ConnectionSettings {
+    private static String url;
     private static String user;
     private static String asswd;
     private static String ip;
     private static String pathToDB;
+    private static String encoding;
     private static Properties props = new Properties();
 
     public ConnectionSettings() {
@@ -39,6 +41,8 @@ public class ConnectionSettings {
         asswd = new String(decodedBytes);
         ip = props.getProperty("ip");
         pathToDB = props.getProperty("pathToDB");
+        encoding = props.getProperty("encoding");
+        url = props.getProperty("url");
 
         addInfoLog("Settings file connection.properties read.");
     }
@@ -65,6 +69,14 @@ public class ConnectionSettings {
 
     public static String getAsswd() {
         return asswd;
+    }
+
+    public static String getEncoding() {
+        return encoding;
+    }
+
+    public static String getUrl() {
+        return url;
     }
 
     public static String getIp() {

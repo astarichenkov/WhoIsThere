@@ -1,7 +1,5 @@
 package ru.whoisthere.model;
 
-import ru.whoisthere.utils.Logging;
-
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 

@@ -50,8 +50,9 @@ public class PhotoCache {
             double imgRatio = imgHeight / imgWidth;
             img = resize(img, (int) (100 * imgRatio), 100);
         } catch (IOException e) {
-            addWarningLog(e.getMessage());
+            addWarningLog(e.getMessage() + "error read image");
         } catch (NullPointerException e) {
+            addWarningLog(e.getMessage() + "no photo in database");
             return new BufferedImage(100, 100, TYPE_INT_RGB);
         }
         return img;

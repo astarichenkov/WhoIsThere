@@ -12,6 +12,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import ru.whoisthere.settings.ConnectionSettings;
 
+import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
 import static ru.whoisthere.utils.Logging.addInfoLog;
 
 public class ConnectionOverviewController implements Initializable {
@@ -46,15 +47,17 @@ public class ConnectionOverviewController implements Initializable {
                 addInfoLog(e.getMessage() + "Exception in set file attributes");
             }
             Properties properties = new Properties();
-            properties.put("user", loginField.getText());
+            properties.put("user", escapeHtml4(loginField.getText()));
             String encodedAsswd = Base64.getEncoder().encodeToString(
-                    passwordField.getText().getBytes());
+                    escapeHtml4(passwordField.getText()).getBytes());
             properties.put("asswd", encodedAsswd);
-            properties.put("ip", ipAddressField.getText());
-            properties.put("pathToDB", pathToDBField.getText());
+            properties.put("ip", escapeHtml4(ipAddressField.getText()));
+            properties.put("pathToDB", escapeHtml4(pathToDBField.getText()));
+            properties.put("encoding", "UTF8");
+            properties.put("url", "jdbc:firebirdsql://");
             ConnectionSettings.writeToFile(properties);
 
-            addInfoLog("Settings was successfully recorded to file connection.txt");
+            addInfoLog("Settings was successfully recorded to file connection.properties");
             Stage stage = (Stage) okButton.getScene().getWindow();
             stage.close();
     }
