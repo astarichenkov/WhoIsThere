@@ -118,7 +118,7 @@ public class PersonsOverviewController {
                     personPhoto.fitWidthProperty().bind(
                             mynode.prefWidthProperty().multiply(imgRatio));
                     personPhoto.fitHeightProperty().bind(
-                            mynode.prefHeightProperty().divide(9.2).subtract(40));
+                            mynode.prefHeightProperty().divide(10).subtract(40));
                     personPhoto.setPreserveRatio(true);
 
 
