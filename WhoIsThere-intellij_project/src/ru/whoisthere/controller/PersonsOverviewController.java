@@ -22,11 +22,11 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import ru.whoisthere.utils.DownloadData;
-import ru.whoisthere.utils.Logging;
 import ru.whoisthere.model.Departments;
 import ru.whoisthere.model.Person;
 
@@ -83,8 +83,6 @@ public class PersonsOverviewController {
         clearData();
         DownloadData downloadData = new DownloadData();
         persons = downloadData.getPersons();
-//        int maxPersons = 9;
-//        int maxPersons = downloadData.getMaxPersons();
         Date refreshingStart = new Date();
         Stage stage = (Stage) gp.getScene().getWindow();
         gp.prefHeightProperty().bind(stage.heightProperty().subtract(40));
@@ -101,8 +99,8 @@ public class PersonsOverviewController {
             for (int i = 0; i < 16; i++) {
                 if (person.getDepartment().equals(departs.getDepartmentName(i))) {
                     FlowPane mynode = (FlowPane) gp.lookup("#col" + i);
-                    mynode.setHgap(5);
-                    mynode.setVgap(5);
+                    mynode.setHgap(1);
+                    mynode.setVgap(4);
 
                     Image photo = SwingFXUtils.toFXImage(person.getPhoto(), null);
 
@@ -113,26 +111,23 @@ public class PersonsOverviewController {
                         personPhoto.setEffect(grayScale);
                     }
 
-                    double imgRatio = setImageRatio(photo);
-
-                    personPhoto.fitWidthProperty().bind(
-                            mynode.prefWidthProperty().multiply(imgRatio));
-                    personPhoto.fitHeightProperty().bind(
-                            mynode.prefHeightProperty().divide(10).subtract(40));
-                    personPhoto.setPreserveRatio(true);
-
-
                     Label label = new Label(person.getName() + " " + System.lineSeparator()
                             + person.getSurname(), personPhoto);
-//                    label.setWrapText(true);
-                    label.setMaxWidth(55);
-//                    label.setMinWidth(55);
-                    label.setFont(Font.font("Roboto", 8.5));
-//                    label.setStyle("-fx-border-color: black;");
-                    label.setContentDisplay(ContentDisplay.TOP);
-                    label.setAlignment(Pos.BOTTOM_RIGHT);
-                    mynode.getChildren().addAll(label);
 
+                    label.setPrefWidth(58);
+                    label.setMinWidth(58);
+                    label.setMaxWidth(58);
+
+                    label.setFont(Font.font("Roboto", 8.5));
+                    label.setStyle("-fx-border-color: gray; "
+                            + "-fx-border-radius: 1; "
+                            + "-fx-background-radius: 1;");
+                    label.setContentDisplay(ContentDisplay.TOP);
+                    label.setAlignment(Pos.CENTER);
+                    label.setTextAlignment(TextAlignment.CENTER);
+
+
+                    mynode.getChildren().addAll(label);
                 }
             }
         }
@@ -141,12 +136,6 @@ public class PersonsOverviewController {
         addInfoLog("Interface updated for: "
                 + (refreshingEnd.getTime() - refreshingStart.getTime()) + " ms.");
         dataUpdated.setText(downloadData.getDataTime());
-    }
-
-    private double setImageRatio(Image photo) {
-        double imgWidth = photo.getWidth();
-        double imgHeight = photo.getHeight();
-        return 1 * imgWidth / imgHeight;
     }
 
     private void clearData() {

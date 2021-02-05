@@ -48,7 +48,13 @@ public class PhotoCache {
             double imgWidth = img.getWidth();
             double imgHeight = img.getHeight();
             double imgRatio = imgHeight / imgWidth;
-            img = resize(img, (int) (100 * imgRatio), 100);
+            if (imgRatio > 1.3) {
+                img = cropImageHeight(img);
+            } else if (imgRatio < 1.1) {
+                img = cropImageWidth(img);
+            }
+            img = resize(img, 68, 56);
+            img = setBorderToBufferedImage(img);
         } catch (IOException e) {
             addWarningLog(e.getMessage() + "error read image");
         } catch (NullPointerException e) {
@@ -65,6 +71,26 @@ public class PhotoCache {
         g2d.drawImage(tmp, 0, 0, null);
         g2d.dispose();
         return resized;
+    }
+
+    private static BufferedImage cropImageHeight(BufferedImage src) {
+        double ratio = 1.22;
+        int y = 0;
+        return src.getSubimage(0, y, src.getWidth(), (int) (src.getWidth() * ratio));
+    }
+
+    private static BufferedImage cropImageWidth(BufferedImage src) {
+        double ratio = 1.22;
+        int x = (int) (src.getWidth() - (src.getWidth() / ratio)) / 2;
+        return src.getSubimage(x, 0, (int) (src.getHeight() / ratio), src.getHeight());
+    }
+
+    private static BufferedImage setBorderToBufferedImage(BufferedImage img) {
+        Graphics2D g = (Graphics2D) img.getGraphics();
+        g.setStroke(new BasicStroke(1));
+        g.setColor(Color.GRAY);
+        g.drawRect(-1, -1, img.getWidth() + 10, img.getHeight());
+        return img;
     }
 
 }

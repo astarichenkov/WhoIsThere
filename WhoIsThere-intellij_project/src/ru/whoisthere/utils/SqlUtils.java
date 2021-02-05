@@ -42,7 +42,7 @@ public class SqlUtils {
             PhotoCache.addPersonToCache(person);
             addInfoLog(person + " photo downloaded");
         }
-        addInfoLog("***Personn photos loaded to cache***");
+        addInfoLog("***Person photos loaded to cache***");
     }
 
     public List<Person> execQuery() {

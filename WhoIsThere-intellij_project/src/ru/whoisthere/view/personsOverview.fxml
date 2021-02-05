@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -171,34 +173,85 @@
                </AnchorPane>
                <AnchorPane GridPane.columnIndex="15" GridPane.rowIndex="1">
                    <children>
-                       <FlowPane id="col15" layoutX="-2.0" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0">
+                       <FlowPane id="col15" layoutX="-2.0" styleClass="columns" stylesheets="@personsOverview.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0.0">
                            <padding>
                                <Insets top="5.0" />
                            </padding>
                        </FlowPane>
                    </children>
                </AnchorPane>
-               <Label fx:id="departLabel00" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="Дирекция" textAlignment="CENTER" />
-               <Label fx:id="departLabel01" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="1 отдел" textAlignment="CENTER" GridPane.columnIndex="1" />
-               <Label fx:id="departLabel02" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="2 отдел" GridPane.columnIndex="2" />
-               <Label fx:id="departLabel03" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="3 отдел" GridPane.columnIndex="3" />
-               <Label fx:id="departLabel04" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="4 отдел" GridPane.columnIndex="4" />
-               <Label fx:id="departLabel05" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="5 отдел" GridPane.columnIndex="5" />
-               <Label fx:id="departLabel06" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="6 отдел" GridPane.columnIndex="6" />
-               <Label fx:id="departLabel07" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="7 отдел" GridPane.columnIndex="7" />
-               <Label fx:id="departLabel08" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="8 отдел" GridPane.columnIndex="8" />
-               <Label fx:id="departLabel09" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="9 отдел" GridPane.columnIndex="9" />
-               <Label fx:id="departLabel10" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="10 отдел" GridPane.columnIndex="10" />
-               <Label fx:id="departLabel11" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="11 отдел" GridPane.columnIndex="11" />
-               <Label fx:id="departLabel12" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="12 отдел" GridPane.columnIndex="12" />
-               <Label fx:id="departLabel13" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="13 отдел" GridPane.columnIndex="13" />
-               <Label fx:id="departLabel14" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="14 отдел" GridPane.columnIndex="14" />
-               <Label fx:id="departLabel15" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="15 отдел" GridPane.columnIndex="15" />
+               <Label fx:id="departLabel00" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="Дирекция" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+               <Label fx:id="departLabel01" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="1 отдел" textAlignment="CENTER" GridPane.columnIndex="1">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+               <Label fx:id="departLabel02" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="2 отдел" GridPane.columnIndex="2">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+               <Label fx:id="departLabel03" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="3 отдел" GridPane.columnIndex="3">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+               <Label fx:id="departLabel04" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="4 отдел" GridPane.columnIndex="4">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+               <Label fx:id="departLabel05" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="5 отдел" GridPane.columnIndex="5">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+               <Label fx:id="departLabel06" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="6 отдел" GridPane.columnIndex="6">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+               <Label fx:id="departLabel07" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="7 отдел" GridPane.columnIndex="7">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+               <Label fx:id="departLabel08" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="8 отдел" GridPane.columnIndex="8">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+               <Label fx:id="departLabel09" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="9 отдел" GridPane.columnIndex="9">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+               <Label fx:id="departLabel10" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="10 отдел" GridPane.columnIndex="10">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+               <Label fx:id="departLabel11" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="11 отдел" GridPane.columnIndex="11">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+               <Label fx:id="departLabel12" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="12 отдел" GridPane.columnIndex="12">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+               <Label fx:id="departLabel13" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="13 отдел" GridPane.columnIndex="13">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+               <Label fx:id="departLabel14" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="14 отдел" GridPane.columnIndex="14">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+               <Label fx:id="departLabel15" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="headers" stylesheets="@personsOverview.css" text="15 отдел" GridPane.columnIndex="15">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
                <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="footer" stylesheets="@personsOverview.css" GridPane.columnSpan="16" GridPane.rowIndex="2">
                    <children>
                        <HBox alignment="CENTER_LEFT" layoutX="-49.0" layoutY="-40.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1400.0" AnchorPane.topAnchor="0.0">
                            <children>
-                               <Label text="Обновлено: " />
+                               <Label text="Обновлено: ">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></Label>
                                <Label fx:id="dataUpdated" />
                            </children>
                        </HBox>
